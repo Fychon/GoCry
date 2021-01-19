@@ -239,6 +239,7 @@ public class Victim {
         this.inJump = false;
         this.moveLeft = false;
         this.moveRight = false;
+        this.fallen = true;
     }
 
     // Bewegungsmethode: Rechts

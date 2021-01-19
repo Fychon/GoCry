@@ -183,6 +183,7 @@ import javax.swing.*;
 
         public void showLevel(int level_id){
             LevelController.getInstance().setModsForLevel(level_id);
+            Victim.getInstance().resetMovement();
             
             if(level_id == 0){
                ViewController.getInstance().setVictimName(enterName.getText());

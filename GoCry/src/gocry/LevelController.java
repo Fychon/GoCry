@@ -283,7 +283,10 @@ public class LevelController implements KeyListener {
            playTinnitus();
         }
         if (e.getKeyCode() == KeyEvent.VK_W) {
-            levelInSwitch = false;
+            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
+            if(levelInSwitch){
+                levelInSwitch = false;
+            }
             Victim.getInstance().startJump();
         }
         if(invertEnabled){
