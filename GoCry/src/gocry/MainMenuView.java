@@ -122,6 +122,7 @@ import javax.swing.*;
             closeGame.setMargin(new Insets(0, 0, 0, 0));
 
             
+            closeGame.setBorder(null);
             newGame.setBorder(null);
             loadGame.setBorder(null);
             scoreboard.setBorder(null);
@@ -159,7 +160,7 @@ import javax.swing.*;
         }
         
         public void loadSecPanel(){
-            Icon icon = new ImageIcon("textures/GoCry.png");
+            Icon icon = new ImageIcon("textures/GoCry.gif");
             JLabel label = new JLabel(icon);
             label.setBounds(lmenu.getBounds());
             label.setVisible(true);
