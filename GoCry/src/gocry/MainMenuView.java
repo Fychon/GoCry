@@ -102,6 +102,10 @@ import javax.swing.*;
                 
                 //TODO BUTTONSIZE FROM ICONSIZE -> CONFIGURE POSITION
                 closeGame.setSize(imgCloseGame.getIconWidth(), imgCloseGame.getIconHeight());
+                loadGame.setSize(imgLoadGame.getIconWidth(), imgLoadGame.getIconHeight());
+                scoreboard.setSize(imgShowScore.getIconWidth(), imgShowScore.getIconHeight());
+                newGame.setSize(imgNewGame.getIconWidth(), imgNewGame.getIconHeight());
+
             }  catch (Exception ex) {
                     System.out.println(ex);
             }
@@ -127,15 +131,15 @@ import javax.swing.*;
             loadGame.setOpaque(false);
             scoreboard.setOpaque(false);
             
-            newGame.setSize(sizeButtons);
-            loadGame.setSize(sizeButtons);
-            scoreboard.setSize(sizeButtons);
+            //newGame.setSize(sizeButtons);
+            //loadGame.setSize(sizeButtons);
+            //scoreboard.setSize(sizeButtons);
             enterName.setSize(sizeButtons);
 
-            newGame.setLocation(sizeButtons.width, sizeButtons.height * 3);
-            loadGame.setLocation(sizeButtons.width, (sizeButtons.height * 4) );
-            scoreboard.setLocation(sizeButtons.width, (sizeButtons.height * 5));
-            enterName.setLocation(sizeButtons.width, (sizeButtons.height * 6) - 10);
+            newGame.setLocation((lmenuKomp.getSize().width-newGame.getSize().width)/2, sizeButtons.height * 3);
+            loadGame.setLocation((lmenuKomp.getSize().width-loadGame.getSize().width)/2, (sizeButtons.height * 4) );
+            scoreboard.setLocation((lmenuKomp.getSize().width-scoreboard.getSize().width)/2, (sizeButtons.height * 5));
+            enterName.setLocation((lmenuKomp.getSize().width-enterName.getSize().width)/2, (sizeButtons.height * 6) - 10);
             closeGame.setLocation(lmenuKomp.getSize().width-closeGame.getSize().width*2,lmenuKomp.getSize().height-closeGame.getSize().height*2);
 
             newGame.addActionListener(controller);
