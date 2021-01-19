@@ -6,11 +6,9 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.SwingUtilities;
 
 /*
  * Controller für die Interaktionen zwischen Victim und LevelObjects + Erstellung des Levels
@@ -42,7 +40,7 @@ public class LevelController implements KeyListener {
     private boolean tinnitus = false;
     private Clip clipTin;
     
-    private boolean collisionInProgress = false;
+    private boolean levelInSwitch = false;
 
     
     final public int blockArrayWidth = 32;
@@ -100,21 +98,19 @@ public class LevelController implements KeyListener {
                 if (objectArray[(int) (values.getX())][((int) values.getY())] == null) {
                     result = false;
                 } else {
-                    //SIcherungsvariable
-                    //if(collisionInProgress == false){
-                    //    collisionInProgress = true;
-                        if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.NEUTRAL) {
-                            result = true;
+                    if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.NEUTRAL) {
+                        result = true;
+                    }
+                    if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.KILL) {
+                        //resetVictim();
+                        ViewController.getInstance().backToMenu();
+                    }
+                    if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.WINZONE) {
+                        if(levelInSwitch==false){
+                            levelInSwitch = true;
+                            nextLayer();
                         }
-                        if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.KILL) {
-                            //resetVictim();
-                            ViewController.getInstance().backToMenu();
-                        }
-                        if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.WINZONE) {
-                                nextLayer();
-                        }
-                     //   collisionInProgress = false;
-                   // }
+                    }
                 }
             }
             return result;
@@ -285,11 +281,12 @@ public class LevelController implements KeyListener {
         }
         if(tinnitus){
            playTinnitus();
-        } 
+        }
+        if (e.getKeyCode() == KeyEvent.VK_W) {
+            levelInSwitch = false;
+            Victim.getInstance().startJump();
+        }
         if(invertEnabled){
-            if (e.getKeyCode() == KeyEvent.VK_W) {
-                Victim.getInstance().startJump();
-            }
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 Victim.getInstance().startMoveLeft();
             }
@@ -297,9 +294,6 @@ public class LevelController implements KeyListener {
                 Victim.getInstance().startMoveRight();
             }
         } else if(wtfEnabled){
-            if (e.getKeyCode() == KeyEvent.VK_W) {
-                Victim.getInstance().startJump();
-            }
             if (e.getKeyCode() == KeyEvent.VK_T) {
                 Victim.getInstance().startMoveLeft();
             }
@@ -307,9 +301,7 @@ public class LevelController implements KeyListener {
                 Victim.getInstance().startMoveRight();
             }       
         }   else {
-            if (e.getKeyCode() == KeyEvent.VK_W) {
-                Victim.getInstance().startJump();
-            }
+            
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 Victim.getInstance().startMoveLeft();
             }
