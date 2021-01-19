@@ -72,6 +72,7 @@ public class ViewController implements ActionListener {
     }
 
     public void nextLayer(){
+        Victim.getInstance().resetMovement();
         levelSwitch = true;
             actualLayer = layers.get(actualLayer).nextLayer;
             try {

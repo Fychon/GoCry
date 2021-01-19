@@ -234,6 +234,12 @@ public class Victim {
         this.maxHeight = 0;
 
     }
+    
+    public void resetMovement(){
+        this.inJump = false;
+        this.moveLeft = false;
+        this.moveRight = false;
+    }
 
     // Bewegungsmethode: Rechts
     public void startMoveRight() {
