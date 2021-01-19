@@ -160,19 +160,18 @@ import javax.swing.*;
         
         public void loadSecPanel(){
             Icon icon = new ImageIcon("textures/GoCry.png");
-                JLabel label = new JLabel(icon);
-                label.setBounds(lmenu.getBounds());
-                label.setVisible(true);
-                ltitle.add(label);
+            JLabel label = new JLabel(icon);
+            label.setBounds(lmenu.getBounds());
+            label.setVisible(true);
+            ltitle.add(label);
         }
 
         public void loadFirstPanel(){
-
-                Icon icon = new ImageIcon("textures/mainmenu.gif");
-                JLabel label = new JLabel(icon);
-                label.setBounds(lmenu.getBounds());
-                label.setVisible(true);
-                lbackGround.add(label); 
+            Icon icon = new ImageIcon("textures/mainmenu.gif");
+            JLabel label = new JLabel(icon);
+            label.setBounds(lmenu.getBounds());
+            label.setVisible(true);
+            lbackGround.add(label); 
         }
         
 
@@ -284,13 +283,10 @@ import javax.swing.*;
             inGameMenuBoolean = false;
             inGameMenu.setVisible(false);
             inGameMenu.setFocusable(false);
-            
             this.repaint();
             this.revalidate();
         }
         public void showMenu(){
-            
-            
             this.getContentPane().removeAll();
             this.add(lmenu);
             this.setTitle("GoCry Hauptmenü");
