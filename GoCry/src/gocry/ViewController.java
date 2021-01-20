@@ -38,6 +38,8 @@ public class ViewController implements ActionListener {
     private Clip inGameSound;
     private Clip menuSound;
 
+    private boolean youCheated = false;
+    
     private boolean oncePlayed = false;
     
     private ArrayList<Ghost>[] levelsGhost;
@@ -124,11 +126,12 @@ public class ViewController implements ActionListener {
     public void lastLevelFinished(){
         oncePlayed = true;
         actualLayer = 0;
-        
-        try {
-            DBInterface.getInstance().newScoreboardEntry(gameTime, LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), name);
-        } catch (SQLException ex){
-            System.out.println("Konnte nicht gespeichert werden.");
+        if(this.youCheated==false){
+            try {
+                DBInterface.getInstance().newScoreboardEntry(gameTime, LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), name);
+            } catch (SQLException ex){
+                System.out.println("Konnte nicht gespeichert werden.");
+            }
         }
         menuView.showMenu();
         inGameSound.stop();
@@ -286,5 +289,12 @@ public class ViewController implements ActionListener {
     }
     public boolean getOncePlayed(){
         return this.oncePlayed;
+    }
+    
+    public boolean getCheated(){
+        return this.youCheated;
+    }
+    public void setCheated(boolean in){
+        this.youCheated = in;
     }
 }

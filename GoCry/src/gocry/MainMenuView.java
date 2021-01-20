@@ -190,8 +190,9 @@ import javax.swing.*;
             Victim.getInstance().resetMovement();
             
             if(level_id == 0){
-               ViewController.getInstance().setVictimName(enterName.getText());
-               LevelController.getInstance().setStartTime(System.currentTimeMillis());
+                ViewController.getInstance().setCheated(false);
+                ViewController.getInstance().setVictimName(enterName.getText());
+                LevelController.getInstance().setStartTime(System.currentTimeMillis());
             }
             this.getContentPane().removeAll();        
             lpane = new JLayeredPane();

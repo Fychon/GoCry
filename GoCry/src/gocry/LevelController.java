@@ -240,7 +240,6 @@ public class LevelController implements KeyListener {
     public void resetVictim() {
         Victim.getInstance().setPosition(Victim.getInstance().getRelToPixelSize(new Point2D.Double(1.0, 3.0)));
         Victim.getInstance().setInJump(false);
-
     }
     
     public void vicToGoal(){
@@ -273,12 +272,14 @@ public class LevelController implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            if(levelInSwitch == false){
-                levelInSwitch = true;
+            if(ViewController.getInstance().getInMenu() == false){
                 ViewController.getInstance().backToMenu();
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_U) {
+            if(ViewController.getInstance().getCheated()==false){
+                ViewController.getInstance().setCheated(true);
+            }
             vicToGoal();
         }
         if(tinnitus){
