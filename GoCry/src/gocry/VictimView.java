@@ -25,13 +25,17 @@ import java.util.ArrayList;
     public class VictimView extends JPanel implements Runnable{
         private Thread t2;
         private ArrayList<Ghost> ghostList = new ArrayList<Ghost>();
-        
+        private ArrayList<Ghost>[] ghostListArray;
+
         Font f = new Font("Dialog", Font.PLAIN, 38);
         SimpleDateFormat format = new SimpleDateFormat("mm:ss.SSS");
         Date dateTime = new Date();
         private int threadLayer;
-        private int i = 0;
+        private int ghostTicker = 0;
         private boolean ghost = false;
+        private boolean ghostModification = false;
+        private int biggestRecord;
+
         
         private String gametime;
 
@@ -60,6 +64,25 @@ import java.util.ArrayList;
                 ghost = true;
                 ghostList = in;
         }
+        public void setGhostListArray(ArrayList<Ghost>[] in){
+                ghostModification = true;
+                int i = 0;
+                for(ArrayList<Ghost> g : in) {
+                    if(g != null)i++;
+                }
+                ghostListArray = new ArrayList[i];
+                i = 0;
+                biggestRecord = 0;
+                for(ArrayList<Ghost> g : in){
+                    if(g != null){
+                        if(g.size() > biggestRecord){
+                            biggestRecord = g.size();
+                        }
+                        ghostListArray[i] = g;
+                        i++;
+                    }
+                }
+        }
         
 
         public void drawVictim(Graphics g) {        
@@ -72,7 +95,19 @@ import java.util.ArrayList;
             Graphics2D graphics2D = (Graphics2D)g;
             float opacity = 0.5f;
             graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-            graphics2D.drawImage(ghostList.get(i).getImage(), ghostList.get(i).getPositionX(), ghostList.get(i).getPositionY(), null);
+            graphics2D.drawImage(ghostList.get(ghostTicker).getImage(), ghostList.get(ghostTicker).getPositionX(), ghostList.get(ghostTicker).getPositionY(), null);
+            //g.fillRect(Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), Victim.getInstance().getWidth(), Victim.getInstance().getHeight());
+        }
+        
+        public void drawGhosts(Graphics g) {
+            Graphics2D graphics2D = (Graphics2D)g;
+            float opacity = 0.5f;
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+            for(int a = 0; a < ghostListArray.length; a++){
+                if(!(ghostTicker >= ghostListArray[a].size())){
+                    graphics2D.drawImage(ghostListArray[a].get(ghostTicker).getImage(), ghostListArray[a].get(ghostTicker).getPositionX(), ghostListArray[a].get(ghostTicker).getPositionY(), null);
+                }
+            }
             //g.fillRect(Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), Victim.getInstance().getWidth(), Victim.getInstance().getHeight());
         }
 
@@ -81,13 +116,17 @@ import java.util.ArrayList;
             super.paintComponent(g);
             drawVictim(g);
 
-            if(ghost){
-                if(!(i>=ghostList.size())){
-
-                    drawGhost(g);
-                    i++;
+            if(ghost || ghostModification){
+                if(ghostModification){
+                    drawGhosts(g);
+                    ghostTicker++;
                 } else {
-                    ghost = false;
+                    if(!(ghostTicker>=ghostList.size())){
+                        drawGhost(g);
+                        ghostTicker++;
+                    } else {
+                        ghost = false;
+                    }
                 }
             }
             

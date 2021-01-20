@@ -207,13 +207,15 @@ import javax.swing.*;
             VictimView transPanel = new VictimView(this.getSize());
 
             if(ViewController.getInstance().getOncePlayed()){
+                if(ViewController.getInstance().getGhostsEnabled()){
+                    transPanel.setGhostListArray(ViewController.getInstance().getGhostListArray());
+                }
                 if(ViewController.getInstance().getGhostList(level_id)==null){
                     
                 }else{
                     transPanel.setGhostList(ViewController.getInstance().getGhostList(level_id));
                 }
-            }
-            
+            }    
             lpane.add(transPanel, new Integer(1), 0);
             this.add(lpane);
             this.addKeyListener(LevelController.getInstance());

@@ -46,6 +46,7 @@ public class ViewController implements ActionListener {
 
     
     private boolean inMenu = true;
+    private boolean ghostsEnabled = false;
     
     
     public ViewController() {
@@ -287,6 +288,9 @@ public class ViewController implements ActionListener {
     public ArrayList<Ghost> getGhostList(int layerID){
         return this.levelsGhost[layerID];
     }
+    public ArrayList<Ghost>[] getGhostListArray(){
+        return this.levelsGhost;
+    }
     public boolean getOncePlayed(){
         return this.oncePlayed;
     }
@@ -296,5 +300,11 @@ public class ViewController implements ActionListener {
     }
     public void setCheated(boolean in){
         this.youCheated = in;
+    }
+    public void setGhostEnabled(boolean in){
+        ghostsEnabled = in;
+    }
+    public boolean getGhostsEnabled(){
+        return this.ghostsEnabled;
     }
 }

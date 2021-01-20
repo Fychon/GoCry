@@ -51,6 +51,7 @@ public class LevelController implements KeyListener {
     final public int frameHeight = 720;
     final public int blockWidth = frameWidth / blockArrayWidth;
     
+    int deathTimeCounter = 0;
 
     public static LevelController getInstance() {
         if (instance == null) {
@@ -70,7 +71,7 @@ public class LevelController implements KeyListener {
         Victim.getInstance().setGravityMod(levels.get(levelID).gravitation);
         Victim.getInstance().setMovementMod(levels.get(levelID).movementspeed);
         Victim.getInstance().setHeadWindMod(levels.get(levelID).headwind);
-        
+        ViewController.getInstance().setGhostEnabled(levels.get(levelID).ghostsEnabled);
         invertEnabled = levels.get(levelID).invertcontrol;
         wtfEnabled = levels.get(levelID).wtfisenabled;
         tinnitus = levels.get(levelID).tinnitus;
@@ -88,6 +89,7 @@ public class LevelController implements KeyListener {
 
     public boolean isBlockOnPoint(Point2D values) {
         boolean result = false;
+        
         if ((values.getX() <= 0 || values.getX() >= LevelController.getInstance().blockArrayWidth)
                 || (values.getY() <= 0 || values.getY() >= LevelController.getInstance().blockArrayHeight)) {
             return true;
@@ -104,7 +106,7 @@ public class LevelController implements KeyListener {
                         //resetVictim();
                         ViewController.getInstance().backToMenu();
                     }
-                }
+                }            
                 if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.WINZONE) {
                     if(levelInSwitch==false){
                         levelInSwitch = true;
@@ -180,8 +182,8 @@ public class LevelController implements KeyListener {
         Point2D pixelLocationRT = Victim.getInstance().getRTCorner();
 
         //Schaue einen Pixel nach links
-        pixelLocationLT.setLocation(pixelLocationLT.getX(), pixelLocationLT.getY() - 1);
-        pixelLocationRT.setLocation(pixelLocationRT.getX(), pixelLocationRT.getY() - 1);
+        pixelLocationLT.setLocation(pixelLocationLT.getX()+2, pixelLocationLT.getY() - 1);
+        pixelLocationRT.setLocation(pixelLocationRT.getX()-2, pixelLocationRT.getY() - 1);
 
         Point2D relPosLT = Victim.getInstance().getRelativLocation(pixelLocationLT);
         Point2D relPosRT = Victim.getInstance().getRelativLocation(pixelLocationRT);

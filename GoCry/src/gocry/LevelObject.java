@@ -36,6 +36,7 @@ public class LevelObject{
 
     // Pfad zur Textur des Objekts
     private String texture;
+    
 
     /* Switch um Effekt des Objekts auf Spieler festzulegen
    * Kill - instantdeath

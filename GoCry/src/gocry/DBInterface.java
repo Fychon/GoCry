@@ -135,7 +135,8 @@ public class DBInterface {
                     rst.getBoolean("killblocksarehidden"),
                     rst.getBoolean("killblocksareinvisible"),
                     rst.getBoolean("flipswitchillusion"),
-                    rst.getBoolean("tinnitus")       
+                    rst.getBoolean("tinnitus"),
+                    rst.getBoolean("ghostsEnabled")
             );
            result.add(levelObject);
         }
