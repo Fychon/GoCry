@@ -124,6 +124,7 @@ public class ViewController implements ActionListener {
     public void lastLevelFinished(){
         oncePlayed = true;
         actualLayer = 0;
+        
         try {
             DBInterface.getInstance().newScoreboardEntry(gameTime, LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), name);
         } catch (SQLException ex){

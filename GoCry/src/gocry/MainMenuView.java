@@ -228,8 +228,8 @@ import javax.swing.*;
             this.getContentPane().removeAll();
             this.add(lmenu);
             this.setTitle("GoCry Hauptmenü");
+            enterName.setText(ViewController.getInstance().getVictimName());
             this.repaint();
             this.revalidate();
-            enterName.setText(ViewController.getInstance().getVictimName());
         }
     }

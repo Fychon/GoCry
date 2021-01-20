@@ -244,7 +244,7 @@ public class LevelController implements KeyListener {
     }
     
     public void vicToGoal(){
-        Victim.getInstance().setPosition(Victim.getInstance().getRelToPixelSize(new Point2D.Double(18.0, 16.0)));
+        Victim.getInstance().setPosition(Victim.getInstance().getRelToPixelSize(new Point2D.Double(2, 17.0)));
         Victim.getInstance().setInJump(false);
     }
     
