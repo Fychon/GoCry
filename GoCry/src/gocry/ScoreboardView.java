@@ -1,8 +1,9 @@
 package gocry;
 
-import java.awt.BorderLayout;
+import java.awt.Font;
 import javax.swing.*;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /*
  * Ansicht des Scoreboards, die den Usernamen anzeigt und die Bestenzeit.
@@ -64,13 +65,30 @@ public class ScoreboardView extends JLayeredPane {
         }
 
         JTable scoreTable = new JTable(data, column);
+        scoreTable.getTableHeader().setFont(new Font("Monospaced", Font.BOLD, 28));
+        scoreTable.getTableHeader().setOpaque(false);
+
+        scoreTable.setFont(new Font("Monospaced", Font.PLAIN, 24));
+        scoreTable.setBorder(null);
+        scoreTable.setOpaque(false);
         scoreTable.setSize(500, 600);
         scoreTable.setLocation(0,0);
+        scoreTable.setShowVerticalLines(true);
+        scoreTable.setRowHeight(50);
+        scoreTable.setShowGrid(false);
+        scoreTable.setRowSelectionAllowed(false);
+        scoreTable.setFocusable(false);
+        ((DefaultTableCellRenderer)scoreTable.getDefaultRenderer(Object.class)).setOpaque(false);
+
         //scoreTable.setBounds((this.getSize().width-500) / 2, 300, 500, 600);
         scrollPane = new JScrollPane(scoreTable);
         scrollPane.setSize(500, 600);
         scrollPane.setLocation(0,0);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(null);
         frame.setTitle("Scoreboard");
+
         scrollPane.setBounds((this.getSize().width-600) / 2, 140, 600, 500);
 
         back.addActionListener(ViewController.getInstance());
