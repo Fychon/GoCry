@@ -5,13 +5,16 @@
      */
     package gocry;
 
+import java.awt.AlphaComposite;
     import java.awt.Color;
     import java.awt.Dimension;
     import java.awt.Font;
     import java.awt.FontMetrics;
     import java.awt.Graphics;
+import java.awt.Graphics2D;
     import java.sql.SQLException;
     import java.text.SimpleDateFormat;
+import java.util.ArrayList;
     import java.util.Date;
     import javax.swing.*;
 
@@ -21,11 +24,15 @@
      */
     public class VictimView extends JPanel implements Runnable{
         private Thread t2;
+        private ArrayList<Ghost> ghostList = new ArrayList<Ghost>();
+        
         Font f = new Font("Dialog", Font.PLAIN, 38);
         SimpleDateFormat format = new SimpleDateFormat("mm:ss.SSS");
         Date dateTime = new Date();
         private int threadLayer;
-
+        private int i = 0;
+        private boolean ghost = false;
+        
         private String gametime;
 
         public VictimView(Dimension size) {
@@ -47,15 +54,25 @@
             GameLoop loop = new GameLoop();
             loop.start();
 
-
-
-
         }
+        
+        public void setGhostList(ArrayList<Ghost> in){
+                ghost = true;
+                ghostList = in;
+        }
+        
 
         public void drawVictim(Graphics g) {        
-
             g.setColor(Color.white);
             g.drawImage(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), null);
+            //g.fillRect(Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), Victim.getInstance().getWidth(), Victim.getInstance().getHeight());
+        }
+        
+        public void drawGhost(Graphics g) {
+            Graphics2D graphics2D = (Graphics2D)g;
+            float opacity = 0.5f;
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+            graphics2D.drawImage(ghostList.get(i).getImage(), ghostList.get(i).getPositionX(), ghostList.get(i).getPositionY(), null);
             //g.fillRect(Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), Victim.getInstance().getWidth(), Victim.getInstance().getHeight());
         }
 
@@ -64,6 +81,16 @@
             super.paintComponent(g);
             drawVictim(g);
 
+            if(ghost){
+                if(!(i>=ghostList.size())){
+
+                    drawGhost(g);
+                    i++;
+                } else {
+                    ghost = false;
+                }
+            }
+            
             g.setFont(f);
             FontMetrics myFM = g.getFontMetrics();
             int textBreite = myFM.stringWidth(gametime);

@@ -4,6 +4,7 @@ import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 
@@ -68,6 +69,9 @@ public class Victim {
     private BufferedImage walkLeft[];
     private int walkTimer = 0;
     
+    private ArrayList<Ghost> ghostList = new ArrayList<Ghost>();
+
+    
     public static Victim getInstance() {
         if (instance == null) {
             instance = new Victim();
@@ -78,6 +82,14 @@ public class Victim {
     Victim() {
         loadTextures();
         activeImage = standRight;
+    }
+    
+    public ArrayList<Ghost> getGhostList(){
+        return this.ghostList;
+    }
+    
+    public void resetGhostList(){
+        this.ghostList = new ArrayList<Ghost>();
     }
     
     private void loadTextures(){
@@ -208,6 +220,10 @@ public class Victim {
             calcMaxJumpHeight();
         }
     }
+    
+    public void savePos(){
+        ghostList.add(new Ghost(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY()));
+    }
 
     public void calcMaxJumpHeight() {
         this.maxHeight = this.positionY - this.jumpHeight;
@@ -266,6 +282,7 @@ public class Victim {
 
     // Bewegung anhand Bewegungsvariablen
     public void calcMovement() {
+        savePos();
         if(moveModification == 2){
             moveModification = 1.5;
         }
@@ -312,11 +329,11 @@ public class Victim {
     }
 
 // Setter
-    public synchronized void setPositionX(int x) {
+    public void setPositionX(int x) {
         this.positionX = x;
     }
 
-    public synchronized void setPositionY(int y) {
+    public void setPositionY(int y) {
         this.positionY = y;
     }
 
@@ -338,7 +355,7 @@ public class Victim {
     }
 
 // Getter
-    public synchronized int getPositionY() {
+    public int getPositionY() {
         return this.positionY;
     }
 
@@ -364,7 +381,7 @@ public class Victim {
         return this.inJump;
     }
 
-    public synchronized int getPositionX() {
+    public int getPositionX() {
         return this.positionX;
     }
 

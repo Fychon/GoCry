@@ -205,6 +205,14 @@ import javax.swing.*;
 
             VictimView transPanel = new VictimView(this.getSize());
 
+            if(ViewController.getInstance().getOncePlayed()){
+                if(ViewController.getInstance().getGhostList(level_id)==null){
+                    
+                }else{
+                    transPanel.setGhostList(ViewController.getInstance().getGhostList(level_id));
+                }
+            }
+            
             lpane.add(transPanel, new Integer(1), 0);
             this.add(lpane);
             this.addKeyListener(LevelController.getInstance());
@@ -216,77 +224,6 @@ import javax.swing.*;
             this.revalidate();
         }
         
-        public void switchGameMenu(){
-            if(inGameMenuBoolean == false){
-                showGameMenu();
-            } else {
-                closeGameMenu();
-            }
-        }
-        
-        public void showGameMenu(){
-            inGameMenuBoolean = true;
-            inGameMenu = new JPanel();
-            inGameMenu.setBounds(this.getSize().width/3,50,this.getSize().width/3, this.getSize().height-100);
-            inGameMenu.setVisible(true);
-            inGameMenu.setFocusable(true);
-            Dimension sizeButtons = inGameMenu.getSize();
-            sizeButtons.width = sizeButtons.width;
-            sizeButtons.height = sizeButtons.height / 7;
-            
-            inGameMenu.setLayout(null);
-            JButton pauseGame = new JButton();
-            JButton backToMain = new JButton();
-            JButton continueB = new JButton();
-            pauseGame.setOpaque(true);
-            backToMain.setOpaque(true);
-            continueB.setOpaque(true);
-            
-            pauseGame.setActionCommand("Neues Spiel");
-            backToMain.setActionCommand("Zurück");
-            continueB.setActionCommand("Close inGameMenu");  
-            
-            try {
-                ImageIcon imgNewGame = new ImageIcon("textures/NEWGAME.png");
-                ImageIcon imgLoadGame = new ImageIcon("textures/CONTINUE.png");
-                ImageIcon imgShowScore = new ImageIcon("textures/LEADERBOARD.png");
-                pauseGame.setIcon(imgNewGame);
-                backToMain.setIcon(imgLoadGame);
-                continueB.setIcon(imgShowScore);
-                //pauseGame.setLocation(inGameMenu.getSize().width/2 - imgNewGame.getIconWidth()/2, inGameMenu.getSize().height/2 - imgNewGame.getIconHeight()/2);
-            }  catch (Exception ex) {
-                    System.out.println(ex);
-            }
-            
-            
-            
-            continueB.setLocation(0, sizeButtons.height * 2);
-            pauseGame.setLocation(0, (sizeButtons.height * 3) );
-            backToMain.setLocation(0, (sizeButtons.height * 4));
-            continueB.setSize(sizeButtons);
-            pauseGame.setSize(sizeButtons);
-            backToMain.setSize(sizeButtons);
-            continueB.setVisible(true);
-            pauseGame.setVisible(true);
-            backToMain.setVisible(true);           
-            inGameMenu.add(continueB);
-            inGameMenu.add(pauseGame);
-            inGameMenu.add(backToMain);
-
-            //panel.setOpaque(false);
-            //panel.setBackground(new Color(0,0,0,190));
-            lpane.add(inGameMenu, new Integer(2), 0);
-            this.repaint();
-            this.revalidate();
-        }
-
-        public void closeGameMenu(){
-            inGameMenuBoolean = false;
-            inGameMenu.setVisible(false);
-            inGameMenu.setFocusable(false);
-            this.repaint();
-            this.revalidate();
-        }
         public void showMenu(){
             this.getContentPane().removeAll();
             this.add(lmenu);
@@ -294,6 +231,5 @@ import javax.swing.*;
             this.repaint();
             this.revalidate();
             enterName.setText(ViewController.getInstance().getVictimName());
-
         }
     }

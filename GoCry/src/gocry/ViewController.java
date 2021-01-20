@@ -32,17 +32,19 @@ public class ViewController implements ActionListener {
     private static ViewController instance;
     private int actualLayer = 0;
     private String gameTime;
-    private long timeFinished;
     private boolean inGameSoundOn = false;
     private boolean inMenuSoundOn = false;
     private String name = "ENTER NAME";
     private Clip inGameSound;
     private Clip menuSound;
 
+    private boolean oncePlayed = false;
+    
+    private ArrayList<Ghost>[] levelsGhost;
+
     
     private boolean inMenu = true;
     
-    private boolean levelSwitch = false;
     
     public ViewController() {
         menuView = new MainMenuView(this);
@@ -57,6 +59,9 @@ public class ViewController implements ActionListener {
         } catch (SQLException ex) {
             
         }
+        
+        levelsGhost = new ArrayList[layers.size()];
+
 
     }
     
@@ -72,8 +77,8 @@ public class ViewController implements ActionListener {
     }
 
     public void nextLayer(){
-        levelSwitch = true;
-            actualLayer = layers.get(actualLayer).nextLayer;
+        levelsGhost[actualLayer]= new ArrayList<Ghost>(Victim.getInstance().getGhostList());
+        Victim.getInstance().resetGhostList();
             try {
                 inGameSound.stop();
                 //Thread.sleep(1000);
@@ -82,33 +87,42 @@ public class ViewController implements ActionListener {
                 inGameSound.start();
             } catch (Exception ex) {
             }
-            if(actualLayer != 0){
-               menuView.showLevel(layers.get(actualLayer).level_id);
-            } else {
+            if(layers.get(actualLayer).nextLayer==0){
                 SimpleDateFormat format = new SimpleDateFormat("mm:ss.SSS");
                 gameTime = format.format(new Date(System.currentTimeMillis() - LevelController.getInstance().getStartTime()));
                 lastLevelFinished();
+            } else {
+                actualLayer = layers.get(actualLayer).nextLayer;
+                menuView.showLevel(layers.get(actualLayer).level_id);
             }
-        levelSwitch = false;    
+            //if(actualLayer != 0){
+            //   menuView.showLevel(layers.get(actualLayer).level_id);
+            //} else {
+            //    SimpleDateFormat format = new SimpleDateFormat("mm:ss.SSS");
+            //    gameTime = format.format(new Date(System.currentTimeMillis() - LevelController.getInstance().getStartTime()));
+            //    lastLevelFinished();
+            //}
     }
     
     public void backToMenu(){
         inMenu = true;
+        levelsGhost[actualLayer] = new ArrayList<Ghost>(Victim.getInstance().getGhostList());
+        Victim.getInstance().resetGhostList();
+        oncePlayed = true;
         actualLayer = 0;
         menuView.showMenu();
         stopInGameSound();
         try {
             playMenuSound();
         } catch (Exception ex) {
-        } 
+        }
+        
     }
     
-    public void showInGameMenu(){
-        menuView.switchGameMenu();
-    }
     
     
     public void lastLevelFinished(){
+        oncePlayed = true;
         actualLayer = 0;
         try {
             DBInterface.getInstance().newScoreboardEntry(gameTime, LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), name);
@@ -129,6 +143,7 @@ public class ViewController implements ActionListener {
 
         if (command.equals("Neues Spiel")) {
             inMenu = false;
+            LevelController.getInstance().setLevelInSwitch(false);
             stopMenuSound();
             try {
                 playInGameSound();
@@ -139,6 +154,7 @@ public class ViewController implements ActionListener {
 
         if (command.equals("Spiel laden")) {
             inMenu = false;
+            LevelController.getInstance().setLevelInSwitch(false);
             stopMenuSound();
             try {
                 playInGameSound();
@@ -157,10 +173,6 @@ public class ViewController implements ActionListener {
         }
         if (command.equals("Zurück")) {
             backToMenu();
-        }
-        if (command.equals("Close inGameMenu")) {
-            menuView.closeGameMenu();
-
         }
         if (command.equals("Exit Game")) {
             System.exit(0);
@@ -261,18 +273,17 @@ public class ViewController implements ActionListener {
             inMenuSoundOn = false;
         }
     }
-    public void levelSwitch(){
-        this.levelSwitch = true;
-    }
-
-    public boolean getLevelSwitch() {
-        return this.levelSwitch;
-    }
     
     public void setInMenu(boolean in){
         this.inMenu = in;
     }
     public boolean getInMenu(){
         return this.inMenu;
+    }
+    public ArrayList<Ghost> getGhostList(int layerID){
+        return this.levelsGhost[layerID];
+    }
+    public boolean getOncePlayed(){
+        return this.oncePlayed;
     }
 }

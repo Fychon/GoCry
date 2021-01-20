@@ -50,6 +50,7 @@ public class LevelController implements KeyListener {
     final public int frameWidth = 1280;
     final public int frameHeight = 720;
     final public int blockWidth = frameWidth / blockArrayWidth;
+    
 
     public static LevelController getInstance() {
         if (instance == null) {
@@ -59,7 +60,6 @@ public class LevelController implements KeyListener {
     }
 
     public LevelController() {
-
     }
     
     public Level getLevel(int levelID){
@@ -92,24 +92,23 @@ public class LevelController implements KeyListener {
                 || (values.getY() <= 0 || values.getY() >= LevelController.getInstance().blockArrayHeight)) {
             return true;
         } else {
-            //SIcherungsvariable
-            if(ViewController.getInstance().getLevelSwitch() == false){
-
-                if (objectArray[(int) (values.getX())][((int) values.getY())] == null) {
-                    result = false;
-                } else {
-                    if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.NEUTRAL) {
-                        result = true;
-                    }
-                    if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.KILL) {
+            if (objectArray[(int) (values.getX())][((int) values.getY())] == null) {
+                result = false;
+            } else {
+                if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.NEUTRAL) {
+                    result = true;
+                }
+                if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.KILL) {
+                    if(levelInSwitch==false){
+                        levelInSwitch=true;
                         //resetVictim();
                         ViewController.getInstance().backToMenu();
                     }
-                    if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.WINZONE) {
-                        if(levelInSwitch==false){
-                            levelInSwitch = true;
-                            nextLayer();
-                        }
+                }
+                if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.WINZONE) {
+                    if(levelInSwitch==false){
+                        levelInSwitch = true;
+                        nextLayer();
                     }
                 }
             }
@@ -210,7 +209,7 @@ public class LevelController implements KeyListener {
         }
     }
     
-    public void nextLayer(){       
+    public void nextLayer(){
         ViewController.getInstance().nextLayer();
     }
 
@@ -274,7 +273,10 @@ public class LevelController implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            ViewController.getInstance().backToMenu();
+            if(levelInSwitch == false){
+                levelInSwitch = true;
+                ViewController.getInstance().backToMenu();
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_U) {
             vicToGoal();
@@ -354,5 +356,8 @@ public class LevelController implements KeyListener {
     }
     public long getStartTime() {
         return this.startTime;
+    }
+    public void setLevelInSwitch(boolean in){
+        this.levelInSwitch = in;
     }
 }
