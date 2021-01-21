@@ -91,26 +91,28 @@ public class ViewController implements ActionListener, ChangeListener {
         if(tinnitusIsPlaying){
             stopTinnitus();
         }
+        
         levelsGhost[actualLayer]= new ArrayList<Ghost>(Victim.getInstance().getGhostList());
         Victim.getInstance().resetGhostList();
-            try {
-                playWinSound();
-            } catch (Exception ex) {
-            }
-            if(layers.get(actualLayer).nextLayer==0){
-                SimpleDateFormat format = new SimpleDateFormat("mm:ss.SSS");
-                gameTime = format.format(new Date(System.currentTimeMillis() - LevelController.getInstance().getStartTime()));
-                lastLevelFinished();
-            } else {
-                actualLayer = layers.get(actualLayer).nextLayer;
-                menuView.showLevel(layers.get(actualLayer).level_id);
-            }
+        try {
+            playWinSound();
+        } catch (Exception ex) {
+        }
+        if(layers.get(actualLayer).nextLayer==0){
+        SimpleDateFormat format = new SimpleDateFormat("mm:ss.SSS");
+        gameTime = format.format(new Date(System.currentTimeMillis() - LevelController.getInstance().getStartTime()));
+        lastLevelFinished();
+        } else {
+            actualLayer = layers.get(actualLayer).nextLayer;
+            menuView.showLevel(layers.get(actualLayer).level_id);
+        }
     }
     
     public void backToMenu(){
         if(tinnitusIsPlaying){
             stopTinnitus();
         }
+        
         inMenu = true;
         levelsGhost[actualLayer] = new ArrayList<Ghost>(Victim.getInstance().getGhostList());
         Victim.getInstance().resetGhostList();
@@ -262,10 +264,12 @@ public class ViewController implements ActionListener, ChangeListener {
     }
     
     public void playWinSound(){
+            winSound.setFramePosition(0);
             winSound.start();
         }
         
     public void playDeathSound(){
+            deathSound.setFramePosition(0);
             deathSound.start();
         }
     

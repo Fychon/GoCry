@@ -99,6 +99,7 @@ public class LevelController implements KeyListener {
                     if(levelInSwitch==false){
                         levelInSwitch=true;
                         //resetVictim();
+                        ViewController.getInstance().playDeathSound();
                         ViewController.getInstance().backToMenu();
                     }
                 }            
@@ -265,24 +266,7 @@ public class LevelController implements KeyListener {
             }
             vicToGoal();
         }
-        if(tinnitus){
-            if (e.getKeyCode() == KeyEvent.VK_D) {
-                dIsPressed = true;
-                Victim.getInstance().startMoveRight();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_A) {
-                aIsPressed = true;
-                Victim.getInstance().startMoveLeft();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_W) {
-            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
-                if(levelInSwitch){
-                    levelInSwitch = false;
-                }
-                wIsPressed = true;
-                Victim.getInstance().startJump();
-            }
-        } else if(invertEnabled){
+         if(invertEnabled){
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 Victim.getInstance().startMoveLeft();
             }
@@ -313,9 +297,11 @@ public class LevelController implements KeyListener {
         }   else {
             
             if (e.getKeyCode() == KeyEvent.VK_A) {
+                aIsPressed = true;
                 Victim.getInstance().startMoveLeft();
             }
             if (e.getKeyCode() == KeyEvent.VK_D) {
+                dIsPressed = true;
                 Victim.getInstance().startMoveRight();
             }
             if (e.getKeyCode() == KeyEvent.VK_W) {
@@ -323,6 +309,7 @@ public class LevelController implements KeyListener {
                 if(levelInSwitch){
                     levelInSwitch = false;
                 }
+                wIsPressed = true;
                 Victim.getInstance().startJump();
             }            
 
@@ -332,7 +319,23 @@ public class LevelController implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(tinnitus){
+
+        if(invertEnabled){
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                Victim.getInstance().endMoveLeft();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                Victim.getInstance().endMoveRight();
+
+            }
+        }else if(wtfEnabled){
+            if (e.getKeyCode() == KeyEvent.VK_T) {
+                Victim.getInstance().endMoveLeft();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_F) {
+                Victim.getInstance().endMoveRight();
+            }       
+        } else {
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 dIsPressed = false;
                 Victim.getInstance().endMoveRight();
@@ -342,34 +345,7 @@ public class LevelController implements KeyListener {
                 Victim.getInstance().endMoveLeft();
             }
             if (e.getKeyCode() == KeyEvent.VK_W) {
-            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
                 wIsPressed = false;
-            }
-        }
-        if(invertEnabled){
-            if (e.getKeyCode() == KeyEvent.VK_D) {
-                Victim.getInstance().endMoveLeft();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_A) {
-                Victim.getInstance().endMoveRight();
-
-            }
-        }
-        if(wtfEnabled){
-            if (e.getKeyCode() == KeyEvent.VK_T) {
-                Victim.getInstance().endMoveLeft();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_F) {
-                Victim.getInstance().endMoveRight();
-            }       
-        }
-        if(wtfEnabled == false && invertEnabled == false){
-            if (e.getKeyCode() == KeyEvent.VK_A) {
-                Victim.getInstance().endMoveLeft();
-            }
-            if (e.getKeyCode() == KeyEvent.VK_D) {
-                Victim.getInstance().endMoveRight();
-
             }
         }
     }
@@ -392,8 +368,12 @@ public class LevelController implements KeyListener {
         this.levelInSwitch = in;
     }
     public boolean shouldTinnituaPlayed(){
-        if(this.wIsPressed || this.aIsPressed || this.dIsPressed){
-            return true;
+        if(this.tinnitus){
+            if(this.wIsPressed || this.aIsPressed || this.dIsPressed){
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

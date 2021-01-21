@@ -74,8 +74,8 @@ import javax.swing.*;
 
             //Load Panels from LayeredPane
             loadFirstPanel();
-            loadSecPanel();
             loadThirdPanel();
+            loadSecPanel();
             
             //Add Panels to LayeredPane    
             lmenu.add(lbackGround, new Integer(0), 0); 
@@ -120,7 +120,8 @@ import javax.swing.*;
             //VolumeSlider Settings
             volume.setOpaque(false);
             volume.setSize(150,30);
-            volume.setLocation(lmenuKomp.getSize().width-(closeGame.getSize().width*2)-volume.getSize().width,lmenuKomp.getSize().height+(int)(closeGame.getSize().height/2)-(closeGame.getSize().height*2)-15);
+            volume.setLocation(lmenuKomp.getSize().width-(closeGame.getSize().width*2)-volume.getSize().width,
+                    lmenuKomp.getSize().height+(int)(closeGame.getSize().height/2)-(closeGame.getSize().height*2)-volume.getSize().height/2);
             volume.setBorder(null);
             volume.setVisible(true);
             volume.addChangeListener(controller);
@@ -175,7 +176,14 @@ import javax.swing.*;
             label.setSize(icon.getIconWidth(), icon.getIconHeight());
             label.setLocation((lmenu.getSize().width-label.getSize().width)/2, 40);
             label.setVisible(true);
+            Icon volumeicon = new ImageIcon("textures/volume.png");
+            JLabel volumeIc = new JLabel(volumeicon);
+            volumeIc.setSize(volumeicon.getIconWidth(), volumeicon.getIconHeight());
+            volumeIc.setLocation(lmenuKomp.getSize().width-(closeGame.getSize().width*2)-volume.getSize().width-volumeIc.getSize().width,
+                    lmenuKomp.getSize().height+(int)(closeGame.getSize().height/2)-(closeGame.getSize().height*2)-volumeIc.getSize().height/2);
+            volumeIc.setVisible(true);
             ltitle.add(label);
+            ltitle.add(volumeIc);
         }
 
         public void loadFirstPanel(){
