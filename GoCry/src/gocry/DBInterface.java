@@ -71,7 +71,6 @@ public class DBInterface {
             LevelObject object = new LevelObject(
                     rst.getInt("positionx"),
                     rst.getInt("positiony"),
-                    rst.getInt("rotation"),
                     rst.getBoolean("collision"),
                     rst.getBoolean("visibility"),
                     rst.getInt("status_id")

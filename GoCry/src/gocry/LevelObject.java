@@ -1,7 +1,6 @@
 package gocry;
 
 import java.awt.Dimension;
-import java.awt.geom.Point2D;
 
 /*
  * Bausteine der Level
@@ -24,9 +23,6 @@ public class LevelObject{
 
     // Breite des Objekts
     private int width;
-
-    //Rotation des Objekts
-    private int rotation;
 
     //Collision des Objekts
     private boolean collision;
@@ -52,10 +48,9 @@ public class LevelObject{
     // Status des Objekts
     private objectStatus status;
 
-    LevelObject(int positionX, int positionY, int rotation, int status_id) {
+    LevelObject(int positionX, int positionY, int status_id) {
         this.positionx = positionX;
         this.positiony = positionY;
-        this.rotation = rotation;
         switch (status_id) {
             case 0:
                 this.status = objectStatus.NEUTRAL;
@@ -68,11 +63,10 @@ public class LevelObject{
         }
     }
 
-    LevelObject(int positionX, int positionY, int rotation, boolean collision, boolean visibility, int status_id) {
+    LevelObject(int positionX, int positionY, boolean collision, boolean visibility, int status_id) {
         this.positionx = positionX;
         this.positiony = positionY;
 
-        this.rotation = rotation;
         this.collision = collision;
         this.visibility = visibility;
         switch (status_id) {
@@ -123,9 +117,6 @@ public class LevelObject{
         this.collision = collision;
     }
 
-    public void setRotation(int rotation) {
-        this.rotation = rotation;
-    }
 
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
@@ -150,10 +141,6 @@ public class LevelObject{
 
     public int getWidth() {
         return this.width;
-    }
-
-    public int getRotation() {
-        return this.rotation;
     }
 
     public boolean getCollision() {

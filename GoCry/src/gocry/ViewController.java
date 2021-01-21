@@ -88,6 +88,7 @@ public class ViewController implements ActionListener, ChangeListener {
     }
 
     public void nextLayer(){
+        menuView.setBeMean(false);
         if(tinnitusIsPlaying){
             stopTinnitus();
         }
@@ -108,7 +109,7 @@ public class ViewController implements ActionListener, ChangeListener {
         }
     }
     
-    public void backToMenu(){
+    public void backToMenu(boolean escPressed){
         if(tinnitusIsPlaying){
             stopTinnitus();
         }
@@ -118,7 +119,7 @@ public class ViewController implements ActionListener, ChangeListener {
         Victim.getInstance().resetGhostList();
         oncePlayed = true;
         actualLayer = 0;
-        menuView.showMenu();
+        menuView.showMenuWithButton(escPressed);
         stopInGameSound();
         try {
             playMenuSound();
@@ -182,7 +183,7 @@ public class ViewController implements ActionListener, ChangeListener {
 
         }
         if (command.equals("Zurück")) {
-            backToMenu();
+            backToMenu(false);
         }
         if (command.equals("Exit Game")) {
             System.exit(0);

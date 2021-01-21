@@ -25,10 +25,13 @@ import javax.swing.*;
         private JLayeredPane lpane = new JLayeredPane();
         private JSlider volume = new JSlider(JSlider.HORIZONTAL,0,100,50);
 
+        private boolean beMean = false;
+        
         private ViewController controller;
         private LevelView level = new LevelView(this, 0);;
 
-
+        private ImageIcon imgLoadGameOff;
+        private ImageIcon imgLoadGameOn;
 
         //Constructor
         public MainMenuView(ViewController controller){
@@ -94,17 +97,17 @@ import javax.swing.*;
             
             try {
                 ImageIcon imgNewGame = new ImageIcon("textures/NEWGAME.png");
-                ImageIcon imgLoadGame = new ImageIcon("textures/CONTINUE.png");
+                imgLoadGameOff = new ImageIcon("textures/CONTINUE_off.png");
+                imgLoadGameOn = new ImageIcon("textures/CONTINUE_on.png");
                 ImageIcon imgShowScore = new ImageIcon("textures/LEADERBOARD.png");
                 ImageIcon imgCloseGame = new ImageIcon("textures/CLOSEGAME.png");
                 newGame.setIcon(imgNewGame);
-                loadGame.setIcon(imgLoadGame);
+                loadGame.setIcon(imgLoadGameOff);
                 scoreboard.setIcon(imgShowScore);
                 closeGame.setIcon(imgCloseGame);
                 
-                //TODO BUTTONSIZE FROM ICONSIZE -> CONFIGURE POSITION
                 closeGame.setSize(imgCloseGame.getIconWidth(), imgCloseGame.getIconHeight());
-                loadGame.setSize(imgLoadGame.getIconWidth(), imgLoadGame.getIconHeight());
+                loadGame.setSize(imgLoadGameOff.getIconWidth(), imgLoadGameOff.getIconHeight());
                 scoreboard.setSize(imgShowScore.getIconWidth(), imgShowScore.getIconHeight());
                 newGame.setSize(imgNewGame.getIconWidth(), imgNewGame.getIconHeight());
 
@@ -142,9 +145,6 @@ import javax.swing.*;
             loadGame.setOpaque(false);
             scoreboard.setOpaque(false);
             
-            //newGame.setSize(sizeButtons);
-            //loadGame.setSize(sizeButtons);
-            //scoreboard.setSize(sizeButtons);
             enterName.setSize(sizeButtons);
 
             newGame.setLocation((lmenuKomp.getSize().width-newGame.getSize().width)/2, sizeButtons.height * 3);
@@ -162,6 +162,9 @@ import javax.swing.*;
             loadGame.setActionCommand("Spiel laden");
             scoreboard.setActionCommand("Scoreboard anzeigen"); 
             closeGame.setActionCommand("Exit Game");
+            
+            loadGame.setEnabled(false);
+            
             lmenuKomp.add(newGame);
             lmenuKomp.add(loadGame);
             lmenuKomp.add(scoreboard);
@@ -221,6 +224,9 @@ import javax.swing.*;
             level = new LevelView(this, level_id);
             level.setVisible(true);
 
+            if(beMean && level_id == 0){
+                level.setLevelName("Ups, did we say continue? sorry =(");
+            }
             lpane.add(level, new Integer(0), 0);     
 
             VictimView transPanel = new VictimView(this.getSize());
@@ -253,5 +259,26 @@ import javax.swing.*;
             enterName.setText(ViewController.getInstance().getVictimName());
             this.repaint();
             this.revalidate();
+        }
+        public void showMenuWithButton(boolean escPressed){
+            this.getContentPane().removeAll();
+            this.add(lmenu);
+            this.setTitle("GoCry Hauptmenü");
+            if(escPressed){
+                loadGame.setIcon(imgLoadGameOn);
+                loadGame.setEnabled(true);
+                beMean = true;
+            } else {
+                loadGame.setIcon(imgLoadGameOff);
+                loadGame.setEnabled(false); 
+                beMean = false;
+            }
+            enterName.setText(ViewController.getInstance().getVictimName());
+            lmenuKomp.repaint();
+            this.repaint();
+            this.revalidate();
+        }
+        public void setBeMean(boolean in){
+            this.beMean = in;
         }
     }

@@ -134,7 +134,7 @@ import java.util.ArrayList;
             FontMetrics myFM = g.getFontMetrics();
             int textBreite = myFM.stringWidth(gametime);
             int textHoehe = myFM.getHeight();
-            g.drawString(gametime, (this.getSize().width-textBreite-2) , textHoehe + 2);
+            g.drawString(gametime, (this.getSize().width-textBreite-5) , textHoehe + 2);
         }
 
 

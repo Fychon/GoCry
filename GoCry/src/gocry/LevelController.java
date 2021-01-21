@@ -100,7 +100,7 @@ public class LevelController implements KeyListener {
                         levelInSwitch=true;
                         //resetVictim();
                         ViewController.getInstance().playDeathSound();
-                        ViewController.getInstance().backToMenu();
+                        ViewController.getInstance().backToMenu(false);
                     }
                 }            
                 if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.WINZONE) {
@@ -257,7 +257,7 @@ public class LevelController implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             if(ViewController.getInstance().getInMenu() == false){
-                ViewController.getInstance().backToMenu();
+                ViewController.getInstance().backToMenu(true);
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_U) {
