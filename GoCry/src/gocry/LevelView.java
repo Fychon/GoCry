@@ -81,7 +81,7 @@ public class LevelView extends JPanel {
         int textHoehe = myFM.getHeight();       
         
         g.drawImage(background, 0, 0, null);
-        g.drawString(levelName, (this.getSize().width-textBreite)/2 , textHoehe + 2);
+        g.drawString(levelName, (this.getSize().width-textBreite)/2 , textHoehe + 4);
 
         for (LevelObject object : objectList) {
             if(object.getStatus() == LevelObject.objectStatus.NEUTRAL){
