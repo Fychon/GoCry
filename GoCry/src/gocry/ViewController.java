@@ -9,12 +9,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Objects;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -25,7 +28,7 @@ import javax.swing.SwingUtilities;
  *
  * @author johann
  */
-public class ViewController implements ActionListener {
+public class ViewController implements ActionListener, ChangeListener {
 
     private MainMenuView menuView;
     private ArrayList<Layer> layers = new ArrayList();
@@ -37,6 +40,11 @@ public class ViewController implements ActionListener {
     private String name = "ENTER NAME";
     private Clip inGameSound;
     private Clip menuSound;
+    private Clip clipTin;
+    private Clip winSound;
+    private Clip deathSound;
+    
+    private boolean tinnitusIsPlaying = false;
 
     private boolean youCheated = false;
     
@@ -53,16 +61,16 @@ public class ViewController implements ActionListener {
         menuView = new MainMenuView(this);
         menuView.setVisible(true);
         try {
-            playMenuSound();
-        } catch (Exception ex) {
-        }
-        try {
             layers = DBInterface.getInstance().getAllLayer();
             actualLayer = layers.get(0).level_id;
         } catch (SQLException ex) {
             
         }
-        
+        try {
+            loadClips();
+            playMenuSound();
+        } catch (Exception ex) {
+        }
         levelsGhost = new ArrayList[layers.size()];
 
 
@@ -80,14 +88,13 @@ public class ViewController implements ActionListener {
     }
 
     public void nextLayer(){
+        if(tinnitusIsPlaying){
+            stopTinnitus();
+        }
         levelsGhost[actualLayer]= new ArrayList<Ghost>(Victim.getInstance().getGhostList());
         Victim.getInstance().resetGhostList();
             try {
-                inGameSound.stop();
-                //Thread.sleep(1000);
                 playWinSound();
-                //Thread.sleep(1000);
-                inGameSound.start();
             } catch (Exception ex) {
             }
             if(layers.get(actualLayer).nextLayer==0){
@@ -98,16 +105,12 @@ public class ViewController implements ActionListener {
                 actualLayer = layers.get(actualLayer).nextLayer;
                 menuView.showLevel(layers.get(actualLayer).level_id);
             }
-            //if(actualLayer != 0){
-            //   menuView.showLevel(layers.get(actualLayer).level_id);
-            //} else {
-            //    SimpleDateFormat format = new SimpleDateFormat("mm:ss.SSS");
-            //    gameTime = format.format(new Date(System.currentTimeMillis() - LevelController.getInstance().getStartTime()));
-            //    lastLevelFinished();
-            //}
     }
     
     public void backToMenu(){
+        if(tinnitusIsPlaying){
+            stopTinnitus();
+        }
         inMenu = true;
         levelsGhost[actualLayer] = new ArrayList<Ghost>(Victim.getInstance().getGhostList());
         Victim.getInstance().resetGhostList();
@@ -217,38 +220,59 @@ public class ViewController implements ActionListener {
         return this.layers.get(actualLayer).getDeathSound();
     }
     
-    public void playWinSound() throws Exception{
-            File file = new File(getWinSound());
-            Clip clip = AudioSystem.getClip();
-            // getAudioInputStream() also accepts a File or InputStream
-            AudioInputStream ais = AudioSystem.getAudioInputStream(file);
-            clip.open(ais);
-            clip.start();
+    
+    private void loadClips() throws Exception{
+        File file = new File("sounds/tinnitus.wav");
+        clipTin = AudioSystem.getClip();
+        AudioInputStream tinnitusStream = AudioSystem.getAudioInputStream(file);
+        clipTin.open(tinnitusStream);
+                
+        File inGameFile = new File("sounds/toto_ingame.wav");
+        inGameSound = AudioSystem.getClip();
+        AudioInputStream inGameStream = AudioSystem.getAudioInputStream(inGameFile);
+        inGameSound.open(inGameStream);
+        
+        File menuFile = new File("sounds/moderntalking_mainmenu.wav");
+        menuSound = AudioSystem.getClip();
+        AudioInputStream menuStream = AudioSystem.getAudioInputStream(menuFile);
+        menuSound.open(menuStream);
+        
+        File winFile = new File(getWinSound());
+        winSound = AudioSystem.getClip();
+        AudioInputStream winStream = AudioSystem.getAudioInputStream(winFile);
+        winSound.open(winStream);
+        
+        File deathFile = new File(getDeathSound());
+        deathSound = AudioSystem.getClip();
+        AudioInputStream deathStream = AudioSystem.getAudioInputStream(deathFile);
+        deathSound.open(deathStream);
+    }
+    
+    public void playTinnitus(){
+        if(this.tinnitusIsPlaying == false){
+            tinnitusIsPlaying = true;
+            clipTin.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+    }
+    public void stopTinnitus(){
+        if(this.tinnitusIsPlaying == true){
+            clipTin.stop();
+            tinnitusIsPlaying = false;
+        }
+    }
+    
+    public void playWinSound(){
+            winSound.start();
         }
         
-    public void playDeathSound() throws Exception{
-            File file = new File(getDeathSound());
-            Clip clip = AudioSystem.getClip();
-            // getAudioInputStream() also accepts a File or InputStream
-            AudioInputStream ais = AudioSystem.getAudioInputStream(file);
-            clip.open(ais);
-            clip.start();
+    public void playDeathSound(){
+            deathSound.start();
         }
     
-    public void playInGameSound() throws Exception{
+    public void playInGameSound(){
         if(inGameSoundOn == false){
             inGameSoundOn = true;
-            File file = new File("sounds/toto_ingame.wav");
-            inGameSound = AudioSystem.getClip();
-            // getAudioInputStream() also accepts a File or InputStream
-            AudioInputStream ais = AudioSystem.getAudioInputStream(file);
-            inGameSound.open(ais);
             inGameSound.loop(Clip.LOOP_CONTINUOUSLY);
-            SwingUtilities.invokeLater(() -> {
-                // A GUI element to prevent the Clip's daemon Thread
-                // from terminating at the end of the main()
-                //JOptionPane.showMessageDialog(null, "Close to exit!");
-            });
         }
     }
     
@@ -259,19 +283,13 @@ public class ViewController implements ActionListener {
         }
     }
     
-    public void playMenuSound() throws Exception{
+    public void playMenuSound(){
         if(inMenuSoundOn == false){
             inMenuSoundOn = true;
-            File file = new File("sounds/moderntalking_mainmenu.wav");
-            menuSound = AudioSystem.getClip();
-            // getAudioInputStream() also accepts a File or InputStream
-            AudioInputStream ais = AudioSystem.getAudioInputStream(file);
-            menuSound.open(ais);
             menuSound.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
-
-                       
+                     
     public void stopMenuSound(){
         if(inMenuSoundOn == true){
             menuSound.stop();
@@ -306,5 +324,28 @@ public class ViewController implements ActionListener {
     }
     public boolean getGhostsEnabled(){
         return this.ghostsEnabled;
+    }
+    
+    public void setGeneralVolume(int level){
+        setVolume(inGameSound, level);
+        setVolume(menuSound, level);
+        setVolume(clipTin, level);
+        setVolume(winSound, level);
+        setVolume(deathSound, level);
+    }
+    
+    public static void setVolume(Clip clip, int level) {
+        //Objects.requireNonNull(clip);
+        FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        if (volume != null) {
+            float dB = (float) (Math.log(level / 100.0) / Math.log(10.0) * 20.0);
+            volume.setValue(dB);
+        }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        JSlider source = (JSlider)e.getSource();
+        setGeneralVolume(source.getValue());        
     }
 }

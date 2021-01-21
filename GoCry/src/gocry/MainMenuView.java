@@ -22,10 +22,9 @@ import javax.swing.*;
         private JPanel lbackGround = new JPanel();
         private JPanel lmenuKomp = new JPanel();
         private JPanel ltitle = new JPanel();
-        private JPanel inGameMenu = new JPanel();
         private JLayeredPane lpane = new JLayeredPane();
+        private JSlider volume = new JSlider(JSlider.HORIZONTAL,0,100,50);
 
-        private boolean inGameMenuBoolean = false;
         private ViewController controller;
         private LevelView level = new LevelView(this, 0);;
 
@@ -53,21 +52,24 @@ import javax.swing.*;
             this.setLocationRelativeTo(null);
             this.setLayout(null);
             
-            //Panel Settings
+            //LayeredPane Settings
             lmenu.setBounds(0, 0, this.getSize().width, this.getSize().height);
             lmenu.setPreferredSize(this.getSize());
+            //Panel Settings
             lbackGround.setBounds(0, 0, this.getSize().width, this.getSize().height);
             lmenuKomp.setBounds(0, 0, this.getSize().width, this.getSize().height);
-            ltitle.setBounds(0, 0, this.getSize().width, this.getSize().height);            
+            ltitle.setBounds(0, 0, this.getSize().width, this.getSize().height);  
+            
             lbackGround.setVisible(true);
             lmenuKomp.setVisible(true);
+            ltitle.setVisible(true);
             
+            ltitle.setLayout(null);
             lbackGround.setLayout(null);
             lmenuKomp.setLayout(null);
             
             lmenuKomp.setOpaque(false);
             ltitle.setOpaque(false);
-            ltitle.setVisible(true);
             lmenu.setVisible(true);
 
             //Load Panels from LayeredPane
@@ -115,7 +117,14 @@ import javax.swing.*;
             enterName.setFont(new Font("Monospaced", Font.BOLD, 36));
             enterName.setHorizontalAlignment(JTextField.CENTER);
 
-            //
+            //VolumeSlider Settings
+            volume.setOpaque(false);
+            volume.setSize(150,30);
+            volume.setLocation(lmenuKomp.getSize().width-(closeGame.getSize().width*2)-volume.getSize().width,lmenuKomp.getSize().height+(int)(closeGame.getSize().height/2)-(closeGame.getSize().height*2)-15);
+            volume.setBorder(null);
+            volume.setVisible(true);
+            volume.addChangeListener(controller);
+            
             newGame.setMargin(new Insets(0, 0, 0, 0));
             loadGame.setMargin(new Insets(0, 0, 0, 0));
             scoreboard.setMargin(new Insets(0, 0, 0, 0));
@@ -157,12 +166,14 @@ import javax.swing.*;
             lmenuKomp.add(scoreboard);
             lmenuKomp.add(enterName);
             lmenuKomp.add(closeGame);
+            lmenuKomp.add(volume);
         }
         
         public void loadSecPanel(){
             Icon icon = new ImageIcon("textures/GoCry.gif");
             JLabel label = new JLabel(icon);
-            label.setBounds(lmenu.getBounds());
+            label.setSize(icon.getIconWidth(), icon.getIconHeight());
+            label.setLocation((lmenu.getSize().width-label.getSize().width)/2, 40);
             label.setVisible(true);
             ltitle.add(label);
         }

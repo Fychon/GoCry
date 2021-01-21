@@ -283,6 +283,11 @@ public class Victim {
     // Bewegung anhand Bewegungsvariablen
     public void calcMovement() {
         savePos();
+        if(LevelController.getInstance().shouldTinnituaPlayed()){
+            ViewController.getInstance().playTinnitus();
+        } else {
+            ViewController.getInstance().stopTinnitus();
+        }
         if(moveModification == 2){
             moveModification = 1.5;
         }

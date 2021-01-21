@@ -38,15 +38,16 @@ public class LevelController implements KeyListener {
     private boolean invertEnabled = false;
     private boolean wtfEnabled = false;
     private boolean tinnitus = false;
-    private Clip clipTin;
+    
+    private boolean wIsPressed = false;
+    private boolean aIsPressed = false;
+    private boolean dIsPressed= false;
     
     private boolean levelInSwitch = false;
 
     
     final public int blockArrayWidth = 32;
     final public int blockArrayHeight = 18;
-    //final public int frameWidth = 1600; //960;
-    //final public int frameHeight = 900; //540;
     final public int frameWidth = 1280;
     final public int frameHeight = 720;
     final public int blockWidth = frameWidth / blockArrayWidth;
@@ -75,12 +76,6 @@ public class LevelController implements KeyListener {
         invertEnabled = levels.get(levelID).invertcontrol;
         wtfEnabled = levels.get(levelID).wtfisenabled;
         tinnitus = levels.get(levelID).tinnitus;
-        if(tinnitus == true){
-            try {
-                loadTinnitus();
-            } catch (Exception ex) {
-            }
-        }
     }
     
     public String getLevelName(int levelID){
@@ -123,7 +118,7 @@ public class LevelController implements KeyListener {
         Point2D pixelLocationRB = Victim.getInstance().getRBCorner();
         Point2D pixelLocationLB = Victim.getInstance().getLBCorner();
 
-        //Schaue einen Pixel nach unten
+        //Schaue einen Pixel nach unten; Hitbox wird verkleinert -> nan kann an Kanten besser springen
         pixelLocationRB.setLocation(pixelLocationRB.getX() - 5, pixelLocationRB.getY() + 1);
         pixelLocationLB.setLocation(pixelLocationLB.getX() + 5, pixelLocationLB.getY() + 1);
 
@@ -181,7 +176,7 @@ public class LevelController implements KeyListener {
         Point2D pixelLocationLT = Victim.getInstance().getLTCorner();
         Point2D pixelLocationRT = Victim.getInstance().getRTCorner();
 
-        //Schaue einen Pixel nach links
+        //Schaue einen Pixel nach links ; Hitbox wird von der Breite verkleinert (Sprung nach oben am Bildschirmrand)
         pixelLocationLT.setLocation(pixelLocationLT.getX()+2, pixelLocationLT.getY() - 1);
         pixelLocationRT.setLocation(pixelLocationRT.getX()-2, pixelLocationRT.getY() - 1);
 
@@ -195,17 +190,20 @@ public class LevelController implements KeyListener {
     }
 
     public void setUpArray(ArrayList<LevelObject> objects) {
+        //Alle vorhandenen Level aus DB Laden
         try {
             levels = DBInterface.getInstance().getAllLevel();
         } catch (SQLException ex) {
             
         }
+        //Initialisierung unserers BlockArrays (32x19) und Füllung mit Null für die abfragen
         objectArray = new LevelObject[blockArrayWidth][blockArrayHeight];
         for (int i = 0; i < blockArrayWidth; i++) {
             for (int y = 0; y < blockArrayHeight; y++) {
                 objectArray[i][y] = null;
             }
         }
+        //Füllung aus DB an richtige Position
         for (LevelObject o : objects) {
             objectArray[o.getPositionX()][o.getPositionY()] = o;
         }
@@ -249,23 +247,6 @@ public class LevelController implements KeyListener {
         Victim.getInstance().setInJump(false);
     }
     
-    private void playTinnitus(){
-        //TODO ABSICHERN-> 1x Abspielen
-        clipTin.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-    
-    private void stopTinnitus(){
-        clipTin.stop();
-    }
-    
-    private void loadTinnitus() throws Exception{
-        File file = new File("sounds/tinnitus.wav");
-        clipTin = AudioSystem.getClip();
-        // getAudioInputStream() also accepts a File or InputStream
-        AudioInputStream ais = AudioSystem.getAudioInputStream(file);
-        clipTin.open(ais);
-
-    }
 
     @Override
     public void keyTyped(KeyEvent arg0) {
@@ -285,21 +266,35 @@ public class LevelController implements KeyListener {
             vicToGoal();
         }
         if(tinnitus){
-           playTinnitus();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_W) {
-            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
-            if(levelInSwitch){
-                levelInSwitch = false;
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                dIsPressed = true;
+                Victim.getInstance().startMoveRight();
             }
-            Victim.getInstance().startJump();
-        }
-        if(invertEnabled){
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                aIsPressed = true;
+                Victim.getInstance().startMoveLeft();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
+                if(levelInSwitch){
+                    levelInSwitch = false;
+                }
+                wIsPressed = true;
+                Victim.getInstance().startJump();
+            }
+        } else if(invertEnabled){
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 Victim.getInstance().startMoveLeft();
             }
             if (e.getKeyCode() == KeyEvent.VK_A) {
                 Victim.getInstance().startMoveRight();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
+                if(levelInSwitch){
+                    levelInSwitch = false;
+                }
+                Victim.getInstance().startJump();
             }
         } else if(wtfEnabled){
             if (e.getKeyCode() == KeyEvent.VK_T) {
@@ -307,7 +302,14 @@ public class LevelController implements KeyListener {
             }
             if (e.getKeyCode() == KeyEvent.VK_F) {
                 Victim.getInstance().startMoveRight();
-            }       
+            }
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
+                if(levelInSwitch){
+                    levelInSwitch = false;
+                }
+                Victim.getInstance().startJump();
+            }
         }   else {
             
             if (e.getKeyCode() == KeyEvent.VK_A) {
@@ -316,6 +318,13 @@ public class LevelController implements KeyListener {
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 Victim.getInstance().startMoveRight();
             }
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
+                if(levelInSwitch){
+                    levelInSwitch = false;
+                }
+                Victim.getInstance().startJump();
+            }            
 
         }
     
@@ -324,36 +333,55 @@ public class LevelController implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         if(tinnitus){
-            stopTinnitus();
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                dIsPressed = false;
+                Victim.getInstance().endMoveRight();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                aIsPressed = false;
+                Victim.getInstance().endMoveLeft();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_W) {
+            //Ziel wird aktiviert falls LevelWechsel durchgeführt wurde
+                wIsPressed = false;
+            }
         }
-    if(invertEnabled){
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            Victim.getInstance().endMoveLeft();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            Victim.getInstance().endMoveRight();
+        if(invertEnabled){
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                Victim.getInstance().endMoveLeft();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                Victim.getInstance().endMoveRight();
 
+            }
         }
-    }
-    if(wtfEnabled){
-        if (e.getKeyCode() == KeyEvent.VK_T) {
-            Victim.getInstance().endMoveLeft();
+        if(wtfEnabled){
+            if (e.getKeyCode() == KeyEvent.VK_T) {
+                Victim.getInstance().endMoveLeft();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_F) {
+                Victim.getInstance().endMoveRight();
+            }       
         }
-        if (e.getKeyCode() == KeyEvent.VK_F) {
-            Victim.getInstance().endMoveRight();
-        }       
-    }
-    if(wtfEnabled == false && invertEnabled == false){
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            Victim.getInstance().endMoveLeft();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            Victim.getInstance().endMoveRight();
+        if(wtfEnabled == false && invertEnabled == false){
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                Victim.getInstance().endMoveLeft();
+            }
+            if (e.getKeyCode() == KeyEvent.VK_D) {
+                Victim.getInstance().endMoveRight();
 
+            }
         }
     }
+    public boolean getwIsPressed(){
+        return this.wIsPressed;
     }
-    
+    public boolean getaIsPressed(){
+        return this.aIsPressed;
+    }
+    public boolean getdIsPressed(){
+        return this.dIsPressed;
+    }    
     public void setStartTime(long currentTimeMillis) {
         this.startTime = currentTimeMillis;
     }
@@ -362,5 +390,12 @@ public class LevelController implements KeyListener {
     }
     public void setLevelInSwitch(boolean in){
         this.levelInSwitch = in;
+    }
+    public boolean shouldTinnituaPlayed(){
+        if(this.wIsPressed || this.aIsPressed || this.dIsPressed){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
