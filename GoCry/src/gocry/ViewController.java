@@ -338,7 +338,7 @@ public class ViewController implements ActionListener, ChangeListener {
         setVolume(winSound, level);
         setVolume(deathSound, level);
     }
-    
+    //DUPLICATED FROM
     public static void setVolume(Clip clip, int level) {
         //Objects.requireNonNull(clip);
         FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);

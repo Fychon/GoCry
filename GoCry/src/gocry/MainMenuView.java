@@ -141,6 +141,15 @@ import javax.swing.*;
             scoreboard.setBorder(null);
             enterName.setBorder(null);
             
+            closeGame.setBorderPainted(false);
+            closeGame.setContentAreaFilled(false);
+            newGame.setBorderPainted(false);
+            newGame.setContentAreaFilled(false);
+            loadGame.setBorderPainted(false);
+            loadGame.setContentAreaFilled(false);
+            scoreboard.setBorderPainted(false);
+            scoreboard.setContentAreaFilled(false);
+            
             newGame.setOpaque(false);
             loadGame.setOpaque(false);
             scoreboard.setOpaque(false);
