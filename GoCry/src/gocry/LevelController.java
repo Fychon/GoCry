@@ -367,7 +367,7 @@ public class LevelController implements KeyListener {
     public void setLevelInSwitch(boolean in){
         this.levelInSwitch = in;
     }
-    public boolean shouldTinnituaPlayed(){
+    public boolean shouldTinnitusPlayed(){
         if(this.tinnitus){
             if(this.wIsPressed || this.aIsPressed || this.dIsPressed){
                 return true;

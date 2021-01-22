@@ -31,9 +31,11 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     private static ViewController instance;
     private int actualLayer = 0;
     private String gameTime;
+    
     private boolean inGameSoundOn = false;
     private boolean inMenuSoundOn = false;
     private boolean inExitSoundOn = false;
+    
     private String name = "ENTER NAME";
     private Clip inGameSound;
     private Clip menuSound;

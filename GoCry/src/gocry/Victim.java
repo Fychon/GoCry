@@ -52,7 +52,7 @@ public class Victim {
     private boolean fallen;
     
     private boolean headWind = false;
-    private int headWindSwitch = 0;
+    private int headWindCounter = 0;
     
     private double moveModification = 1;
     private double gravityModification = 1;
@@ -277,7 +277,7 @@ public class Victim {
         if (this.positionY <= this.maxHeight) {
             this.endJump();
         } else {
-            this.positionY -= (int) Math.round(this.height / 5.0);
+            this.positionY -= (int) Math.round(this.height / 10.0);
         }
     }
     
@@ -353,21 +353,21 @@ public class Victim {
      */
     public void calcMovement() {
         savePos();
-        if(LevelController.getInstance().shouldTinnituaPlayed()){
+        if(LevelController.getInstance().shouldTinnitusPlayed()){
             ViewController.getInstance().playTinnitus();
         } else {
             ViewController.getInstance().stopTinnitus();
         }
-        if(moveModification == 2){
-            moveModification = 1.5;
+        if(this.moveModification == 2){
+            this.moveModification = 1.5;
         }
         
         if(this.headWind && LevelController.getInstance().blockOnLeftSide() == false){
-            if(headWindSwitch == 2){
+            if(this.headWindCounter == 2){
                 this.setPositionX(this.getPositionX() - 1);
-                headWindSwitch = 0;
+                this.headWindCounter = 0;
             }
-            headWindSwitch++;
+            this.headWindCounter++;
         }
         if (this.inJump) {
             if (LevelController.getInstance().blockOnTop()) {
@@ -377,21 +377,21 @@ public class Victim {
             }
         }
         if (this.moveLeft && LevelController.getInstance().blockOnLeftSide() == false) {
-            walkLeft();
-            this.setPositionX(this.getPositionX() - (int) Math.round(this.width / 10.0 * moveModification));
+            this.walkLeft();
+            this.setPositionX(this.getPositionX() - (int) Math.round(this.width / 10.0 * this.moveModification));
         }
         if (this.moveRight && LevelController.getInstance().blockOnRightSide() == false) {
-            walkRight();
-            this.setPositionX(this.getPositionX() + (int) Math.round(this.width / 10.0 * moveModification));
+            this.walkRight();
+            this.setPositionX(this.getPositionX() + (int) Math.round(this.width / 10.0 * this.moveModification));
         }
         if (this.fallen && LevelController.getInstance().onSolidBlock()==false) {
             
-            if(gravityModification == 0){
-                if(gravitySwitch == 2){
+            if(this.gravityModification == 0){
+                if(this.gravitySwitch == 2){
                     this.setPositionY((int) (this.getPositionY() +  1));//Math.round(this.width / 25.0)));
-                    gravitySwitch = 0;
+                    this.gravitySwitch = 0;
                 }
-                gravitySwitch++;
+                this.gravitySwitch++;
             } else {
                 //Normale Gravitation
                 this.setPositionY(this.getPositionY() + (int) Math.round(this.width / 50.0));
