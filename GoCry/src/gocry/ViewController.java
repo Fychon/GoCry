@@ -347,6 +347,10 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         return this.ghostsEnabled;
     }
     
+    public void changeVolumeIcon(int i){
+        menuView.switchVolumeIcon(i);
+    }
+    
     public void setGeneralVolume(int level){
         setVolume(inGameSound, level);
         setVolume(menuSound, level);
@@ -363,7 +367,17 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         if (volume != null) {
             float dB = (float) (Math.log(level / 100.0) / Math.log(10.0) * 20.0);
             volume.setValue(dB);
+            if(level == 0){
+                ViewController.getInstance().changeVolumeIcon(0);
+            }else if(level <= 33){
+                ViewController.getInstance().changeVolumeIcon(1);
+            }else if(level <= 66){
+                ViewController.getInstance().changeVolumeIcon(2);
+            }else{
+                ViewController.getInstance().changeVolumeIcon(3);
+            }
         }
+        
     }
     
     public void heWantsToCry(boolean in){

@@ -38,6 +38,8 @@ import javax.swing.*;
         private ImageIcon imgCloseGameOn;
         private ImageIcon imgCloseGameOff;
         
+        private ImageIcon volumeIcons[] = new ImageIcon[4];
+        private JLabel volumeLabel;
         //Constructor
         public MainMenuView(ViewController controller){
             this.setUndecorated(true);             
@@ -101,6 +103,10 @@ import javax.swing.*;
             sizeButtons.height = sizeButtons.height / 7;
             
             try {
+                volumeIcons[0] = new ImageIcon("textures/volume_0.png");
+                volumeIcons[1] = new ImageIcon("textures/volume_30.png");
+                volumeIcons[2] = new ImageIcon("textures/volume_60.png");
+                volumeIcons[3] = new ImageIcon("textures/volume_100.png");
                 ImageIcon imgNewGame = new ImageIcon("textures/NEWGAME.png");
                 imgLoadGameOff = new ImageIcon("textures/CONTINUE_off.png");
                 imgLoadGameOn = new ImageIcon("textures/CONTINUE_on.png");
@@ -195,14 +201,13 @@ import javax.swing.*;
             label.setSize(icon.getIconWidth(), icon.getIconHeight());
             label.setLocation((lmenu.getSize().width-label.getSize().width)/2, 40);
             label.setVisible(true);
-            Icon volumeicon = new ImageIcon("textures/volume.png");
-            JLabel volumeIc = new JLabel(volumeicon);
-            volumeIc.setSize(volumeicon.getIconWidth(), volumeicon.getIconHeight());
-            volumeIc.setLocation(lmenuKomp.getSize().width-(closeGame.getSize().width*2)-volume.getSize().width-volumeIc.getSize().width,
-                    lmenuKomp.getSize().height+(int)(closeGame.getSize().height/2)-(closeGame.getSize().height*2)-volumeIc.getSize().height/2);
-            volumeIc.setVisible(true);
+            volumeLabel = new JLabel(volumeIcons[2]);
+            volumeLabel.setSize(volumeIcons[0].getIconWidth(), volumeIcons[0].getIconHeight());
+            volumeLabel.setLocation(lmenuKomp.getSize().width-(closeGame.getSize().width*2)-volume.getSize().width-volumeLabel.getSize().width,
+                    lmenuKomp.getSize().height+(int)(closeGame.getSize().height/2)-(closeGame.getSize().height*2)-volumeLabel.getSize().height/2);
+            volumeLabel.setVisible(true);
             ltitle.add(label);
-            ltitle.add(volumeIc);
+            ltitle.add(volumeLabel);
         }
 
         public void loadFirstPanel(){
@@ -287,6 +292,11 @@ import javax.swing.*;
             level.resizeObjects();
             this.repaint();
             this.revalidate();
+        }
+        
+        public void switchVolumeIcon(int i){
+            volumeLabel.setIcon(volumeIcons[i]);
+            ltitle.repaint();
         }
         
         public void showMenu(){
