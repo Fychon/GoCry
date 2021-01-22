@@ -12,18 +12,20 @@ import javax.swing.*;
      * @author ahh-rief
      */
     public class MainMenuView extends JFrame {
-        //Globale Variablen    
+        //Globale Variablen - Komponenten Panel 3   
         private JButton newGame = new JButton();
         private JButton loadGame = new JButton();
         private JButton scoreboard = new JButton();
         private JButton closeGame = new JButton();
         private JTextField enterName = new JTextField("ENTER NAME", 12);
+        private JSlider volume = new JSlider(JSlider.HORIZONTAL,0,100,50);
+
+        
         private JLayeredPane lmenu = new JLayeredPane();
         private JPanel lbackGround = new JPanel();
         private JPanel lmenuKomp = new JPanel();
         private JPanel ltitle = new JPanel();
-        private JLayeredPane lpane = new JLayeredPane();
-        private JSlider volume = new JSlider(JSlider.HORIZONTAL,0,100,50);
+        private JLayeredPane lgame = new JLayeredPane();
 
         private boolean beMean = false;
         
@@ -211,7 +213,7 @@ import javax.swing.*;
             lbackGround.add(label); 
         }
         
-        public void goodByePanel(boolean in){
+        public void goodbyePanel(boolean in){
             lbackGround.removeAll();
             if(in){
                 closeGame.setIcon(imgCloseGameOn);
@@ -252,9 +254,9 @@ import javax.swing.*;
                 LevelController.getInstance().setStartTime(System.currentTimeMillis());
             }
             this.getContentPane().removeAll();        
-            lpane = new JLayeredPane();
-            lpane.setBounds(0, 0, this.getSize().width, this.getSize().height);
-            lpane.setPreferredSize(this.getSize());
+            lgame = new JLayeredPane();
+            lgame.setBounds(0, 0, this.getSize().width, this.getSize().height);
+            lgame.setPreferredSize(this.getSize());
 
             level = new LevelView(this, level_id);
             level.setVisible(true);
@@ -262,7 +264,7 @@ import javax.swing.*;
             if(beMean && level_id == 0){
                 level.setLevelName("Ups, did we say continue? sorry =(");
             }
-            lpane.add(level, new Integer(0), 0);     
+            lgame.add(level, new Integer(0), 0);     
 
             VictimView transPanel = new VictimView(this.getSize());
 
@@ -276,8 +278,8 @@ import javax.swing.*;
                     transPanel.setGhostList(ViewController.getInstance().getGhostList(level_id));
                 }
             }    
-            lpane.add(transPanel, new Integer(1), 0);
-            this.add(lpane);
+            lgame.add(transPanel, new Integer(1), 0);
+            this.add(lgame);
             this.addKeyListener(LevelController.getInstance());
 
             //this.pack();

@@ -370,11 +370,11 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         if(in){
             ViewController.getInstance().stopMenuSound();
             ViewController.getInstance().playExitSound();
-            menuView.goodByePanel(true);
+            menuView.goodbyePanel(true);
         } else {
             ViewController.getInstance().stopExitSound();
             ViewController.getInstance().playMenuSound();
-            menuView.goodByePanel(false);
+            menuView.goodbyePanel(false);
         }
     }
 
