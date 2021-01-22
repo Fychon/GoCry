@@ -30,11 +30,6 @@ public class LevelController implements KeyListener {
 
     private long startTime;
 
-    
-    private boolean objectMovedXAxis = false;
-
-    private boolean objectMovedYAxis = true;
-
     private boolean invertEnabled = false;
     private boolean wtfEnabled = false;
     private boolean tinnitus = false;
@@ -229,12 +224,10 @@ public class LevelController implements KeyListener {
     }
 
     public void checkPosition() {
-        if (objectMovedYAxis) {
-            if (onSolidBlock() == false && Victim.getInstance().getInJump() == false) {
-                Victim.getInstance().startFallen();
-            } else {
-                Victim.getInstance().endFallen();
-            }
+        if (onSolidBlock() == false && Victim.getInstance().getInJump() == false) {
+            Victim.getInstance().startFallen();
+        } else {
+            Victim.getInstance().endFallen();
         }
     }
 

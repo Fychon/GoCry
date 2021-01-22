@@ -112,18 +112,13 @@ public class Victim {
         try {
              standRight = ImageIO.read(new File("victim/stand_right.png"));
              standLeft = ImageIO.read(new File("victim/stand_left.png"));
-        } catch (IOException ex){
-            System.out.println("This Textures found");
-        }
-        try {
              for(int i = 0; i < 6; i++){
                  int a = i+1;
                  walkRight[i] = ImageIO.read(new File("victim/walking_right" + a + ".png"));
                  walkLeft[i] = ImageIO.read(new File("victim/walking_left" + a + ".png"));
              }
-        
         } catch (IOException ex){
-            System.out.println("No Textures found");
+            System.out.println("Textures found");
         }
     }
 
@@ -431,42 +426,42 @@ public class Victim {
 // Getter
     /**
      * Ausgabe der Y Position
-     * @return 
+     * @return Position Y
      */
     public int getPositionY() {
         return this.positionY;
     }
     /**
      * Ausgabe der X Position
-     * @return 
+     * @return Position X
      */
     public int getPositionX() {
         return this.positionX;
     }
     /**
      * Ausgabe des Rechten Oberen Eckpunktes
-     * @return 
+     * @return Point2D oben rechts
      */
     public Point2D getRTCorner() {
         return new Point2D.Double((this.positionX + this.width), (this.positionY));
     }
     /**
      * Ausgabe des Linken Oberen Eckpunktes
-     * @return 
+     * @return Point2D oben links
      */
     public Point2D getLTCorner() {
         return new Point2D.Double((this.positionX), (this.positionY));
     }
     /**
      * Ausgabe des Rechten Unteren Eckpunktes
-     * @return 
+     * @return Point2D unten rechts
      */
     public Point2D getRBCorner() {
         return new Point2D.Double((this.positionX + this.width), (this.positionY + this.height));
     }
     /**
      * Ausgabe des Linken Unteren Eckpunktes
-     * @return 
+     * @return Point2D unten links
      */
     public Point2D getLBCorner() {
         return new Point2D.Double((this.positionX), (this.positionY + this.height));
