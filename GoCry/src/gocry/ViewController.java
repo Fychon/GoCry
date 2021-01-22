@@ -237,22 +237,28 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
             }
         }
         if(name.equals("ENTER NAME")){
-            if(this.name != null){
-                return;
-            } else {
-                this.name = "Fred";
-            }
+    //        this.name = "Fred";
         }
     }
-    
+    /**
+     * Aktuellen WinSound aus Db laden
+     * @return 
+     */
     public String getWinSound(){
         return this.layers.get(actualLayer).getWinSound();
     }
+    /**
+     * Aktuellen DeathSound aus Db laden
+     * @return 
+     */
     public String getDeathSound(){
         return this.layers.get(actualLayer).getDeathSound();
     }
     
-    
+    /**
+     * Alle Soundfiles laden und in Clips abspeichern
+     * @throws Exception 
+     */
     private void loadClips() throws Exception{
         File file = new File("sounds/tinnitus.wav");
         clipTin = AudioSystem.getClip();
@@ -284,19 +290,27 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         AudioInputStream deathStream = AudioSystem.getAudioInputStream(deathFile);
         deathSound.open(deathStream);
     }
-    
+    /**
+     * Falls noch kein Tinnitus abgespielt -> anfangen in Dauerloop
+     */
     public void playTinnitus(){
         if(this.tinnitusIsPlaying == false){
             tinnitusIsPlaying = true;
             clipTin.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
+    /**
+     * Falls aktuell Tinnitus abgespielt -> stoppen
+     */
     public void stopTinnitus(){
         if(this.tinnitusIsPlaying == true){
             clipTin.stop();
             tinnitusIsPlaying = false;
         }
     }
+    /**
+     * Falls noch kein Exit abgespielt -> anfangen in Dauerloop
+     */
     private void playExitSound() {
         if(inExitSoundOn == false){
             inExitSoundOn = true;
@@ -304,84 +318,142 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
             exitSound.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
+    /**
+     * Winsound von anfang an einmal abspielen
+     */   
     public void playWinSound(){
             winSound.setFramePosition(0);
             winSound.start();
         }
-        
+    /**
+     * Deathsound von anfang an einmal abspielen
+     */    
     public void playDeathSound(){
             deathSound.setFramePosition(0);
             deathSound.start();
         }
-    
+    /**
+     * Falls noch kein Gamesound abgespielt -> anfangen in Dauerloop
+     */
     public void playInGameSound(){
         if(inGameSoundOn == false){
             inGameSoundOn = true;
             inGameSound.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
-    
+    /**
+     * Falls aktuell Gamesound abgespielt -> stoppen
+     */
     public void stopInGameSound(){
         if(inGameSoundOn){
             inGameSound.stop();
             inGameSoundOn = false;
         }
     }
-    
+    /**
+     * Falls noch kein Menusound abgespielt -> anfangen in Dauerloop
+     */
     public void playMenuSound(){
         if(inMenuSoundOn == false){
             inMenuSoundOn = true;
             menuSound.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
-    
+    /**
+     * Falls aktuell Exitsound abgespielt wird -> stoppen
+     */
     public void stopExitSound(){
         if(inExitSoundOn == true){
             exitSound.stop();
             inExitSoundOn = false;
         }
     }
-                     
+    /**
+     * Falls aktuell Menusound abgespielt wird, stoppen
+     */                 
     public void stopMenuSound(){
         if(inMenuSoundOn == true){
             menuSound.stop();
             inMenuSoundOn = false;
         }
     }
-    
+    /**
+     * Setter ob man sich aktuell im Menu befondet
+     * @param in 
+     */
     public void setInMenu(boolean in){
         this.inMenu = in;
     }
+    /**
+     * Ausgabe ob man sich aktuell im Hauptmenü befindet
+     * @return 
+     */
     public boolean getInMenu(){
         return this.inMenu;
     }
+    /**
+     * Ausgabe der GhostListe für ein Level
+     * @param layerID
+     * @return 
+     */
     public ArrayList<Ghost> getGhostList(int layerID){
         return this.levelsGhost[layerID];
     }
+    /**
+     * Ausgabe aller GhostListen
+     * @return 
+     */
     public ArrayList<Ghost>[] getGhostListArray(){
         return this.levelsGhost;
     }
+    /**
+     * Wurde das Spiel bereits einmal mit esc, lose oder lastLevel beendet
+     * @return 
+     */
     public boolean getOncePlayed(){
         return this.oncePlayed;
     }
-    
+    /**
+     * Getter ob U gedrückt wurde
+     * @return 
+     */
     public boolean getCheated(){
         return this.youCheated;
     }
+    /**
+     * Setter ob U gedrückt wurde
+     * @param in 
+     */
     public void setCheated(boolean in){
         this.youCheated = in;
     }
+    /**
+     * Setter ob Ghosts abgespielt werden sollen
+     * @param in 
+     */
     public void setGhostEnabled(boolean in){
         ghostsEnabled = in;
     }
+    /**
+     * Getter ob Ghosts abgespielt werden sollen
+     * @return 
+     */
     public boolean getGhostsEnabled(){
         return this.ghostsEnabled;
     }
-    
+   
+    /**
+     * Veränderung des Lautstärleicons
+     * @param i iconBild 0 bis 3
+     */
     public void changeVolumeIcon(int i){
         menuView.switchVolumeIcon(i);
     }
     
+    /**
+     * Veränderung der Lautstärke auf alle Clips. Veränderung des Icons in der View
+     * @param level Volume von 0 bis 100
+     */
     public void setGeneralVolume(int level){
         setVolume(inGameSound, level);
         setVolume(menuSound, level);
@@ -389,28 +461,37 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         setVolume(winSound, level);
         setVolume(deathSound, level);
         setVolume(exitSound, level);
+        if(level == 0){
+            ViewController.getInstance().changeVolumeIcon(0);
+        }else if(level <= 33){
+            ViewController.getInstance().changeVolumeIcon(1);
+        }else if(level <= 66){
+            ViewController.getInstance().changeVolumeIcon(2);
+        }else{
+            ViewController.getInstance().changeVolumeIcon(3);
+        }
         
     }
-    //DUPLICATED FROM
+    /**
+     * Lautstärkeveränderug pro Clip
+     * @param clip eingabe des Clips der verändert werden soll
+     * @param level volume von 0 bis 100
+     */
     public static void setVolume(Clip clip, int level) {
         Objects.requireNonNull(clip);
         FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         if (volume != null) {
             float dB = (float) (Math.log(level / 100.0) / Math.log(10.0) * 20.0);
             volume.setValue(dB);
-            if(level == 0){
-                ViewController.getInstance().changeVolumeIcon(0);
-            }else if(level <= 33){
-                ViewController.getInstance().changeVolumeIcon(1);
-            }else if(level <= 66){
-                ViewController.getInstance().changeVolumeIcon(2);
-            }else{
-                ViewController.getInstance().changeVolumeIcon(3);
-            }
         }
         
     }
     
+    /**
+     * Methode wird als hoover-Effekt beim Exit Button aufgerufen,
+     * das BackGround Panel im Hauuptmenü und die Musik wird angepasst
+     * @param in 
+     */
     public void heWantsToCry(boolean in){
         if(in){
             ViewController.getInstance().stopMenuSound();
@@ -449,7 +530,10 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     public void mouseExited(MouseEvent e) {
         heWantsToCry(false);
     }
-
+    /**
+     * Ausgabe der aktuellen Levenummer
+     * @return int levelnummer
+     */
     public int getLevelCounter(){
         return this.levelCounter;
     }
