@@ -267,7 +267,7 @@ import javax.swing.*;
             level.setVisible(true);
 
             if(beMean && level_id == 0){
-                level.setLevelName("Ups, did we say continue? sorry =(");
+                level.setLevelName("Did we say 'continue'? Oops...");
             }
             lgame.add(level, new Integer(0), 0);     
 
