@@ -31,6 +31,8 @@ public class ScoreboardView extends JLayeredPane {
         back.setIcon(imgBackMenu);
         back.setSize(imgBackMenu.getIconWidth(), imgBackMenu.getIconHeight());
         back.setBorder(null);
+        back.setBorderPainted(false);
+        back.setContentAreaFilled(false);
         lkomp.setVisible(true);
         lkomp.setOpaque(false);
         lkomp.setBounds(0,0,frame.getWidth(), frame.getHeight());

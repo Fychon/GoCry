@@ -166,6 +166,7 @@ import javax.swing.*;
             loadGame.addActionListener(controller);
             scoreboard.addActionListener(controller);
             closeGame.addActionListener(controller);
+            closeGame.addMouseListener(controller);
             
             newGame.setActionCommand("Neues Spiel");
             loadGame.setActionCommand("Spiel laden");
@@ -204,6 +205,25 @@ import javax.swing.*;
             label.setBounds(lmenu.getBounds());
             label.setVisible(true);
             lbackGround.add(label); 
+        }
+        
+        public void goodByePanel(boolean in){
+            lbackGround.removeAll();
+            if(in){
+                Icon icon = new ImageIcon("textures/exitGame.gif");
+                JLabel label = new JLabel(icon);
+                label.setBounds(lmenu.getBounds());
+                label.setVisible(true);
+                lbackGround.add(label);
+            } else {
+                Icon icon = new ImageIcon("textures/mainmenu.gif");
+                JLabel label = new JLabel(icon);
+                label.setBounds(lmenu.getBounds());
+                label.setVisible(true);
+                lbackGround.add(label);
+            }
+            lbackGround.repaint();
+            lbackGround.revalidate();
         }
         
 

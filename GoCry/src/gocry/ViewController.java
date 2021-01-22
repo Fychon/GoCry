@@ -2,6 +2,8 @@ package gocry;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,7 +24,7 @@ import javax.swing.event.ChangeListener;
  *
  * @author johann
  */
-public class ViewController implements ActionListener, ChangeListener {
+public class ViewController implements ActionListener, ChangeListener, MouseListener {
 
     private MainMenuView menuView;
     private ArrayList<Layer> layers = new ArrayList();
@@ -30,12 +33,14 @@ public class ViewController implements ActionListener, ChangeListener {
     private String gameTime;
     private boolean inGameSoundOn = false;
     private boolean inMenuSoundOn = false;
+    private boolean inExitSoundOn = false;
     private String name = "ENTER NAME";
     private Clip inGameSound;
     private Clip menuSound;
     private Clip clipTin;
     private Clip winSound;
     private Clip deathSound;
+    private Clip exitSound;
     
     private boolean tinnitusIsPlaying = false;
 
@@ -233,6 +238,11 @@ public class ViewController implements ActionListener, ChangeListener {
         AudioInputStream menuStream = AudioSystem.getAudioInputStream(menuFile);
         menuSound.open(menuStream);
         
+        File exitFile = new File("sounds/goodbye.wav");
+        exitSound = AudioSystem.getClip();
+        AudioInputStream exitStream = AudioSystem.getAudioInputStream(exitFile);
+        exitSound.open(exitStream);
+        
         File winFile = new File(getWinSound());
         winSound = AudioSystem.getClip();
         AudioInputStream winStream = AudioSystem.getAudioInputStream(winFile);
@@ -256,7 +266,13 @@ public class ViewController implements ActionListener, ChangeListener {
             tinnitusIsPlaying = false;
         }
     }
-    
+    private void playExitSound() {
+        if(inExitSoundOn == false){
+            inExitSoundOn = true;
+            exitSound.setFramePosition(0);
+            exitSound.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+    }
     public void playWinSound(){
             winSound.setFramePosition(0);
             winSound.start();
@@ -285,6 +301,13 @@ public class ViewController implements ActionListener, ChangeListener {
         if(inMenuSoundOn == false){
             inMenuSoundOn = true;
             menuSound.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+    }
+    
+    public void stopExitSound(){
+        if(inExitSoundOn == true){
+            exitSound.stop();
+            inExitSoundOn = false;
         }
     }
                      
@@ -330,20 +353,56 @@ public class ViewController implements ActionListener, ChangeListener {
         setVolume(clipTin, level);
         setVolume(winSound, level);
         setVolume(deathSound, level);
+        setVolume(exitSound, level);
+        
     }
     //DUPLICATED FROM
     public static void setVolume(Clip clip, int level) {
-        //Objects.requireNonNull(clip);
+        Objects.requireNonNull(clip);
         FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         if (volume != null) {
             float dB = (float) (Math.log(level / 100.0) / Math.log(10.0) * 20.0);
             volume.setValue(dB);
         }
     }
+    
+    public void heWantsToCry(boolean in){
+        if(in){
+            ViewController.getInstance().stopMenuSound();
+            ViewController.getInstance().playExitSound();
+            menuView.goodByePanel(true);
+        } else {
+            ViewController.getInstance().stopExitSound();
+            ViewController.getInstance().playMenuSound();
+            menuView.goodByePanel(false);
+        }
+    }
 
     @Override
     public void stateChanged(ChangeEvent e) {
         JSlider source = (JSlider)e.getSource();
-        setGeneralVolume(source.getValue());        
+        setGeneralVolume(source.getValue());    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
     }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        heWantsToCry(true);
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        heWantsToCry(false);
+    }
+
 }
