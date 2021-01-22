@@ -73,7 +73,8 @@ public class DBInterface {
                     rst.getInt("positiony"),
                     rst.getBoolean("collision"),
                     rst.getBoolean("visibility"),
-                    rst.getInt("status_id")
+                    rst.getInt("status_id"),
+                    rst.getInt("textureid")
             );
             all.add(object);
         }
@@ -119,6 +120,7 @@ public class DBInterface {
         ResultSet rst = stmt.executeQuery("SELECT * FROM Level");
         while (rst.next()) {
             Level levelObject = new Level(
+                    rst.getInt("levelid"),
                     rst.getString("name"),
                     rst.getInt("spawnpointx"),
                     rst.getInt("spawnpointy"),
@@ -143,14 +145,18 @@ public class DBInterface {
         return result;
     }
     
-    public ArrayList<String> getTextures() throws SQLException {
+    public ArrayList<ObjectTexture> getTextures() throws SQLException {
         connect();
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<ObjectTexture> result = new ArrayList<ObjectTexture>();
         Statement stmt = conn.createStatement();
         ResultSet rst = stmt.executeQuery("SELECT * FROM Objecttexture");
         while(rst.next()){
-            String temp = rst.getString("texture");
-            result.add(temp);
+            ObjectTexture oTexture = new ObjectTexture(
+                    rst.getString("texture"),
+                    rst.getInt("status_id"),
+                    rst.getInt("texture_id")
+            );
+            result.add(oTexture);
         }
         close();
         return result;

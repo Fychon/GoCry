@@ -62,6 +62,12 @@ public class LevelController implements KeyListener {
     }
 
     public LevelController() {
+        //Alle vorhandenen Level aus DB Laden
+        try {
+            levels = DBInterface.getInstance().getAllLevel();
+        } catch (SQLException ex) {
+            
+        }
     }
     
     public Level getLevel(int levelID){
@@ -191,12 +197,6 @@ public class LevelController implements KeyListener {
     }
 
     public void setUpArray(ArrayList<LevelObject> objects) {
-        //Alle vorhandenen Level aus DB Laden
-        try {
-            levels = DBInterface.getInstance().getAllLevel();
-        } catch (SQLException ex) {
-            
-        }
         //Initialisierung unserers BlockArrays (32x19) und Füllung mit Null für die abfragen
         objectArray = new LevelObject[blockArrayWidth][blockArrayHeight];
         for (int i = 0; i < blockArrayWidth; i++) {

@@ -33,6 +33,8 @@ public class LevelObject{
     // Pfad zur Textur des Objekts
     private String texture;
     
+    private int textureid;
+    
 
     /* Switch um Effekt des Objekts auf Spieler festzulegen
    * Kill - instantdeath
@@ -63,9 +65,10 @@ public class LevelObject{
         }
     }
 
-    LevelObject(int positionX, int positionY, boolean collision, boolean visibility, int status_id) {
+    LevelObject(int positionX, int positionY, boolean collision, boolean visibility, int status_id, int texture_id) {
         this.positionx = positionX;
         this.positiony = positionY;
+        this.textureid = texture_id;
 
         this.collision = collision;
         this.visibility = visibility;
@@ -157,6 +160,9 @@ public class LevelObject{
 
     public objectStatus getStatus() {
         return this.status;
+    }
+    public int getTextureId(){
+        return this.textureid;
     }
 
 }

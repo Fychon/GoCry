@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 public class LevelView extends JPanel {
     private String levelName;
     private ArrayList<LevelObject> objectList = new ArrayList<LevelObject>();
-    private ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+    private BufferedImage[][] images = new BufferedImage[50][50];
     private BufferedImage background;
 
     public LevelView(JFrame frame, int levelID) {
@@ -32,11 +32,11 @@ public class LevelView extends JPanel {
             } catch (Exception ex){   
             }
         try {    
-            ArrayList<String> texturePaths = DBInterface.getInstance().getTextures();
+            ArrayList<ObjectTexture> texturePaths = DBInterface.getInstance().getTextures();
             try {
                 background = ImageIO.read(new File(LevelController.getInstance().getLevel(levelID).getBackgroundTexture()));
                 for(int i = 0; i < texturePaths.size(); i++){
-                    images.add(ImageIO.read(new File(texturePaths.get(i))));
+                    images[texturePaths.get(i).getStatusId()][texturePaths.get(i).getTextureId()] = (ImageIO.read(new File(texturePaths.get(i).getTexture())));
                 }
             } catch (IOException ex){
                 System.out.println("File not found");
@@ -85,13 +85,13 @@ public class LevelView extends JPanel {
 
         for (LevelObject object : objectList) {
             if(object.getStatus() == LevelObject.objectStatus.NEUTRAL){
-                g.drawImage(images.get(0), object.getPositionX(), object.getPositionY(), null);
+                g.drawImage(images[0][object.getTextureId()], object.getPositionX(), object.getPositionY(), null);
             }
             if(object.getStatus() == LevelObject.objectStatus.KILL){
-                g.drawImage(images.get(1), object.getPositionX(), object.getPositionY(), null);
+                g.drawImage(images[1][object.getTextureId()], object.getPositionX(), object.getPositionY(), null);
             }
             if(object.getStatus() == LevelObject.objectStatus.WINZONE){
-                g.drawImage(images.get(2), object.getPositionX(), object.getPositionY(), null);
+                g.drawImage(images[2][object.getTextureId()], object.getPositionX(), object.getPositionY(), null);
 
             }
         }

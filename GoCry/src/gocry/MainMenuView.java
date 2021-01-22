@@ -33,6 +33,9 @@ import javax.swing.*;
         private ImageIcon imgLoadGameOff;
         private ImageIcon imgLoadGameOn;
 
+        private ImageIcon imgCloseGameOn;
+        private ImageIcon imgCloseGameOff;
+        
         //Constructor
         public MainMenuView(ViewController controller){
             this.setUndecorated(true);             
@@ -100,13 +103,14 @@ import javax.swing.*;
                 imgLoadGameOff = new ImageIcon("textures/CONTINUE_off.png");
                 imgLoadGameOn = new ImageIcon("textures/CONTINUE_on.png");
                 ImageIcon imgShowScore = new ImageIcon("textures/LEADERBOARD.png");
-                ImageIcon imgCloseGame = new ImageIcon("textures/CLOSEGAME.png");
+                imgCloseGameOn = new ImageIcon("textures/exitGameButton2.gif");
+                imgCloseGameOff = new ImageIcon("textures/exitGameButton.png");
                 newGame.setIcon(imgNewGame);
                 loadGame.setIcon(imgLoadGameOff);
                 scoreboard.setIcon(imgShowScore);
-                closeGame.setIcon(imgCloseGame);
+                closeGame.setIcon(imgCloseGameOff);
                 
-                closeGame.setSize(imgCloseGame.getIconWidth(), imgCloseGame.getIconHeight());
+                closeGame.setSize(imgCloseGameOff.getIconWidth(), imgCloseGameOff.getIconHeight());
                 loadGame.setSize(imgLoadGameOff.getIconWidth(), imgLoadGameOff.getIconHeight());
                 scoreboard.setSize(imgShowScore.getIconWidth(), imgShowScore.getIconHeight());
                 newGame.setSize(imgNewGame.getIconWidth(), imgNewGame.getIconHeight());
@@ -182,7 +186,7 @@ import javax.swing.*;
             lmenuKomp.add(closeGame);
             lmenuKomp.add(volume);
         }
-        
+                
         public void loadSecPanel(){
             Icon icon = new ImageIcon("textures/GoCry.gif");
             JLabel label = new JLabel(icon);
@@ -210,20 +214,22 @@ import javax.swing.*;
         public void goodByePanel(boolean in){
             lbackGround.removeAll();
             if(in){
+                closeGame.setIcon(imgCloseGameOn);
                 Icon icon = new ImageIcon("textures/exitGame.gif");
                 JLabel label = new JLabel(icon);
                 label.setBounds(lmenu.getBounds());
                 label.setVisible(true);
                 lbackGround.add(label);
             } else {
+                closeGame.setIcon(imgCloseGameOff);
                 Icon icon = new ImageIcon("textures/mainmenu.gif");
                 JLabel label = new JLabel(icon);
                 label.setBounds(lmenu.getBounds());
                 label.setVisible(true);
                 lbackGround.add(label);
             }
+            lmenuKomp.repaint();
             lbackGround.repaint();
-            lbackGround.revalidate();
         }
         
 
