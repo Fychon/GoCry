@@ -218,6 +218,20 @@ import javax.swing.*;
             lbackGround.add(label); 
         }
         
+        public void showInfoScreen(){
+            this.getContentPane().removeAll();        
+            JPanel infoPanel = new JPanel();
+            infoPanel.setBounds(0,0,this.getSize().width, this.getSize().height);
+            Icon icon = new ImageIcon("textures/infoscreen.png");
+            JLabel label = new JLabel(icon);
+            label.setBounds(infoPanel.getBounds());
+            label.setVisible(true);
+            this.addKeyListener(LevelController.getInstance());
+            infoPanel.add(label);
+            this.add(infoPanel);
+            this.repaint();
+        }
+        
         public void goodbyePanel(boolean in){
             lbackGround.removeAll();
             if(in){

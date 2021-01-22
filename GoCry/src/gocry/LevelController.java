@@ -259,6 +259,9 @@ public class LevelController implements KeyListener {
             }
             vicToGoal();
         }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            ViewController.getInstance().spacePressed();
+        }
          if(invertEnabled){
             if (e.getKeyCode() == KeyEvent.VK_D) {
                 Victim.getInstance().startMoveLeft();

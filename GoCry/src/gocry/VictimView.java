@@ -88,7 +88,6 @@ import java.util.ArrayList;
         public void drawVictim(Graphics g) {        
             g.setColor(Color.white);
             g.drawImage(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), null);
-            //g.fillRect(Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), Victim.getInstance().getWidth(), Victim.getInstance().getHeight());
         }
         
         public void drawGhost(Graphics g) {
@@ -96,7 +95,6 @@ import java.util.ArrayList;
             float opacity = 0.5f;
             graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
             graphics2D.drawImage(ghostList.get(ghostTicker).getImage(), ghostList.get(ghostTicker).getPositionX(), ghostList.get(ghostTicker).getPositionY(), null);
-            //g.fillRect(Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), Victim.getInstance().getWidth(), Victim.getInstance().getHeight());
         }
         
         public void drawGhosts(Graphics g) {
@@ -108,12 +106,22 @@ import java.util.ArrayList;
                     graphics2D.drawImage(ghostListArray[a].get(ghostTicker).getImage(), ghostListArray[a].get(ghostTicker).getPositionX(), ghostListArray[a].get(ghostTicker).getPositionY(), null);
                 }
             }
-            //g.fillRect(Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), Victim.getInstance().getWidth(), Victim.getInstance().getHeight());
         }
-
+        public void drawTimer(Graphics g){
+            Graphics2D graphics2D = (Graphics2D)g;
+            graphics2D.setFont(f);
+            graphics2D.setColor(Color.white);
+            float opacity = 1.0f;
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+            FontMetrics myFM = g.getFontMetrics();
+            int textBreite = myFM.stringWidth(gametime);
+            int textHoehe = myFM.getHeight();
+            graphics2D.drawString(gametime, (this.getSize().width-textBreite-5) , textHoehe + 4);
+        }
         @Override
         protected void paintComponent(final Graphics g) {
             super.paintComponent(g);
+            drawTimer(g);
             drawVictim(g);
 
             if(ghost || ghostModification){
@@ -130,11 +138,6 @@ import java.util.ArrayList;
                 }
             }
             
-            g.setFont(f);
-            FontMetrics myFM = g.getFontMetrics();
-            int textBreite = myFM.stringWidth(gametime);
-            int textHoehe = myFM.getHeight();
-            g.drawString(gametime, (this.getSize().width-textBreite-5) , textHoehe + 4);
         }
 
 

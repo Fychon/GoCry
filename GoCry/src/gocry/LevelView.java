@@ -77,11 +77,11 @@ public class LevelView extends JPanel {
         g.setFont(f);
         g.setColor(Color.white);
         FontMetrics myFM = g.getFontMetrics();
-        int textBreite = myFM.stringWidth(levelName);
-        int textHoehe = myFM.getHeight();       
-        
+        String levelNummer = "Level " + ViewController.getInstance().getLevelCounter() + ": " + levelName;  
+        int textBreiteLnr = myFM.stringWidth(levelNummer);
+        int textHoeheLnr = myFM.getHeight(); 
         g.drawImage(background, 0, 0, null);
-        g.drawString(levelName, (this.getSize().width-textBreite)/2 , textHoehe + 4);
+        g.drawString(levelNummer, (this.getSize().width-textBreiteLnr)/2, textHoeheLnr + 4);
 
         for (LevelObject object : objectList) {
             if(object.getStatus() == LevelObject.objectStatus.NEUTRAL){

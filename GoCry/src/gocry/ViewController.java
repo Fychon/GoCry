@@ -51,11 +51,14 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     private boolean oncePlayed = false;
     
     private ArrayList<Ghost>[] levelsGhost;
-
     
     private boolean inMenu = true;
+    private boolean inInfoscreen = false;
     private boolean ghostsEnabled = false;
+   
+    private boolean gameJustStarted = true;
     
+    private int levelCounter = 0;
     
     public ViewController() {
         menuView = new MainMenuView(this);
@@ -104,6 +107,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         gameTime = format.format(new Date(System.currentTimeMillis() - LevelController.getInstance().getStartTime()));
         lastLevelFinished();
         } else {
+            levelCounter++;
             actualLayer = layers.get(actualLayer).nextLayer;
             menuView.showLevel(layers.get(actualLayer).level_id);
         }
@@ -113,13 +117,18 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         if(tinnitusIsPlaying){
             stopTinnitus();
         }
-        
-        inMenu = true;
-        levelsGhost[actualLayer] = new ArrayList<Ghost>(Victim.getInstance().getGhostList());
-        Victim.getInstance().resetGhostList();
-        oncePlayed = true;
-        actualLayer = 0;
-        menuView.showMenuWithButton(escPressed);
+        if(inInfoscreen == false) {
+            inMenu = true;
+            levelsGhost[actualLayer] = new ArrayList<Ghost>(Victim.getInstance().getGhostList());
+            Victim.getInstance().resetGhostList();
+            oncePlayed = true;
+            actualLayer = 0;
+            levelCounter = 0;
+            menuView.showMenuWithButton(escPressed);
+        } else {
+            menuView.showMenuWithButton(false);
+            inInfoscreen = false;
+        }
         stopInGameSound();
         try {
             playMenuSound();
@@ -132,6 +141,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     
     public void lastLevelFinished(){
         oncePlayed = true;
+        levelCounter = 0;
         actualLayer = 0;
         if(this.youCheated==false){
             try {
@@ -148,19 +158,38 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         }  
     }
     
+    public void spacePressed(){
+        if(inInfoscreen){
+            gameJustStarted = false;
+            inInfoscreen = false;
+            LevelController.getInstance().setLevelInSwitch(false);
+            stopMenuSound();
+            try {
+                playInGameSound();
+            } catch (Exception ex) {}
+            menuView.showLevel(actualLayer);
+        }
+    }
+    
     @Override
     public void actionPerformed(ActionEvent event) {
         String command = event.getActionCommand();
 
         if (command.equals("Neues Spiel")) {
-            inMenu = false;
-            LevelController.getInstance().setLevelInSwitch(false);
-            stopMenuSound();
-            try {
-                playInGameSound();
-            } catch (Exception ex) {
+            if(gameJustStarted){
+                menuView.showInfoScreen();
+                inMenu = false;
+                inInfoscreen = true;
+            } else {
+                inMenu = false;
+                LevelController.getInstance().setLevelInSwitch(false);
+                stopMenuSound();
+                try {
+                    playInGameSound();
+                } catch (Exception ex) {
+                }
+                menuView.showLevel(actualLayer);
             }
-            menuView.showLevel(actualLayer);
         }
 
         if (command.equals("Spiel laden")) {
@@ -421,4 +450,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         heWantsToCry(false);
     }
 
+    public int getLevelCounter(){
+        return this.levelCounter;
+    }
 }
