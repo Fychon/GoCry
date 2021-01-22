@@ -389,7 +389,7 @@ public class Victim {
                 this.gravitySwitch++;
             } else {
                 //Normale Gravitation
-                this.setPositionY(this.getPositionY() + (int) Math.round(this.width / 50.0));
+                this.setPositionY(this.getPositionY() + (int) Math.round(this.width / 25.0));
             }
         }
         
