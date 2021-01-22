@@ -128,6 +128,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         } else {
             menuView.showMenuWithButton(false);
             inInfoscreen = false;
+            inMenu = true;
         }
         stopInGameSound();
         try {
