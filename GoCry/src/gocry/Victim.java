@@ -1,5 +1,4 @@
 package gocry;
-
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -83,15 +82,29 @@ public class Victim {
         loadTextures();
         activeImage = standRight;
     }
-    
+    Victim(String name, String texture, String jumpSound) {
+        this.name = name;
+        this.texture = texture;
+        this.jumpSound = jumpSound;
+    }
+    /**
+     * Ausgabe der GhostList (Aufnahme des Spiels)
+     * @return GhostList
+     */
     public ArrayList<Ghost> getGhostList(){
         return this.ghostList;
     }
-    
+    /**
+     * Ghostlist wird zurückgesetzt. Sollte vor jedem LevelStart gemacht werden.
+     */
     public void resetGhostList(){
         this.ghostList = new ArrayList<Ghost>();
     }
     
+    
+    /**
+     * Laden aller Texturen für den Spielern
+     */
     private void loadTextures(){
         walkRight = new BufferedImage[6];
         walkLeft = new BufferedImage[6];
@@ -114,18 +127,9 @@ public class Victim {
         }
     }
 
-    private void standRight(){
-        walkTimer = 0;
-        activeImage = standRight;
-    }
-    
-    private void standLeft(){
-
-        walkTimer = 0;
-        activeImage = standLeft;
-
-    }
-    
+    /**
+     * Je nach vorherigen Bild wird das passende Bild für das Stehen geladen
+     */
     private void switchToStand(){
         if(this.inJump == false){
             if(Arrays.asList(walkRight).contains(activeImage)){
@@ -136,7 +140,10 @@ public class Victim {
             }        
         }
     }
-    
+    /**
+     * Animation nach rechts. Es wird für jeden Tick das nächste Bild aus dem Array geladen.
+     * Überladungsschutz
+     */
     private void walkRight(){
         if(this.inJump == false){
             if(walkTimer <= 5){
@@ -147,6 +154,10 @@ public class Victim {
             }
         }
     }
+    /**
+     * Animation nach links. Es wird für jeden Tick das nächste Bild aus dem Array geladen.
+     * Überladungsschutz
+     */
     private void walkLeft(){
         if(this.inJump == false){
             if(walkTimer <= 5){
@@ -157,30 +168,44 @@ public class Victim {
             }
         }
     }
-    
+    /**
+     * MODIFIKATION Victimgeschwindigkeit
+     * @param in 
+     */
     public void setMovementMod(double in){
         this.moveModification = in;
     }
-
+    /**
+     * MODIFIKATION Gravitation
+     * @param in 
+     */
     public void setGravityMod(double in){
         this.gravityModification = in;
     }
-    
+    /**
+     * MODIFIKATION Gegenwind
+     * @param in Gegenwind an/aus
+     */
     public void setHeadWindMod(boolean in){
         this.headWind = in;
     }
-    Victim(String name, String texture, String jumpSound) {
-        this.name = name;
-        this.texture = texture;
-        this.jumpSound = jumpSound;
-    }
-
+    
+    /**
+     * Nachträgliche setUp Methode für Victimveränderung. Kann bei jedem Levelstart gesetzt werden.
+     * @param name Name des Victims
+     * @param texture Texturpfad (aktuell nicht genutzt)
+     * @param jumpSound soundPfad für Sprung (aktuell nicht genutzt)
+     */
     public void setUp(String name, String texture, String jumpSound) {
         this.name = name;
         this.texture = texture;
         this.jumpSound = jumpSound;
     }
-
+    /**
+     * Initialisierung des Victims. Größe, Breite, Spawnpunkt wird berechnet 
+     * @param blockwidth anhand der Breite eines Blockes im Spielfeld
+     * @param spawn Position aus Datenbank
+     */
     public void inital(int blockwidth, Point2D spawn) {
        // this.blocksize = blockwidth;
         this.width = (int) Math.round(blockwidth * 0.7);
@@ -188,7 +213,12 @@ public class Victim {
         this.setPosition(this.getRelToPixelSize(spawn));
         calcJumpHeight(blockwidth);
     }
-
+    /**
+     * Umwandlung von der relativen Position im ObjectArray(x; 0-31 - y; 0-17) in die
+     * realer Screen Position (in Pixel Null-Punkt oben link)
+     * @param Point2D aktuelle Position im Array
+     * @return Point2D reale Position in Pixel
+     */
     public Point2D getRelToPixelSize(Point2D input) {
         input.setLocation(input.getX() * LevelController.getInstance().blockArrayWidth, LevelController.getInstance().frameHeight - (input.getY() * LevelController.getInstance().blockWidth) - Victim.getInstance().getHeight());
         return input;
@@ -197,39 +227,52 @@ public class Victim {
     //public boolean
     /**
      * Umwandlung von realer Screen Position (in Pixel Null-Punkt oben link) in
-     * die relative Position im ObjectArray(x; 0-31 & y; 0-17)
+     * die relative Position im ObjectArray(x; 0-31 - y; 0-17)
      *
      * Berechnung:
      *
      * @param point - Reale Position des Victims (Linker oberer Eckpunkt)
-     * @return (x; 0.0-31.0 & y; 0.0-17.0)
+     * @return (x; 0.0-31.0 - y; 0.0-17.0)
      */
     public Point2D getRelativLocation(Point2D point) {
         return new Point2D.Double((point.getX() / LevelController.getInstance().frameWidth * LevelController.getInstance().blockArrayWidth),
                 ((LevelController.getInstance().frameHeight - point.getY()) / LevelController.getInstance().frameHeight * LevelController.getInstance().blockArrayHeight));
     }
-
-    // Sprunghöhe des Spielers
+    
+    /**
+     * Abspeicherung der aktuellen Position und hinzufügen in die GhostList
+     */
+    public void savePos(){
+        ghostList.add(new Ghost(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY()));
+    }
+    
+    /**
+     * Berechnung der Sprunghöhe des Victims
+     * @param blockwidth wird anhand Blockgröße festgesetzt
+     */
     public void calcJumpHeight(int blockwidth) {
         this.jumpHeight = (int) Math.round(blockwidth * 1.6);
     }
 
+    /**
+     * Einleitung des Sprunges falls Victim auf Block steht und nicht bereits springt
+     */
     public void startJump() {
         if (inJump == false && LevelController.getInstance().onSolidBlock()) {
             inJump = true;
             calcMaxJumpHeight();
         }
     }
-    
-    public void savePos(){
-        ghostList.add(new Ghost(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY()));
-    }
-
+    /**
+     * Berechnung der Sprunghöhe für jeden Sprung
+     */
     public void calcMaxJumpHeight() {
         this.maxHeight = this.positionY - this.jumpHeight;
     }
 
-    // Bewegungsmethode: Sprung
+    /**
+     * Sprungabfrage, falls berechnete Höhe erreicht wurde -> Abbruch
+     */
     public void jump() {
         if (this.positionY <= this.maxHeight) {
             this.endJump();
@@ -238,19 +281,33 @@ public class Victim {
         }
     }
     
+    /**
+     * Gravitation / Fallen an
+     */
     public void startFallen(){
         this.fallen = true;
     }
     
+    /**
+     * Gravitation / Fallen aus
+     */
+    
     public void endFallen(){
         this.fallen = false;
     }
+    
+    /**
+     * Sprung beenden
+     */
     public void endJump() {
         this.inJump = false;
         this.maxHeight = 0;
 
     }
     
+    /**
+     * Alle Bewegung zurücksetzen (Für LevelStart)
+     */
     public void resetMovement(){
         this.inJump = false;
         this.moveLeft = false;
@@ -258,29 +315,42 @@ public class Victim {
         this.fallen = true;
     }
 
-    // Bewegungsmethode: Rechts
+    /**
+     * Schritte nach rechts einleiten
+     */
     public void startMoveRight() {
         if (blockOnRightSide == false) {
             this.moveRight = true;
         }
     }
 
+    /**
+     * Schritte nach recht beenden
+     */
     public  void endMoveRight() {
         this.moveRight = false;
     }
 
-    // Bewegungsmethode: Links
+    /**
+     * Schritte nach links einleiten
+     */
     public void startMoveLeft() {
         if (blockOnLeftSide == false) {
             this.moveLeft = true;
         }
     }
-
+    /**
+     * Schritte nach links beenden
+     */
     public void endMoveLeft() {
         this.moveLeft = false;
     }
 
-    // Bewegung anhand Bewegungsvariablen
+    /**
+     * CalcMovement wird im Thread regelmäßig aufgerufen.
+     * Anhand der oben gesetzten Booleans für die Bewegungsrichtungen und Modifikationen
+     * wird hier die Position des Victims geprüft und wenn möglich verändert
+     */
     public void calcMovement() {
         savePos();
         if(LevelController.getInstance().shouldTinnituaPlayed()){
@@ -334,94 +404,119 @@ public class Victim {
     }
 
 // Setter
+    /**
+     * Setzte die Position auf der X Achse
+     * @param x 
+     */
     public void setPositionX(int x) {
         this.positionX = x;
     }
-
+    /**
+     * Setzte die Position auf der Y Achse
+     * @param y 
+     */
     public void setPositionY(int y) {
         this.positionY = y;
     }
-
+    /**
+     * Setzte die Position als Punkt
+     * @param input 
+     */
     public void setPosition(Point2D input) {
         this.positionY = (int) input.getY();
         this.positionX = (int) input.getX();
     }
 
-    public void setTexture(String texture) {
-        this.texture = texture;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setJumpSound(String jumpSound) {
-        this.jumpSound = jumpSound;
-    }
 
 // Getter
+    /**
+     * Ausgabe der Y Position
+     * @return 
+     */
     public int getPositionY() {
         return this.positionY;
     }
-
-
-
-    public Point2D getRTCorner() {
-        return new Point2D.Double((this.positionX + this.width), (this.positionY));
-    }
-
-    public Point2D getLTCorner() {
-        return new Point2D.Double((this.positionX), (this.positionY));
-    }
-
-    public Point2D getRBCorner() {
-        return new Point2D.Double((this.positionX + this.width), (this.positionY + this.height));
-    }
-
-    public Point2D getLBCorner() {
-        return new Point2D.Double((this.positionX), (this.positionY + this.height));
-    }
-
-    public boolean getInJump() {
-        return this.inJump;
-    }
-
+    /**
+     * Ausgabe der X Position
+     * @return 
+     */
     public int getPositionX() {
         return this.positionX;
     }
-
-    public String getTexture() {
-        return this.texture;
+    /**
+     * Ausgabe des Rechten Oberen Eckpunktes
+     * @return 
+     */
+    public Point2D getRTCorner() {
+        return new Point2D.Double((this.positionX + this.width), (this.positionY));
     }
-
-    public String getName() {
-        return this.name;
+    /**
+     * Ausgabe des Linken Oberen Eckpunktes
+     * @return 
+     */
+    public Point2D getLTCorner() {
+        return new Point2D.Double((this.positionX), (this.positionY));
     }
-
+    /**
+     * Ausgabe des Rechten Unteren Eckpunktes
+     * @return 
+     */
+    public Point2D getRBCorner() {
+        return new Point2D.Double((this.positionX + this.width), (this.positionY + this.height));
+    }
+    /**
+     * Ausgabe des Linken Unteren Eckpunktes
+     * @return 
+     */
+    public Point2D getLBCorner() {
+        return new Point2D.Double((this.positionX), (this.positionY + this.height));
+    }
+    /**
+     * Rückgabe ob das Victim aktuell springt
+     * @return 
+     */
+    public boolean getInJump() {
+        return this.inJump;
+    }
+    /**
+     * Setzten ob Spieler sich im Sprung befindet
+     * @param jump 
+     */
     public void setInJump(boolean jump) {
         this.inJump = jump;
     }
-
-    public String getJumpSound() {
-        return this.jumpSound;
-    }
-
+    /**
+     * Ausgabe der Höhe
+     * @return Höhe des Spielers
+     */
     public int getHeight() {
         return this.height;
     }
-
+    /**
+     * Ausgabe der BReite
+     * @return Breite des Spielers
+     */
     public int getWidth() {
         return this.width;
     }
-
+    /**
+     * Setzten ob ein Block auf der rechten Seite ist
+     * @param rightBlock 
+     */
     public void blockOnRightSide(boolean rightBlock) {
         this.blockOnRightSide = rightBlock; //To change body of generated methods, choose Tools | Templates.
     }
-
+    /**
+     * Setzen ob ein Block auf der linken Seite ist
+     * @param leftBlock 
+     */
     public void blockOnLeftSide(boolean leftBlock) {
         this.blockOnLeftSide = leftBlock; //To change body of generated methods, choose Tools | Templates.
     }
-    
+    /**
+     * Ausgabe aktuelles Spieler Bild
+     * @return VictimBild
+     */
     public BufferedImage getImage(){
         return this.activeImage;
     }
