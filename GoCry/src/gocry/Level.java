@@ -15,7 +15,6 @@ public class Level {
     // ID des Levels
     private int levelID;
     
-    public double jumpheight;
     public double gravitation;
     public double movementspeed;
     public boolean lightsout;
@@ -37,14 +36,13 @@ public class Level {
     private Point2D spawnLocation = new Point2D.Double();
 
 
-    Level(int levelid, String namen, int spawnpointx, int spawnpointy, double movementspeed, String backgroundtexture, double jumpheight, double gravitation, boolean lightsout, boolean soundlock, boolean invertcontrol, boolean headwind, boolean wtfisenabled, boolean killblocksarehidden, boolean killblocksareinvisible, boolean flipswitchillusion, boolean tinnitus, boolean ghostsEnabled) {
+    Level(int levelid, String namen, int spawnpointx, int spawnpointy, double movementspeed, String backgroundtexture, double gravitation, boolean lightsout, boolean soundlock, boolean invertcontrol, boolean headwind, boolean wtfisenabled, boolean killblocksarehidden, boolean killblocksareinvisible, boolean flipswitchillusion, boolean tinnitus, boolean ghostsEnabled) {
         this.levelID = levelid;
         this.levelName = namen;
         this.spawnLocation.setLocation(spawnpointx, spawnpointy);
         
         this.movementspeed = movementspeed;
         this.backgroundtexture = backgroundtexture;
-        this.jumpheight = jumpheight;
         this.gravitation = gravitation;
         this.lightsout = lightsout;
         this.soundlock = soundlock;

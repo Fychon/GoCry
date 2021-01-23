@@ -23,7 +23,7 @@ public class DBInterface {
         return instance;
     }
 
-    private DBInterface() {
+    private DBInterface() {     
         try {
             Class.forName(treibername);
         } catch (ClassNotFoundException exc) {
@@ -126,7 +126,6 @@ public class DBInterface {
                     rst.getInt("spawnpointy"),
                     rst.getDouble("movementspeed"),
                     rst.getString("backgroundtexture"),
-                    rst.getDouble("jumpheight"),
                     rst.getDouble("gravitation"),
                     rst.getBoolean("lightsout"),
                     rst.getBoolean("soundlock"),
