@@ -80,18 +80,27 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
 
 
     }
-    
+    /**
+     * Einmalige Erstellung und Rückgabe der ViewController Instanz
+     * @return 
+     */
     public static ViewController getInstance() {
         if (instance == null) {
             instance = new ViewController();
         }
         return instance;
     }
-
+    /**
+     * Auslesen aller ScoreboardEinträge
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<ScoreboardEntry> getScoreboardEntrys() throws SQLException {
         return DBInterface.getInstance().allScoreboardEntrys();
     }
-
+    /**
+     * LayerSwitch falls man am Ziel ist. Abfrage ob das letzte Level gespielt wurde.
+     */
     public void nextLayer(){
         this.beMean = false;
         if(tinnitusIsPlaying){
@@ -114,7 +123,11 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
             menuView.showLevel(layers.get(actualLayer).level_id);
         }
     }
-    
+    /**
+     * Rückgang zum Menu. Soundwechsel, Abbruch von vielleicht vorhandenen Tinnitus. Parameter auf Level & Layer 0 setzten.
+     * Abspeichern und Zurücksetzen der aktuellen lokalen GhostList
+     * @param escPressed 
+     */
     public void backToMenu(boolean escPressed){
         if(tinnitusIsPlaying){
             stopTinnitus();
@@ -141,7 +154,9 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     
     
-    
+    /**
+     * Falls das letzte Level (nexeLayer verweist auf 0) gespielt wurde. Scoreboard eintrag wird geschrieben ( wenn nicht gecheated wurde)
+     */
     public void lastLevelFinished(){
         oncePlayed = true;
         levelCounter = 0;
@@ -160,7 +175,9 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         } catch (Exception ex) {
         }  
     }
-    
+    /**
+     * Wird aufgerufen im InfoScreen um zum Game zu Wechseln.
+     */
     public void spacePressed(){
         if(inInfoscreen){
             gameJustStarted = false;
@@ -173,7 +190,10 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
             menuView.showLevel(actualLayer);
         }
     }
-    
+    /**
+     * Auwahl für ButtonCommands
+     * @param event 
+     */
     @Override
     public void actionPerformed(ActionEvent event) {
         String command = event.getActionCommand();
@@ -194,7 +214,6 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
                 menuView.showLevel(actualLayer);
             }
         }
-
         if (command.equals("Spiel laden")) {
             inMenu = false;
             LevelController.getInstance().setLevelInSwitch(false);
@@ -204,9 +223,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
             } catch (Exception ex) {
             }
             menuView.showLevel(actualLayer);
-
         }
-
         if (command.equals("Scoreboard anzeigen")) {
             try {
                 menuView.showScoreboard();
@@ -222,15 +239,24 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
             return;
         }
     }
-    
+    /**
+     * Rückgabe des aktuellen Layer
+     * @return 
+     */
     public int getActualLayer(){
         return this.actualLayer;
     }
-    
+    /**
+     * Rückgabe Levelname
+     * @return 
+     */
     public String getVictimName(){
         return this.name;
     }
-    
+    /**
+     * VictimName wird gesetzt.Falls der Name nicht verändert wurde sei dein Name ab jetzt Fred.
+     * @param name 
+     */
     public void setVictimName(String name){
         if(!name.equals("ENTER NAME")){
             if(!name.equals(this.name))
@@ -540,10 +566,17 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     public int getLevelCounter(){
         return this.levelCounter;
     }
-    
+    /**
+     * Ausgabe ob im ersten Level veränderter Text dargestellt werden soll
+     * @return 
+     */
     public boolean getBeMean(){
         return this.beMean;
     }
+    /**
+     * Parameterveränderung ob im ersten Level ein anderer Text als LEvelname angezeigt werden soll.
+     * @param in 
+     */
     public void setBeMean(boolean in){
         this.beMean = in;
     }

@@ -1,15 +1,11 @@
 package gocry;
 
 
-import java.sql.Date;
 import java.sql.Time;
 
-/*
- * Eintrag ins Scoreboard um Spieler um Rang, Name und Score des Spielers festzuhalten
- */
 
 /**
- *
+ * 
  * @author justus
  */
 public class ScoreboardEntry {

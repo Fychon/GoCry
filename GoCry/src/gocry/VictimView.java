@@ -11,10 +11,9 @@ import java.awt.AlphaComposite;
     import java.awt.Font;
     import java.awt.FontMetrics;
     import java.awt.Graphics;
-import java.awt.Graphics2D;
-    import java.sql.SQLException;
+    import java.awt.Graphics2D;
     import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+    import java.util.ArrayList;
     import java.util.Date;
     import javax.swing.*;
 
@@ -35,10 +34,14 @@ import java.util.ArrayList;
         private boolean ghost = false;
         private boolean ghostModification = false;
         private int biggestRecord;
-
         
         private String gametime;
-
+        
+        /**
+         * Erstellung der VictimView
+         * @param size
+         * @param level 
+         */
         public VictimView(Dimension size, int level) {
             this.setBounds(0, 0, size.width, size.height);
             this.setPreferredSize(size);
@@ -56,11 +59,19 @@ import java.util.ArrayList;
             loop.start();
 
         }
-        
+        /**
+         * Setzen der GhostListe
+         * @param in 
+         */
         public void setGhostList(ArrayList<Ghost> in){
                 ghost = true;
                 ghostList = in;
         }
+        /**
+         * GhostListe wird nach Fehlern durchgegangen.
+         * biggestRecord (längster GhostEintrag) wird gesucht.
+         * @param in 
+         */
         public void setGhostListArray(ArrayList<Ghost>[] in){
                 ghostModification = true;
                 int i = 0;
@@ -81,19 +92,30 @@ import java.util.ArrayList;
                 }
         }
         
-
+        /**
+         * Zeichnet den gespielten Victim ohne Transparenzveränderung.
+         * @param g 
+         */
         public void drawVictim(Graphics g) {        
             g.setColor(Color.white);
             g.drawImage(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), null);
         }
-        
+        /**
+         * RecapGhost-Zeichnung. Zeichnet ein Ghost  in 50% Transparenz.
+         * @param g 
+         */
         public void drawGhost(Graphics g) {
             Graphics2D graphics2D = (Graphics2D)g;
             float opacity = 0.5f;
             graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
             graphics2D.drawImage(ghostList.get(ghostTicker).getImage(), ghostList.get(ghostTicker).getPositionX(), ghostList.get(ghostTicker).getPositionY(), null);
         }
-        
+        /**
+         * Modification Ghosts für LuckyLuke. Es werden alle vorhandenen Ghost 
+         * in der GhostList mit 50% Transparenz gezeichnet.
+         * Sicherstellung das die einzelnen GhostLists nicht überladen werden.
+         * @param g 
+         */
         public void drawGhosts(Graphics g) {
             Graphics2D graphics2D = (Graphics2D)g;
             float opacity = 0.5f;
@@ -104,6 +126,10 @@ import java.util.ArrayList;
                 }
             }
         }
+        /**
+         * Zeichnen des aktuellen Timers in aktuelle Graphic
+         * @param g 
+         */
         public void drawTimer(Graphics g){
             Graphics2D graphics2D = (Graphics2D)g;
             graphics2D.setFont(f);
@@ -115,6 +141,10 @@ import java.util.ArrayList;
             int textHoehe = myFM.getHeight();
             graphics2D.drawString(gametime, (this.getSize().width-textBreite-5) , textHoehe + 4);
         }
+        /**
+         * Zeichnen aller Komponenten
+         * @param g 
+         */
         @Override
         protected void paintComponent(final Graphics g) {
             super.paintComponent(g);
@@ -137,14 +167,18 @@ import java.util.ArrayList;
             
         }
 
-
+        /**
+         * Erstellung und Start des Threads
+         */
         public void startThread() {
             if (t2 == null) {
                t2 = new Thread(this);
                t2.start();
             }
         }
-
+        /**
+         * Run Method, wird beim Levelladen gestartet und durchgehend im Spiel aufgeführt. Wird bei LevelEnde beendet.
+         */
         @Override
         public void run() {
             while (ViewController.getInstance().getActualLayer()==threadLayer && ViewController.getInstance().getInMenu() == false) {

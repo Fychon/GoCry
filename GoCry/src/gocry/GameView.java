@@ -9,10 +9,15 @@ import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 
 /**
- *
+ * Vereinigt VictimView und LevelView in einem LayeredPane. Wird für jedes Level neu erstellt.
  * @author johann
  */
 public class GameView extends JLayeredPane {
+    /**
+     * Konstrukter, Komplette Erstellung der GameView anhand Frame und aktueller LevelID
+     * @param frame
+     * @param level_id 
+     */
     public GameView(JFrame frame, int level_id){
         Victim.getInstance().resetMovement();
         this.setBounds(0, 0, frame.getSize().width, frame.getSize().height);

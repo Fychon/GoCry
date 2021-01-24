@@ -5,13 +5,10 @@ import javax.swing.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableCellRenderer;
 
-/*
- * Ansicht des Scoreboards, die den Usernamen anzeigt und die Bestenzeit.
-   Ein zurück-button der wieder ins Hauptmenü führt.
- */
 /**
- *
- * @author ahh-rief
+ * Ansicht des Scoreboards. Wird als Layered Pane 
+ * mit Hintergrundbild und Tabelle geladen.
+ * @author johann
  */
 public class ScoreboardView extends JLayeredPane {
 
@@ -22,7 +19,11 @@ public class ScoreboardView extends JLayeredPane {
     private JButton back = new JButton();
 
 
-    
+    /**
+     * Erstellung von SCoreboard in Frame mit Anzeige der gegebenen Entrys
+     * @param frame
+     * @param entrys 
+     */
     public ScoreboardView(JFrame frame, ArrayList<ScoreboardEntry> entrys) {
         this.frame = frame;
         this.setVisible(true);
@@ -47,6 +48,9 @@ public class ScoreboardView extends JLayeredPane {
 
     }
     
+    /**
+     * HintergrundBild wird geladen
+     */
     public void loadBackground(){
             Icon icon = new ImageIcon("textures/mainmenu.png");
             JLabel label = new JLabel(icon);
@@ -55,6 +59,10 @@ public class ScoreboardView extends JLayeredPane {
             lbackGround.add(label);
     }
 
+    /**
+     * Erstellung der Scoreboard und Ansicht der mitgegebenen Entrys
+     * @param entrys 
+     */
     public void createScoreboard(ArrayList<ScoreboardEntry> entrys) {
         String column[] = {"Name", "Zeit", "Datum"};
         back.setLocation(this.getSize().width-back.getSize().width*2,this.getSize().height-back.getSize().height*2);
