@@ -25,13 +25,8 @@ import javax.swing.*;
         private JPanel lbackGround = new JPanel();
         private JPanel lmenuKomp = new JPanel();
         private JPanel ltitle = new JPanel();
-        private JLayeredPane lgame = new JLayeredPane();
-
-        private boolean beMean = false;
         
         private ViewController controller;
-        private LevelView level = new LevelView(this, 0);;
-
         private ImageIcon imgLoadGameOff;
         private ImageIcon imgLoadGameOn;
 
@@ -266,46 +261,16 @@ import javax.swing.*;
         public void showLevel(int level_id){
             this.getContentPane().removeAll();        
 
-            Victim.getInstance().resetMovement();
-            if(level_id == 0){
-                LevelController.getInstance().loadLevel();
-                ViewController.getInstance().setCheated(false);
-                ViewController.getInstance().setVictimName(enterName.getText());
-                LevelController.getInstance().setStartTime(System.currentTimeMillis());
-            }
-            LevelController.getInstance().setModsForLevel(level_id);
-
-            lgame = new JLayeredPane();
-            lgame.setBounds(0, 0, this.getSize().width, this.getSize().height);
-            lgame.setPreferredSize(this.getSize());
-
-            level = new LevelView(this, level_id);
-            level.setVisible(true);
-
-            if(beMean && level_id == 0){
-                level.setLevelName("Did we say 'continue'? Oops...");
-            }
-            lgame.add(level, new Integer(0), 0);     
-
-            VictimView transPanel = new VictimView(this.getSize(), level_id);
-
-            if(ViewController.getInstance().getOncePlayed()){
-                if(ViewController.getInstance().getGhostsEnabled()){
-                    transPanel.setGhostListArray(ViewController.getInstance().getGhostListArray());
-                }
-                if(ViewController.getInstance().getGhostList(level_id)==null){
-                    
-                }else{
-                    transPanel.setGhostList(ViewController.getInstance().getGhostList(level_id));
-                }
-            }    
-            lgame.add(transPanel, new Integer(1), 0);
-            this.add(lgame);
+            GameView game = new GameView(this, level_id);
+            game.setLayout(null);
+            game.setBounds(0, 0, this.getSize().width, this.getSize().height);
+            //game.resiveObjects();
+            this.setVisible(true);
+            this.add(game);
             this.addKeyListener(LevelController.getInstance());
 
             //this.pack();
 
-            level.resizeObjects();
             this.repaint();
             this.revalidate();
         }
@@ -330,18 +295,15 @@ import javax.swing.*;
             if(escPressed){
                 loadGame.setIcon(imgLoadGameOn);
                 loadGame.setEnabled(true);
-                beMean = true;
+                ViewController.getInstance().setBeMean(true);
             } else {
                 loadGame.setIcon(imgLoadGameOff);
                 loadGame.setEnabled(false); 
-                beMean = false;
+                ViewController.getInstance().setBeMean(false);
             }
             enterName.setText(ViewController.getInstance().getVictimName());
             lmenuKomp.repaint();
             this.repaint();
             this.revalidate();
-        }
-        public void setBeMean(boolean in){
-            this.beMean = in;
         }
     }

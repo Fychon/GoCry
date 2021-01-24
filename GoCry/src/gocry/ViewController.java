@@ -60,6 +60,8 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     
     private int levelCounter = 0;
     
+    private boolean beMean = false;
+    
     public ViewController() {
         menuView = new MainMenuView(this);
         menuView.setVisible(true);
@@ -91,7 +93,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
 
     public void nextLayer(){
-        menuView.setBeMean(false);
+        this.beMean = false;
         if(tinnitusIsPlaying){
             stopTinnitus();
         }
@@ -537,5 +539,12 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
      */
     public int getLevelCounter(){
         return this.levelCounter;
+    }
+    
+    public boolean getBeMean(){
+        return this.beMean;
+    }
+    public void setBeMean(boolean in){
+        this.beMean = in;
     }
 }

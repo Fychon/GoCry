@@ -26,6 +26,7 @@ public class LevelView extends JPanel {
         
             this.setPreferredSize((frame.getSize()));
             this.setBounds(0,0,frame.getSize().width, frame.getSize().height);
+            this.setLayout(null);
             addObjectsFromLevelID(levelID);
             try{
                 this.levelName = LevelController.getInstance().getLevel(levelID).getLevelName();
@@ -45,6 +46,7 @@ public class LevelView extends JPanel {
         }
         
         this.setBackground(Color.blue);
+        this.resizeObjects();
     }
     
     public void setLevelName(String in){

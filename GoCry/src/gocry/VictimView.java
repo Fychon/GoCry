@@ -45,7 +45,8 @@ import java.util.ArrayList;
             this.setOpaque(false);
             this.setVisible(true);
             this.setFocusable(true);
-
+            this.setLayout(null);
+            
             LevelController.getInstance().setVictim(level);
 
             threadLayer = ViewController.getInstance().getActualLayer();
