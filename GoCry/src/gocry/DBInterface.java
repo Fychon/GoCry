@@ -5,6 +5,7 @@ package gocry;
  */
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,6 +17,10 @@ public class DBInterface {
     private Connection conn;
     private static DBInterface instance;
 
+    /**
+     * Erstellt eine Instanz, damit immer über dieses Objekt auf die Datenbank zugegriffen wird, um Lockkonflikte zu verhindern
+     * @return 
+     */
     public static DBInterface getInstance() {
         if (instance == null) {
             instance = new DBInterface();
@@ -161,19 +166,28 @@ public class DBInterface {
         return result;
     }
 
-  
-    public boolean newScoreboardEntry(String gameTime, String creationDate, String name) throws SQLException {
-        connect();
-        boolean result = false;
-        
-        String query = "INSERT INTO SCOREBOARD (GAMETIME, CREATIONDATE, NAME)" + " values (?, ?, ?)";
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        preparedStmt.setString(1, gameTime);
-        preparedStmt.setString(2, creationDate);
-        preparedStmt.setString(3, name);
-        preparedStmt.execute();            
-        close();
-        
-        return true;
+    /**
+     * Speichert einen Eintrag in die DB und gibt true oder false zurück ob es erfolgreich war
+     * @param gameTime
+     * @param creationDate
+     * @param name
+     * @return 
+     */
+    public boolean newScoreboardEntry(String gameTime, String creationDate, String name){
+        boolean result = true;
+        try {
+            connect();
+            String query = "INSERT INTO SCOREBOARD (GAMETIME, CREATIONDATE, NAME)" + "values (?, ?, ?)";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, gameTime);
+            preparedStmt.setString(2, creationDate);
+            preparedStmt.setString(3, name);
+            preparedStmt.execute();            
+            close();
+        } catch (SQLException ex) {
+            result = false;
+        }
+               
+        return result;
     }
 }

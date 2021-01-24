@@ -264,6 +264,7 @@ import javax.swing.*;
         }
 
         public void showLevel(int level_id){
+            this.getContentPane().removeAll();
             LevelController.getInstance().setModsForLevel(level_id);
             Victim.getInstance().resetMovement();
             
@@ -285,7 +286,7 @@ import javax.swing.*;
             }
             lgame.add(level, new Integer(0), 0);     
 
-            VictimView transPanel = new VictimView(this.getSize());
+            VictimView transPanel = new VictimView(this.getSize(),level_id);
 
             if(ViewController.getInstance().getOncePlayed()){
                 if(ViewController.getInstance().getGhostsEnabled()){
