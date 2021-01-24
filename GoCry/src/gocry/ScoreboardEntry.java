@@ -1,9 +1,5 @@
 package gocry;
 
-
-import java.sql.Time;
-
-
 /**
  * 
  * @author justus
@@ -17,9 +13,7 @@ public class ScoreboardEntry {
     private String creationdate;
     // Name des Spielers
     private String name;
-    
-    private Time creationtime;
-    
+        
     public ScoreboardEntry(String gametime, String creationdate, String name){
         this.gametime = gametime;
         this.creationdate = creationdate;

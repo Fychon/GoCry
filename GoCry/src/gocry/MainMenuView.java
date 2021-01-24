@@ -260,7 +260,7 @@ import javax.swing.*;
 
         public void showLevel(int level_id){
             this.getContentPane().removeAll();        
-
+            ViewController.getInstance().setVictimName(enterName.getText());
             GameView game = new GameView(this, level_id);
             game.setLayout(null);
             game.setBounds(0, 0, this.getSize().width, this.getSize().height);
