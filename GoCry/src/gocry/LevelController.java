@@ -207,7 +207,7 @@ public class LevelController implements KeyListener {
     }
 
     public void setVictim(int victimID){
-        Victim.getInstance().inital(blockWidth, levels.get(victimID).getSpawn());
+        Victim.getInstance().initial(blockWidth, levels.get(victimID).getSpawn());
     }
 
     public void checkPosition() {

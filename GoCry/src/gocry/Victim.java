@@ -201,7 +201,7 @@ public class Victim {
      * @param blockwidth anhand der Breite eines Blockes im Spielfeld
      * @param spawn Position aus Datenbank
      */
-    public void inital(int blockwidth, Point2D spawn) {
+    public void initial(int blockwidth, Point2D spawn) {
         Point2D in = spawn;
        // this.blocksize = blockwidth;
         this.width = (int) Math.round(blockwidth * 0.7);
