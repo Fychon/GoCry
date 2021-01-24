@@ -35,8 +35,8 @@ public class LevelView extends JPanel {
             ArrayList<ObjectTexture> texturePaths = DBInterface.getInstance().getTextures();
             try {
                 background = ImageIO.read(new File(LevelController.getInstance().getLevel(levelID).getBackgroundTexture()));
-                for(ObjectTexture texture : texturePaths){
-                    images[texture.getStatusId()][texture.getTextureId()] = (ImageIO.read(new File(texture.getTexture())));
+                for(int i = 0; i < texturePaths.size(); i++){
+                    images[texturePaths.get(i).getStatusId()][texturePaths.get(i).getTextureId()] = (ImageIO.read(new File(texturePaths.get(i).getTexture())));
                 }
             } catch (IOException ex){
                 System.out.println("File not found");

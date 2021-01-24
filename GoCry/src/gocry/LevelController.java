@@ -24,9 +24,6 @@ public class LevelController implements KeyListener {
     private boolean inLevel = true;
     public Victim victim;
     public ArrayList<LevelObject> objects;
-   
-    
-    //Initialisierung unserers BlockArrays (32x18) und Füllung mit Null für die Abfragen
     private LevelObject[][] objectArray;
     
     private ArrayList<Level> levels;
@@ -43,9 +40,9 @@ public class LevelController implements KeyListener {
     
     private boolean levelInSwitch = false;
 
+    
     final public int blockArrayWidth = 32;
     final public int blockArrayHeight = 18;
-    
     final public int frameWidth = 1280;
     final public int frameHeight = 720;
     final public int blockWidth = frameWidth / blockArrayWidth;
@@ -195,6 +192,7 @@ public class LevelController implements KeyListener {
     }
 
     public void setUpArray(ArrayList<LevelObject> objects) {
+        //Initialisierung unserers BlockArrays (32x19) und Füllung mit Null für die abfragen
         objectArray = new LevelObject[blockArrayWidth][blockArrayHeight];
         for (int i = 0; i < blockArrayWidth; i++) {
             for (int y = 0; y < blockArrayHeight; y++) {
@@ -210,23 +208,19 @@ public class LevelController implements KeyListener {
     public void nextLayer(){
         ViewController.getInstance().nextLayer();
     }
-    /**
-     * 
-     * @param levelID
-     * @return
-     * @throws SQLException 
-     */
+
     public ArrayList<LevelObject> getAllObjectsFromLevelID(int levelID) throws SQLException {
         setUpArray(DBInterface.getInstance().allLevelObjects(levelID));
         return objects = DBInterface.getInstance().allLevelObjects(levelID);
     }
 
-    public void setVictim(int levelID) {
+    public Victim setVictim(int victimID) throws SQLException {
 
-        Victim.getInstance().inital(blockWidth, levels.get(levelID).getSpawn());
+        Victim.getInstance().inital(blockWidth, new Point2D.Double(1, 4));
 
-      //  String[] data = DBInterface.getInstance().getVictim(0);
-      //  Victim.getInstance().setUp(data[0], data[1], data[2]);
+        String[] data = DBInterface.getInstance().getVictim(victimID);
+        Victim.getInstance().setUp(data[0], data[1], data[2]);
+        return Victim.getInstance();
     }
 
     public void checkPosition() {

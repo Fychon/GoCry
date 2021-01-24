@@ -145,8 +145,9 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         levelCounter = 0;
         actualLayer = 0;
         if(this.youCheated==false){
-            if(DBInterface.getInstance().newScoreboardEntry(gameTime, LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), name)){}
-                else{
+            try {
+                DBInterface.getInstance().newScoreboardEntry(gameTime, LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), name);
+            } catch (SQLException ex){
                 System.out.println("Konnte nicht gespeichert werden.");
             }
         }

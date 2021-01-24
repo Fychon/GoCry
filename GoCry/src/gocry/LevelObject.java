@@ -50,6 +50,20 @@ public class LevelObject{
     // Status des Objekts
     private objectStatus status;
 
+    LevelObject(int positionX, int positionY, int status_id) {
+        this.positionx = positionX;
+        this.positiony = positionY;
+        switch (status_id) {
+            case 0:
+                this.status = objectStatus.NEUTRAL;
+            case 1:
+                this.status = objectStatus.KILL;
+            case 2:
+                this.status = objectStatus.WINZONE;
+            default:
+                this.status = objectStatus.NEUTRAL;
+        }
+    }
 
     LevelObject(int positionX, int positionY, boolean collision, boolean visibility, int status_id, int texture_id) {
         this.positionx = positionX;

@@ -39,16 +39,18 @@ import java.util.ArrayList;
         
         private String gametime;
 
-        public VictimView(Dimension size, int levelID) {
+        public VictimView(Dimension size) {
             this.setBounds(0, 0, size.width, size.height);
             this.setPreferredSize(size);
             this.setOpaque(false);
             this.setVisible(true);
             this.setFocusable(true);
 
-            
-            LevelController.getInstance().setVictim(levelID);
-                        
+            try {
+                LevelController.getInstance().setVictim(0);
+            } catch (SQLException ex) {
+
+            }
 
             threadLayer = ViewController.getInstance().getActualLayer();
             startThread();
@@ -56,10 +58,6 @@ import java.util.ArrayList;
             GameLoop loop = new GameLoop();
             loop.start();
 
-        }
-        
-        public void setVictimToSpawn(int levelID){
-            LevelController.getInstance().setVictim(levelID);
         }
         
         public void setGhostList(ArrayList<Ghost> in){
