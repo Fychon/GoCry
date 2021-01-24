@@ -46,11 +46,7 @@ import java.util.ArrayList;
             this.setVisible(true);
             this.setFocusable(true);
 
-            try {
-                LevelController.getInstance().setVictim(0);
-            } catch (SQLException ex) {
-
-            }
+            LevelController.getInstance().setVictim(0);
 
             threadLayer = ViewController.getInstance().getActualLayer();
             startThread();

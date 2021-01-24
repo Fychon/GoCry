@@ -403,21 +403,21 @@ public class Victim {
      * Setzte die Position auf der X Achse
      * @param x 
      */
-    public void setPositionX(int x) {
+    public synchronized void setPositionX(int x) {
         this.positionX = x;
     }
     /**
      * Setzte die Position auf der Y Achse
      * @param y 
      */
-    public void setPositionY(int y) {
+    public synchronized void setPositionY(int y) {
         this.positionY = y;
     }
     /**
      * Setzte die Position als Punkt
      * @param input 
      */
-    public void setPosition(Point2D input) {
+    public synchronized void setPosition(Point2D input) {
         this.positionY = (int) input.getY();
         this.positionX = (int) input.getX();
     }
@@ -428,14 +428,14 @@ public class Victim {
      * Ausgabe der Y Position
      * @return Position Y
      */
-    public int getPositionY() {
+    public synchronized int getPositionY() {
         return this.positionY;
     }
     /**
      * Ausgabe der X Position
      * @return Position X
      */
-    public int getPositionX() {
+    public synchronized int getPositionX() {
         return this.positionX;
     }
     /**

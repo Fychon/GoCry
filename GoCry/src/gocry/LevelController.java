@@ -214,13 +214,13 @@ public class LevelController implements KeyListener {
         return objects = DBInterface.getInstance().allLevelObjects(levelID);
     }
 
-    public Victim setVictim(int victimID) throws SQLException {
-
+    public void setVictim(int victimID){
+        //Victim.getInstance().inital(blockWidth, levels.get(victimID).getSpawn());
         Victim.getInstance().inital(blockWidth, new Point2D.Double(1, 4));
-
-        String[] data = DBInterface.getInstance().getVictim(victimID);
-        Victim.getInstance().setUp(data[0], data[1], data[2]);
-        return Victim.getInstance();
+        //System.out.print(levels);
+        //Victim.getInstance().inital(blockWidth, point);
+        //String[] data = DBInterface.getInstance().getVictim(victimID);
+        //Victim.getInstance().setUp(data[0], data[1], data[2]);
     }
 
     public void checkPosition() {
