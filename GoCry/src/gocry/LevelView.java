@@ -28,7 +28,7 @@ public class LevelView extends JPanel {
             this.setBounds(0,0,frame.getSize().width, frame.getSize().height);
             addObjectsFromLevelID(levelID);
             try{
-                this.levelName = LevelController.getInstance().getLevelName(levelID);
+                this.levelName = LevelController.getInstance().getLevel(levelID).getLevelName();
             } catch (Exception ex){   
             }
         try {    
@@ -51,9 +51,6 @@ public class LevelView extends JPanel {
         this.levelName = in;
     }
     
-    public void resetLevel(){
-        objectList = new ArrayList<LevelObject>();
-    }
 
     public void addObjectsFromLevelID(int levelID) {
         try {

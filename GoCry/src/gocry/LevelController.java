@@ -3,13 +3,8 @@ package gocry;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Point2D;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
 /*
  * Controller für die Interaktionen zwischen Victim und LevelObjects + Erstellung des Levels
  */
@@ -22,7 +17,6 @@ public class LevelController implements KeyListener {
     private static LevelController instance;
     
     private boolean inLevel = true;
-    public Victim victim;
     public ArrayList<LevelObject> objects;
     private LevelObject[][] objectArray;
     
@@ -57,17 +51,21 @@ public class LevelController implements KeyListener {
     }
 
     public LevelController() {
-        //Alle vorhandenen Level aus DB Laden
+        loadLevel();
+    }
+    
+    public Level getLevel(int levelID){
+        return levels.get(levelID);
+    }
+    
+    public void loadLevel(){
         try {
             levels = DBInterface.getInstance().getAllLevel();
         } catch (SQLException ex) {
             
         }
     }
-    
-    public Level getLevel(int levelID){
-        return levels.get(levelID);
-    }
+            
     
     public void setModsForLevel(int levelID){
         Victim.getInstance().setGravityMod(levels.get(levelID).gravitation);
@@ -77,10 +75,6 @@ public class LevelController implements KeyListener {
         invertEnabled = levels.get(levelID).invertcontrol;
         wtfEnabled = levels.get(levelID).wtfisenabled;
         tinnitus = levels.get(levelID).tinnitus;
-    }
-    
-    public String getLevelName(int levelID){
-        return levels.get(levelID).getLevelName();
     }
 
     public boolean isBlockOnPoint(Point2D values) {
@@ -97,12 +91,10 @@ public class LevelController implements KeyListener {
                     result = true;
                 }
                 if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.KILL) {
-                    if(levelInSwitch==false){
                         levelInSwitch=true;
                         //resetVictim();
                         ViewController.getInstance().playDeathSound();
                         ViewController.getInstance().backToMenu(false);
-                    }
                 }            
                 if (objectArray[((int) values.getX())][((int) values.getY())].getStatus() == LevelObject.objectStatus.WINZONE) {
                     if(levelInSwitch==false){
@@ -215,9 +207,10 @@ public class LevelController implements KeyListener {
     }
 
     public void setVictim(int victimID){
-        //Victim.getInstance().inital(blockWidth, levels.get(victimID).getSpawn());
-        Victim.getInstance().inital(blockWidth, new Point2D.Double(1, 4));
-        //System.out.print(levels);
+        Victim.getInstance().inital(blockWidth, levels.get(victimID).getSpawn());
+ //       Victim.getInstance().setPosition(Victim.getInstance().getRelToPixelSize(levels.get(victimID).getSpawn()));
+        //Victim.getInstance().inital(blockWidth, new Point2D.Double(1, 4));
+        System.out.print(levels);
         //Victim.getInstance().inital(blockWidth, point);
         //String[] data = DBInterface.getInstance().getVictim(victimID);
         //Victim.getInstance().setUp(data[0], data[1], data[2]);

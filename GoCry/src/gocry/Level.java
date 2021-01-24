@@ -33,13 +33,13 @@ public class Level {
     private String levelName;
     
     // Startpunkt der Spielfigur
-    private Point2D.Double spawnLocation = new Point2D.Double();
+    private Point2D.Double levelSpawnLocation;
 
 
     Level(int levelid, String namen, int spawnpointx, int spawnpointy, double movementspeed, String backgroundtexture, double gravitation, boolean lightsout, boolean soundlock, boolean invertcontrol, boolean headwind, boolean wtfisenabled, boolean killblocksarehidden, boolean killblocksareinvisible, boolean flipswitchillusion, boolean tinnitus, boolean ghostsEnabled) {
         this.levelID = levelid;
         this.levelName = namen;
-        this.spawnLocation.setLocation(spawnpointx, spawnpointy);
+        this.levelSpawnLocation = new Point2D.Double(spawnpointx,spawnpointy);
         
         this.movementspeed = movementspeed;
         this.backgroundtexture = backgroundtexture;
@@ -72,7 +72,7 @@ public class Level {
     }
     
     public Point2D.Double getSpawn(){
-        return this.spawnLocation;
+        return this.levelSpawnLocation;
     }
 
     String getBackgroundTexture() {

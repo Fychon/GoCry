@@ -39,14 +39,14 @@ import java.util.ArrayList;
         
         private String gametime;
 
-        public VictimView(Dimension size) {
+        public VictimView(Dimension size, int level) {
             this.setBounds(0, 0, size.width, size.height);
             this.setPreferredSize(size);
             this.setOpaque(false);
             this.setVisible(true);
             this.setFocusable(true);
 
-            LevelController.getInstance().setVictim(0);
+            LevelController.getInstance().setVictim(level);
 
             threadLayer = ViewController.getInstance().getActualLayer();
             startThread();

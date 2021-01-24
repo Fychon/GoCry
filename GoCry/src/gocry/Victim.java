@@ -202,10 +202,11 @@ public class Victim {
      * @param spawn Position aus Datenbank
      */
     public void inital(int blockwidth, Point2D spawn) {
+        Point2D in = spawn;
        // this.blocksize = blockwidth;
         this.width = (int) Math.round(blockwidth * 0.7);
         this.height = (int) Math.round(blockwidth * 1.2);
-        this.setPosition(this.getRelToPixelSize(spawn));
+        this.setPosition(this.getRelToPixelSize(in));
         calcJumpHeight(blockwidth);
     }
     /**

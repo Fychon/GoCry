@@ -264,15 +264,17 @@ import javax.swing.*;
         }
 
         public void showLevel(int level_id){
-            LevelController.getInstance().setModsForLevel(level_id);
+            this.getContentPane().removeAll();        
+
             Victim.getInstance().resetMovement();
-            
             if(level_id == 0){
+                LevelController.getInstance().loadLevel();
                 ViewController.getInstance().setCheated(false);
                 ViewController.getInstance().setVictimName(enterName.getText());
                 LevelController.getInstance().setStartTime(System.currentTimeMillis());
             }
-            this.getContentPane().removeAll();        
+            LevelController.getInstance().setModsForLevel(level_id);
+
             lgame = new JLayeredPane();
             lgame.setBounds(0, 0, this.getSize().width, this.getSize().height);
             lgame.setPreferredSize(this.getSize());
@@ -285,7 +287,7 @@ import javax.swing.*;
             }
             lgame.add(level, new Integer(0), 0);     
 
-            VictimView transPanel = new VictimView(this.getSize());
+            VictimView transPanel = new VictimView(this.getSize(), level_id);
 
             if(ViewController.getInstance().getOncePlayed()){
                 if(ViewController.getInstance().getGhostsEnabled()){
