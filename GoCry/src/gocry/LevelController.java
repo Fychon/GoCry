@@ -208,12 +208,6 @@ public class LevelController implements KeyListener {
 
     public void setVictim(int victimID){
         Victim.getInstance().inital(blockWidth, levels.get(victimID).getSpawn());
- //       Victim.getInstance().setPosition(Victim.getInstance().getRelToPixelSize(levels.get(victimID).getSpawn()));
-        //Victim.getInstance().inital(blockWidth, new Point2D.Double(1, 4));
-        System.out.print(levels);
-        //Victim.getInstance().inital(blockWidth, point);
-        //String[] data = DBInterface.getInstance().getVictim(victimID);
-        //Victim.getInstance().setUp(data[0], data[1], data[2]);
     }
 
     public void checkPosition() {

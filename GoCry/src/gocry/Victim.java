@@ -57,7 +57,7 @@ public class Victim {
     private double moveModification = 1;
     private double gravityModification = 1;
     
-    private int gravitySwitch = 0;
+    private int gravityCounter = 0;
     
     private BufferedImage activeImage;
     
@@ -348,6 +348,7 @@ public class Victim {
      * wird hier die Position des Victims geprüft und wenn möglich verändert
      */
     public void calcMovement() {
+        // GhostSpeicher und Modifikation
         savePos();
         if(LevelController.getInstance().shouldTinnitusPlayed()){
             ViewController.getInstance().playTinnitus();
@@ -357,7 +358,6 @@ public class Victim {
         if(this.moveModification == 2){
             this.moveModification = 1.5;
         }
-        
         if(this.headWind && LevelController.getInstance().blockOnLeftSide() == false){
             if(this.headWindCounter == 2){
                 this.setPositionX(this.getPositionX() - 1);
@@ -365,6 +365,10 @@ public class Victim {
             }
             this.headWindCounter++;
         }
+        
+        /*
+        * Bewegungssteuerung anhand Keylistener
+        */
         if (this.inJump) {
             if (LevelController.getInstance().blockOnTop()) {
                 this.endJump();
@@ -380,14 +384,15 @@ public class Victim {
             this.walkRight();
             this.setPositionX(this.getPositionX() + (int) Math.round(this.width / 10.0 * this.moveModification));
         }
-        if (this.fallen && LevelController.getInstance().onSolidBlock()==false) {
+        // Bewegungsmodifikation durch Gameloop
+        if (this.fallen) {
             
             if(this.gravityModification == 0){
-                if(this.gravitySwitch == 2){
+                if(this.gravityCounter == 2){
                     this.setPositionY((int) (this.getPositionY() +  1));//Math.round(this.width / 25.0)));
-                    this.gravitySwitch = 0;
+                    this.gravityCounter = 0;
                 }
-                this.gravitySwitch++;
+                this.gravityCounter++;
             } else {
                 //Normale Gravitation
                 this.setPositionY(this.getPositionY() + (int) Math.round(this.width / 25.0));

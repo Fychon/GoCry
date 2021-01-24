@@ -97,8 +97,7 @@ import java.awt.AlphaComposite;
          * @param g 
          */
         public void drawVictim(Graphics g) {        
-            g.setColor(Color.white);
-            g.drawImage(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), null);
+           g.drawImage(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), null);
         }
         /**
          * RecapGhost-Zeichnung. Zeichnet ein Ghost  in 50% Transparenz.
