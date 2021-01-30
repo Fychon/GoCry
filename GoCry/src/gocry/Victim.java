@@ -62,7 +62,7 @@ public class Victim {
 
     /**
      * Rückgabe des einzigen Victim Objects.
-     * @return 
+     * @return Rückgabe des Victims
      */
     public static Victim getInstance() {
         if (instance == null) {
@@ -152,14 +152,14 @@ public class Victim {
     }
     /**
      * MODIFIKATION Victimgeschwindigkeit
-     * @param in 
+     * @param in boolean Geschwindigkeitsveränderung
      */
     public void setMovementMod(double in){
         this.moveModification = in;
     }
     /**
      * MODIFIKATION Gravitation
-     * @param in 
+     * @param in boolean Gravitationveränderung
      */
     public void setGravityMod(double in){
         this.gravityModification = in;
@@ -200,7 +200,7 @@ public class Victim {
      * realer Screen Position (in Pixel Null-Punkt oben link)
      * Berechnung: x*=40; y = FensterBreite - (y*40) - SpielerHöhe
      * 
-     * @param input
+     * @param input Point2D Position im Array
      * 
      * @return Point2D reale Position in Pixel
      */
@@ -385,21 +385,21 @@ public class Victim {
 // Setter
     /**
      * Setzte die Position auf der X Achse
-     * @param x 
+     * @param x PositionY int
      */
     public synchronized void setPositionX(int x) {
         this.positionX = x;
     }
     /**
      * Setzte die Position auf der Y Achse
-     * @param y 
+     * @param y PositionY int
      */
     public synchronized void setPositionY(int y) {
         this.positionY = y;
     }
     /**
      * Setzte die Position als Punkt
-     * @param input 
+     * @param input Position Point2D
      */
     public synchronized void setPosition(Point2D input) {
         this.positionY = (int) input.getY();
@@ -424,42 +424,42 @@ public class Victim {
     }
     /**
      * Ausgabe des Rechten Oberen Eckpunktes
-     * @return Point2D oben rechts
+     * @return Point2D Eckpunkt oben rechts
      */
     public Point2D getRTCorner() {
         return new Point2D.Double((this.positionX + this.width), (this.positionY));
     }
     /**
      * Ausgabe des Linken Oberen Eckpunktes
-     * @return Point2D oben links
+     * @return Point2D Eckpunkt oben links
      */
     public Point2D getLTCorner() {
         return new Point2D.Double((this.positionX), (this.positionY));
     }
     /**
      * Ausgabe des Rechten Unteren Eckpunktes
-     * @return Point2D unten rechts
+     * @return Point2D Eckpunkt unten rechts
      */
     public Point2D getRBCorner() {
         return new Point2D.Double((this.positionX + this.width), (this.positionY + this.height));
     }
     /**
      * Ausgabe des Linken Unteren Eckpunktes
-     * @return Point2D unten links
+     * @return Point2D Eckpunkt unten links
      */
     public Point2D getLBCorner() {
         return new Point2D.Double((this.positionX), (this.positionY + this.height));
     }
     /**
      * Rückgabe ob das Victim aktuell springt
-     * @return 
+     * @return Ausgabe inJump
      */
     public boolean getInJump() {
         return this.inJump;
     }
     /**
      * Setzten ob Spieler sich im Sprung befindet
-     * @param jump 
+     * @param jump boolen inJump
      */
     public void setInJump(boolean jump) {
         this.inJump = jump;
@@ -480,21 +480,21 @@ public class Victim {
     }
     /**
      * Setzten ob ein Block auf der rechten Seite ist
-     * @param rightBlock 
+     * @param rightBlock boolean ob Block auf der Seite ist 
      */
     public void blockOnRightSide(boolean rightBlock) {
         this.blockOnRightSide = rightBlock; //To change body of generated methods, choose Tools | Templates.
     }
     /**
      * Setzen ob ein Block auf der linken Seite ist
-     * @param leftBlock 
+     * @param leftBlock boolean ob Block auf der Seite ist
      */
     public void blockOnLeftSide(boolean leftBlock) {
         this.blockOnLeftSide = leftBlock; //To change body of generated methods, choose Tools | Templates.
     }
     /**
      * Ausgabe aktuelles Spieler Bild
-     * @return VictimBild
+     * @return aktuelles VictimBild
      */
     public BufferedImage getImage(){
         return this.activeImage;

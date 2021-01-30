@@ -20,9 +20,9 @@ public class Ghost {
     
     /**
      * Erstellung eines Ghost. Das aktuelle Bild wird mit der aktuellen Position abgespeichert.
-     * @param img
-     * @param posx
-     * @param posy 
+     * @param img BufferedImage aktuelles Bild
+     * @param posx int aktuelle Position X
+     * @param posy int aktuelle Position Y
      */
     public Ghost(BufferedImage img, int posx, int posy){
         this.image = img;
@@ -31,21 +31,21 @@ public class Ghost {
     }
     /**
      * Rückgabe der Position auf der X-Achse
-     * @return 
+     * @return int Position auf X
      */
     public int getPositionX(){
         return this.positionx;
     }
     /**
      * Rückgabe der Position auf der Y-Achse
-     * @return 
+     * @return int Position auf Y
      */
     public int getPositionY(){
         return this.positiony;
     }
     /**
      * Rückgabe des abgespeicherten Bildes.
-     * @return 
+     * @return BufferedImage aktuelles Bild
      */
     public BufferedImage getImage(){
         return this.image;

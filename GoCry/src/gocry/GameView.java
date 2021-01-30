@@ -10,8 +10,8 @@ import javax.swing.JLayeredPane;
 public class GameView extends JLayeredPane {
     /**
      * Konstrukter, Komplette Erstellung der GameView anhand Frame und aktueller LevelID
-     * @param frame
-     * @param level_id 
+     * @param frame JFrame
+     * @param level_id int zugehöriges Level
      */
     public GameView(JFrame frame, int level_id){
         Victim.getInstance().resetMovement();

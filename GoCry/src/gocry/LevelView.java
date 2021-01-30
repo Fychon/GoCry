@@ -29,8 +29,8 @@ public class LevelView extends JPanel {
     /**
      * Erstellung eines Levels in einem Frame.
      * LevelObjekte, Objekttexturen u. Levelname werden anhand LevelID aus der Datenbank geladen und zugefügt.
-     * @param frame
-     * @param levelID 
+     * @param frame JFrame
+     * @param levelID int zu erstellendes Level
      */
     public LevelView(JFrame frame, int levelID) {
         
@@ -61,7 +61,7 @@ public class LevelView extends JPanel {
     
     /**
      * Verändern des anzuzeigenden Level
-     * @param in 
+     * @param in String angezeigter Levelname
      */
     public void setLevelName(String in){
         this.levelName = in;
@@ -69,7 +69,7 @@ public class LevelView extends JPanel {
     
     /**
      * Laden aller Objekte zu einem Level aus der Datenbank und erstellung einer Objektliste
-     * @param levelID 
+     * @param levelID Objekte zu LevelID
      */
     public void addObjectsFromLevelID(int levelID) {
         try {
@@ -91,7 +91,7 @@ public class LevelView extends JPanel {
     /**
      * Überschreibung der PaintComponent Methode. Wird automatisch bei jeden repaint() mitaufgerufen.
      * LevelName, Background und alle LevelObjekte mit richtiger Textur werden in die Graphic  gezeichnet.
-     * @param g 
+     * @param g Graphic auf der gezeichnet wird
      */
     @Override
     public void paintComponent(final Graphics g) {

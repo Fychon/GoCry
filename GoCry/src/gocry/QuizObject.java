@@ -2,12 +2,8 @@ package gocry;
 
 import java.awt.geom.Point2D;
 
-/*
- * Bausteine der Quiz
- */
-
 /**
- *
+ * NOT USED - Für mögliche Erweiterungen offen gelassen.
  * @author justu
  */
 public class QuizObject {

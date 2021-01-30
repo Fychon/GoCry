@@ -38,7 +38,7 @@ import javax.swing.*;
         /**
          * Konstruktor für Hauptmenü. Größe wird festgelegt und ist nicht veränderbar.
          * Entfernen eines vorhandenen Layout-Managers für Pixelgenau GUI Gestaltung.
-         * @param controller 
+         * @param controller ViewController für Actions
          */
         public MainMenuView(ViewController controller){
             this.setUndecorated(true);             
@@ -261,7 +261,7 @@ import javax.swing.*;
          * Methode für Anzeige des Hoover-Effect (an - true; aus - false).
          * Das Background Bild aus dem HintergrundPanels des MainMenüs wird gewechselt.
          * Das Icon des ExitButtons wird als Animation abgespielt.
-         * @param in   Hoover an / aus
+         * @param in Hoover an / aus
          */
         public void goodbyePanel(boolean in){
             lbackGround.removeAll();
@@ -288,7 +288,7 @@ import javax.swing.*;
          * Erstellung und Hinzugügung einer ScoreBoard View.
          * Bei Erstellung werden alle Einträge aus der Datenbank geladen und mitgegeben.
          * 
-         * @throws SQLException 
+         * @throws SQLException ScoreboardEntrys konnten nicht geladen werden
          */
         public void showScoreboard() throws SQLException{
             ViewController.getInstance().setVictimName(enterName.getText());
@@ -303,7 +303,7 @@ import javax.swing.*;
          * Erstellung und Anzeige einer GameView.
          * Laden und Anzeige der benötigten Spieleobjekt (LevelView) und des
          * Spielers (VictimView) passend zum mitgegebenen Level.
-         * @param level_id          
+         * @param level_id  int zu erstellendes Level        
          */
         public void showLevel(int level_id){
             this.getContentPane().removeAll();        
@@ -322,7 +322,7 @@ import javax.swing.*;
         
         /**
          * Wechsel des VolumeIcons im 2. Panel von 0-3 (0%;33%;66%;100%), um die Lautstärke zu visualisieren.
-         * @param i 
+         * @param i int 0-3
          */
         public void switchVolumeIcon(int i){
             volumeLabel.setIcon(volumeIcons[i]);
@@ -344,7 +344,7 @@ import javax.swing.*;
         /**
          * Ansicht des Hauptmenüs mit deaktivierten o. aktivierten Continue Button. Falls der mitgegebnen Parameter ecPressed true ist wird der
          * nichtsnützige Continue Button aktiviert und ein anderes Bild verwendet. Im anderen Falle wird er deaktiviert und das ausgegraute Bild verwendet.
-         * @param escPressed 
+         * @param escPressed boolean ob ESC gedrückt wurde
          */
         public void showMenuWithButton(boolean escPressed){
             this.getContentPane().removeAll();

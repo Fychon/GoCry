@@ -48,7 +48,7 @@ public class Layer {
     
     /**
      * Rückgabe der aktuellen LayerID
-     * @return 
+     * @return int aktuelle LayerID
      */
     public int getLayerID(){
         return this.layerID;

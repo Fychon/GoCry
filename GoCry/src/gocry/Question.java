@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 
 
 /**
- * 
+ * NOT USED - Für mögliche Erweiterungen offen gelassen.
  * @author justus
  */
 public class Question {

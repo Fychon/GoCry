@@ -22,8 +22,8 @@ public class ScoreboardView extends JLayeredPane {
 
     /**
      * Erstellung von SCoreboard in Frame mit Anzeige der gegebenen Entrys
-     * @param frame
-     * @param entrys 
+     * @param frame aktueller Frame/Größe
+     * @param entrys Einträge des Scoreboard
      */
     public ScoreboardView(JFrame frame, ArrayList<ScoreboardEntry> entrys) {
         this.frame = frame;
@@ -62,7 +62,7 @@ public class ScoreboardView extends JLayeredPane {
 
     /**
      * Erstellung der Scoreboard und Ansicht der mitgegebenen Entrys im Sec. Panel
-     * @param entrys 
+     * @param entrys Einträge des Scoreboard
      */
     public void createScoreboard(ArrayList<ScoreboardEntry> entrys) {
         String column[] = {"Name", "Zeit", "Datum"};

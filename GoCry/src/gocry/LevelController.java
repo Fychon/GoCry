@@ -50,7 +50,7 @@ public class LevelController implements KeyListener {
 
     /**
      * Rückgabe der einzig vorhandenen LevelController Instanz, wenn keine vorhanden wird eine erstellt.
-     * @return 
+     * @return LevelController einzige Instanz
      */
     public static LevelController getInstance() {
         if (instance == null) {
@@ -68,8 +68,8 @@ public class LevelController implements KeyListener {
     
    /**
     * Rückgabe eines spezifischen Levels nach LevelID
-    * @param levelID
-    * @return 
+    * @param levelID int ID des Levels
+    * @return Level komplettes Objekt
     */
     public Level getLevel(int levelID){
         return levels.get(levelID);
@@ -87,7 +87,7 @@ public class LevelController implements KeyListener {
     /**
      * Setzen aller geladenen Modifikationen aus spezifischen Level.
      * Modifikationen werden in verscheidenen Bereichen gesetzt und genutzt.
-     * @param levelID 
+     * @param levelID int Verknüpfung zum Level
      */
     public void setModsForLevel(int levelID){
         Victim.getInstance().setGravityMod(levels.get(levelID).gravitation);
@@ -105,7 +105,7 @@ public class LevelController implements KeyListener {
      * Richtiges Verhalten (kill, win, nichts tun) anhand Blockart/Status wird angestoßen.
      * @param values zu prüfender ContactPoint als 2x Dimensionale Double Koordinaten (0.0-31.9)u.(0.0-17.9)
      *                  Deizimalstellen werden bei Umwandlung in Integer abgeschnitten.
-     * @return 
+     * @return boolean false bei keinBlock
      */
     public boolean isBlockOnPoint(Point2D values) {
         boolean result = false;
@@ -140,7 +140,7 @@ public class LevelController implements KeyListener {
      * Collsision-Detection nach unten. Es wird geschaut ob sich 1 Pixel unter dem Spieler ein Block befindet. Es wird der linke und rechte Eckpunkt des Spielers verwendet.
      * Um ein realistisches Sprung und Lauferlebnis zu ermöglichen, wird die Hitbox insgesamt um 10 Pixel nach innen verschoben.
      * Der Spieler kann somit an Kanten stehen/herunterfallen und Collsisions mit Killblöcken werden nciht zu früh ausgelöst. 
-     * @return 
+     * @return boolean block unter Victim
      */
     public boolean onSolidBlock() {
         boolean result = false;
@@ -164,7 +164,7 @@ public class LevelController implements KeyListener {
      * Collsision Detection nach rechts. Es wird geschaut ob sich 1 Pixel auf der rechten Seite des Victims ein Block defindet. 
      * Es wird der obere, mittlere und untere Eckpunkt des Victims verwendet.
      * 
-     * @return 
+     * @return boolean Block auf rechter Seite
      */
     public boolean blockOnRightSide() {
         boolean result = false;
@@ -189,7 +189,7 @@ public class LevelController implements KeyListener {
      * Collsision Detection nach links. Es wird geschaut ob sich 1 Pixel auf der Linken Seite des Victims ein Block defindet. 
      * Es wird der obere, mittlere und untere Eckpunkt des Victims verwendet.
      * 
-     * @return 
+     * @return boolean Block auf linker Seite
      */
     public boolean blockOnLeftSide() {
         boolean result = false;
@@ -215,7 +215,7 @@ public class LevelController implements KeyListener {
      * Collsision-Detection nach oben. Es wird geschaut ob sich 1 Pixel über dem Spieler ein Block befindet. Es wird der linke und rechte Eckpunkt des Spielers verwendet.
      * Um ein realistisches Sprung zu ermöglichen, wird die Hitbox insgesamt um 4 Pixel nach innen verschoben.
      * Collsisions mit Killblöcken werden nicht zu früh ausgelöst. 
-     * @return 
+     * @return boolean Block über Victim
      */
     public boolean blockOnTop() {
         boolean result = false;
@@ -238,7 +238,7 @@ public class LevelController implements KeyListener {
     /**
      * Initialisierung unserers BlockArrays (32x18) und Füllung mit Null für die Abfragen.
      * Blöcke werden direkt an die richtige Position im Array geschrieben.
-     * @param objects 
+     * @param objects LevelObjekte eines Levels als ArrayListe
      */
     public void setUpArray(ArrayList<LevelObject> objects) {
         objectArray = new LevelObject[blockArrayWidth][blockArrayHeight];
@@ -262,9 +262,9 @@ public class LevelController implements KeyListener {
     /**
      * Laden aller Objekte eines Levels und Aufbereitung in eine ArrayListe für die Ausgabe und als
      * formatiertes Array für die Collsisiondetection.
-     * @param levelID
-     * @return
-     * @throws SQLException 
+     * @param levelID int verweist auf das aktuelle Level
+     * @return LevelObjekte als ArrayListe
+     * @throws SQLException Exception bei Datenbankfehlern 
      */
     public ArrayList<LevelObject> getAllObjectsFromLevelID(int levelID) throws SQLException {
         setUpArray(DBInterface.getInstance().allLevelObjects(levelID));
@@ -272,7 +272,7 @@ public class LevelController implements KeyListener {
     }
     /**
      * SetUp des Victims bei jeden Levelstart. Der SpawnPunkt des Victims wird passend zum aktuellen Level gesetzt.
-     * @param victimID 
+     * @param victimID int zugehörig zum aktuellen Level
      */
     public void setVictim(int victimID){
         Victim.getInstance().initial(blockWidth, levels.get(victimID).getSpawn());
@@ -311,7 +311,7 @@ public class LevelController implements KeyListener {
      * Wird automatisch aufgerufen falls bei Anzeigen der GameView eine Taste gedrückt wird.
      * Falls sich der Spieler noch im InfoScreen befindet geht der Spieler mit SPACE in das erste Level rein.
      * Mit ESC wird das Hauptmenü wieder aufgerufen. "A" u. "D" || "F" u. "T" sind für die Richtungs
-     * @param e 
+     * @param e inKeyEvent
      */
     @Override
     public void keyPressed(KeyEvent e) {
@@ -382,7 +382,7 @@ public class LevelController implements KeyListener {
     /**
      * Wird automatisch aufgerufen falls bei Anzeigen der GameView eine Taste losgelassen wird.
      * Wird für die Bewegungssteuerung genutzt. RichtungsSwitch(Boolea) wird wieder auf false gesetzt.
-     * @param e 
+     * @param e inKeyEvent
      */
     @Override
     public void keyReleased(KeyEvent e) {
@@ -418,50 +418,50 @@ public class LevelController implements KeyListener {
     }
     /**
      * Rückgabe true/false ob aktuell die Taste W gedrückt ist. Verwendung für Tinnitus.
-     * @return 
+     * @return boolean ob W gedrückt ist
      */
     public boolean getwIsPressed(){
         return this.wIsPressed;
     }
     /**
      * Rückgabe true/false ob aktuell die Taste A gedrückt ist. Verwendung für Tinnitus.
-     * @return 
+     * @return boolean ob A gedrückt ist
      */
     public boolean getaIsPressed(){
         return this.aIsPressed;
     }
     /**
      * Rückgabe true/false ob aktuell die Taste D gedrückt ist. Verwendung für Tinnitus.
-     * @return 
+     * @return boolean ob D gedrückt ist
      */    
     public boolean getdIsPressed(){
         return this.dIsPressed;
     }
     /**
      * Abspeicherung der aktuellen Systemzeit bei Spielbeginn für die Berechnung der allgemeinen Spielzeit
-     * @param currentTimeMillis 
+     * @param currentTimeMillis Speicherung der Startzeit
      */
     public void setStartTime(long currentTimeMillis) {
         this.startTime = currentTimeMillis;
     }
     /**
      * Rückgabe der abgespeicherten Startzeit des Spielbeginns
-     * @return 
+     * @return long Startzeit der aktuellen Runde
      */
     public long getStartTime() {
         return this.startTime;
     }
     /**
-     * Setzen ob man sich aktuell in einem Levelwechsel befindet (Collisisons werden deaktiviert)
+     * Setzen ob man sich aktuell in einem Levelwechsel befindet (Collisions werden deaktiviert)
      * Sicherheit das Collsisions nicht mehrmals anch "Spielende" registriert werden.
-     * @param in 
+     * @param in boolean ob aktuell im Levelwechsel
      */
     public void setLevelInSwitch(boolean in){
         this.levelInSwitch = in;
     }
     /**
-     * Abfrage ob aktuell eine Steuerungstaste gedrückt wird und der Tinitus im Loop abgespielt werden soll.
-     * @return 
+     * Abfrage ob aktuell eine Steuerungstaste gedrückt wird und der Tinnitus im Loop abgespielt werden soll.
+     * @return boolean ob Tinnitus abgespielt werden soll
      */
     public boolean shouldTinnitusPlayed(){
         if(this.tinnitus){

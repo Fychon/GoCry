@@ -16,9 +16,9 @@ public class ScoreboardEntry {
         
     /**
      * Erstellung eines neuen Eintrages.
-     * @param gametime
-     * @param creationdate
-     * @param name 
+     * @param gametime String zugehörige Spielzeit
+     * @param creationdate String Datum der Erstellung des Scoreboardeintrages
+     * @param name String Spielername
      */
     public ScoreboardEntry(String gametime, String creationdate, String name){
         this.gametime = gametime;
@@ -27,21 +27,21 @@ public class ScoreboardEntry {
     }
     /**
      * Ausgabe des Erstellungsdatum dieses Eintrages
-     * @return 
+     * @return String Spieldatum
      */
     public String getCreationDate() {
         return this.creationdate;
     }
     /**
      * Ausgabe der Spielzeit dieses Eintrages
-     * @return 
+     * @return String Spielzeit
      */            
     public String getGameTime() {
         return this.gametime;
     }
     /**
      * Ausgabe des Spielernamens dieses Eintrages.
-     * @return 
+     * @return String Spielername
      */
     public String getName() {
         return this.name;

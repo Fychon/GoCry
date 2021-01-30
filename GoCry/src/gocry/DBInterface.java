@@ -20,7 +20,7 @@ public class DBInterface {
 
     /**
      * Rückgabe des einzigen DBInterface Objektes, falls noch kein existiert wird ein erstellt.
-     * @return 
+     * @return DBInterface einzige Instanz
      */
     public static DBInterface getInstance() {
         if (instance == null) {
@@ -42,14 +42,14 @@ public class DBInterface {
     }
     /**
      * Verbindung mit der Datenbank wird aufgebaut.
-     * @throws SQLException 
+     * @throws SQLException Verbindung konnte nicht aufgebaut werden
      */
     private void connect() throws SQLException {
         conn = DriverManager.getConnection(dbURL, "admin", "");
     }
     /**
      * Bestehende Verbindung mit der Datenbank wird unterbrochen.
-     * @throws SQLException 
+     * @throws SQLException Datenbankverbindung konnte nicht abgeschlossen werden.
      */
     private void close() throws SQLException {
         if (conn != null) {
@@ -64,7 +64,7 @@ public class DBInterface {
      * Ausgabe aller bestehenden Scoreboardeinträge in der Datenbank.
      * Die Einträge sind nach der Spielzeit sortiert.
      * @return ArrayListe aller ScoreboardEntry(s)
-     * @throws SQLException 
+     * @throws SQLException Datenbankfehler
      */
     public ArrayList<ScoreboardEntry> allScoreboardEntrys() throws SQLException {
         ArrayList<ScoreboardEntry> alle = new ArrayList<ScoreboardEntry>();
@@ -83,9 +83,9 @@ public class DBInterface {
     }
     /**
      * Ausgabe aller LevelObjekte eines Levels
-     * @param levelid
+     * @param levelid int LevelID
      * @return ArrayListe aller LevelObject(s)
-     * @throws SQLException 
+     * @throws SQLException Datenbankfehler
      */
     public ArrayList<LevelObject> allLevelObjects(int levelid) throws SQLException {
         ArrayList<LevelObject> all = new ArrayList<LevelObject>();
@@ -108,9 +108,9 @@ public class DBInterface {
     }
     /**
      * Ausgabe der Victiminformationen.
-     * @param victimDesignID
-     * @return
-     * @throws SQLException 
+     * @param victimDesignID int ID der Texture
+     * @return String Array für Dateipfade
+     * @throws SQLException Datenbankfehler
      */
     public String[] getVictim(int victimDesignID) throws SQLException {
         connect();
@@ -127,8 +127,8 @@ public class DBInterface {
     /**
      * Ausgabe aller Layer des Spiels
      * Alle Layer werden einer ArrayListe hinzugefügt und ausgegeben um die Levelwechsel zu organisieren.
-     * @return
-     * @throws SQLException 
+     * @return Layer als ArrayList
+     * @throws SQLException Datenbankfehler
      */
     public ArrayList<Layer> getAllLayer() throws SQLException {
         connect();
@@ -152,7 +152,7 @@ public class DBInterface {
     /**
      * Ausgabe aller Level und deren Modifikationen
      * @return ArrayListe aller Level
-     * @throws SQLException 
+     * @throws SQLException Datenbankfehler
      */
     public ArrayList<Level> getAllLevel() throws SQLException {
         connect();
@@ -188,8 +188,8 @@ public class DBInterface {
     /**
      * Ausgabe aller Texturenpfade für alle Objekte.
      * Texturen werden anhand StatusID und TextureID des Objektes zugeordnet.
-     * @return
-     * @throws SQLException 
+     * @return ObjectTexture als ArrayList
+     * @throws SQLException Datenbankfehler
      */
     public ArrayList<ObjectTexture> getTextures() throws SQLException {
         connect();
@@ -214,7 +214,7 @@ public class DBInterface {
      * @param creationDate  Tag an dem die Spielzeit erstellt wurde
      * @param name          name des Victims der die SPielzeit erspielt hat
      * @return              Rückgabe ob das Speichern erfolgreich gewesen ist.
-     * @throws SQLException 
+     * @throws SQLException Datenbankfehler
      */
     public boolean newScoreboardEntry(String gameTime, String creationDate, String name) throws SQLException {
         connect();

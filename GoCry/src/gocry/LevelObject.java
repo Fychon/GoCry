@@ -47,23 +47,21 @@ public class LevelObject{
 
     // Status des Objekts
     private objectStatus status;
-
     /**
      * Konstruktor für levelObjekte. Ein Objekt braucht eine Position im Array und einen 
      * zugehörigen Status (Neutral/Kill/Win). Alle Objekte werden mittels Informationen aus der Datenbank ersteltl.
      * 
-     * @param positionX
-     * @param positionY
-     * @param collision
-     * @param visibility
-     * @param status_id
-     * @param texture_id 
+     * @param positionX int Position auf X Achse
+     * @param positionY int Position auf Y Achse
+     * @param collision boolean Collsions enabled
+     * @param visibility boolean is Visible
+     * @param status_id int StatusID (neutral/kill/win)
+     * @param texture_id  int TextureID
      */
     LevelObject(int positionX, int positionY, boolean collision, boolean visibility, int status_id, int texture_id) {
         this.positionx = positionX;
         this.positiony = positionY;
         this.textureid = texture_id;
-
         this.collision = collision;
         this.visibility = visibility;
         switch (status_id) {
@@ -79,15 +77,13 @@ public class LevelObject{
             default:
                 this.status = objectStatus.NEUTRAL;
                 break;
-
         }
     }
-
     /**
      * Anpassung der Breite und Hööge eines Levelblockes.
      * Alle Objekte sollen Quadratisch sein. Die Breite wird durch die gesamte Framebreite und der Anzahl der Blöcke in "einer Zeile"
      * Alle Blöcke auf der X-Achse zusammen, bilden die gesamte Framebreite
-     * @param size 
+     * @param size Dimension aktuelle Blockgröße
      */
     void calcRealSize(Dimension size) {
         this.width = size.width / 32;
@@ -98,55 +94,52 @@ public class LevelObject{
      * Die Position wird mit der Breite eines Objektes verrechnet (e.g. block(x:4;y:0) -> x; 4*40px = 160px
      * Die Position auf der Y Achse muss invertiert werden, da der Nullpunkt oben ist, und Faktor 1 aus der DB-Position hinzugerechnet
      * (e.g. ist: x:4;y:0 soll: x:160;y:680) y = 720 - 40 * (y(0)+1)
-     * @param size 
+     * @param size Dimension aktuelle Blockgröße
      */
     void calcRealLocation(Dimension size) {
         positionx *= getWidth();
         positiony = size.height - getHeight() * (positiony+1);
     }
-
-
     /**
      * Rückgabe der Position des Blockes auf der x Achse
-     * @return 
+     * @return int PositionX
      */
     public int getPositionX() {
         return this.positionx;
     }
     /**
      * Rückgabe der Position des Blockes auf der Y Achse
-     * @return 
+     * @return int PositionY
      */
     public int getPositionY() {
         return this.positiony;
     }
     /**
      * Rückgabe der Höhe des Blockes
-     * @return 
+     * @return int Höhe
      */
     public int getHeight() {
         return this.height;
     }
     /**
      * Rückgabe der Breite des Blockes
-     * @return 
+     * @return int Breite
      */
     public int getWidth() {
         return this.width;
     }
     /**
      * Rückgabe des Status des Blockes
-     * @return 
+     * @return status win/kkill/neutral
      */
     public objectStatus getStatus() {
         return this.status;
     }
     /**
      * Rückgabe der TextureID des Blockes
-     * @return 
+     * @return int TextureID
      */
     public int getTextureId(){
         return this.textureid;
     }
-
 }

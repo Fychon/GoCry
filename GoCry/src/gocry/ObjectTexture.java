@@ -25,21 +25,21 @@ public class ObjectTexture {
     }
     /**
      * Rückgabe des Pfades zur Texture
-     * @return 
+     * @return String Path to Texture
      */
     public String getTexture(){
         return this.texturePath;
     }
     /**
      * Rückgabe der TextureID
-     * @return 
+     * @return int TextureID
      */
     public int getTextureId(){
         return this.texture_id;
     }
     /**
      * Rückgabe der StatusID (0:neutral; 1: kill; 2: win)
-     * @return 
+     * @return int StatusID 
      */
     public int getStatusId(){
         return this.status_id;

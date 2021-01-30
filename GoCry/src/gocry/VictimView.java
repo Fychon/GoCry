@@ -36,8 +36,8 @@
         
         /**
          * Erstellung der VictimView
-         * @param size
-         * @param level 
+         * @param size Größe des Frames
+         * @param level zugehörige LevelID
          */
         public VictimView(Dimension size, int level) {
             this.setBounds(0, 0, size.width, size.height);
@@ -58,7 +58,7 @@
         }
         /**
          * Setzen der GhostListe
-         * @param in 
+         * @param in GhostListe
          */
         public void setGhostList(ArrayList<Ghost> in){
                 ghost = true;
@@ -67,7 +67,7 @@
         /**
          * GhostListe wird nach Fehlern durchgegangen.
          * biggestRecord (längster GhostEintrag) wird gesucht.
-         * @param in 
+         * @param in GhostListe
          */
         public void setGhostListArray(ArrayList<Ghost>[] in){
                 ghostModification = true;
@@ -91,14 +91,14 @@
         
         /**
          * Zeichnet den gespielten Victim ohne Transparenzveränderung.
-         * @param g 
+         * @param g Graphic auf die gezeichnet wird
          */
         public void drawVictim(Graphics g) {        
            g.drawImage(Victim.getInstance().getImage(), Victim.getInstance().getPositionX(), Victim.getInstance().getPositionY(), null);
         }
         /**
          * RecapGhost-Zeichnung. Zeichnet ein Ghost  in 50% Transparenz.
-         * @param g 
+         * @param g Graphic auf die gezeichnet wird
          */
         public void drawGhost(Graphics g) {
             Graphics2D graphics2D = (Graphics2D)g;
@@ -110,7 +110,7 @@
          * Modification Ghosts für LuckyLuke. Es werden alle vorhandenen Ghost 
          * in der GhostList mit 50% Transparenz gezeichnet.
          * Sicherstellung das die einzelnen GhostLists nicht überladen werden.
-         * @param g 
+         * @param g Graphic auf die gezeichnet wird
          */
         public void drawGhosts(Graphics g) {
             Graphics2D graphics2D = (Graphics2D)g;
@@ -124,7 +124,7 @@
         }
         /**
          * Zeichnen des aktuellen Timers in aktuelle Graphic
-         * @param g 
+         * @param g Graphic auf die gezeichnet wird
          */
         public void drawTimer(Graphics g){
             Graphics2D graphics2D = (Graphics2D)g;
@@ -139,7 +139,7 @@
         }
         /**
          * Zeichnen aller Komponenten
-         * @param g 
+         * @param g Graphic auf die gezeichnet wird
          */
         @Override
         protected void paintComponent(final Graphics g) {

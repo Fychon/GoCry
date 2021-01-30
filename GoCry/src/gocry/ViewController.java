@@ -64,14 +64,18 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     
     private boolean beMean = false;
     
+    
+    /**
+     * Konstrukter des ViewControllers.
+     * Das Hauptmenü wird erstellt und angezeigt
+     */
     public ViewController() {
         menuView = new MainMenuView(this);
         menuView.setVisible(true);
         try {
             layers = DBInterface.getInstance().getAllLayer();
             actualLayer = layers.get(0).level_id;
-        } catch (SQLException ex) {
-            
+        } catch (SQLException ex) {     
         }
         try {
             loadClips();
@@ -79,12 +83,10 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         } catch (Exception ex) {
         }
         levelsGhost = new ArrayList[layers.size()];
-
-
     }
     /**
      * Einmalige Erstellung und Rückgabe der ViewController Instanz
-     * @return 
+     * @return Ausgabe des aktuellen ViewControllers
      */
     public static ViewController getInstance() {
         if (instance == null) {
@@ -94,8 +96,8 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     /**
      * Auslesen aller ScoreboardEinträge
-     * @return
-     * @throws SQLException 
+     * @return ArrayLste aller Scoreboard eintröge
+     * @throws SQLException Tabelle wird nicht gefunden
      */
     public ArrayList<ScoreboardEntry> getScoreboardEntrys() throws SQLException {
         return DBInterface.getInstance().allScoreboardEntrys();
@@ -128,7 +130,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     /**
      * Rückgang zum Menu. Soundwechsel, Abbruch von vielleicht vorhandenen Tinnitus. Parameter auf Level u. Layer 0 setzten.
      * Abspeichern und Zurücksetzen der aktuellen lokalen GhostList
-     * @param escPressed 
+     * @param escPressed  ob über die ESC Taste das Hauptmenü aufgerufen wird
      */
     public void backToMenu(boolean escPressed){
         if(tinnitusIsPlaying){
@@ -154,8 +156,6 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         }
         
     }
-    
-    
     /**
      * Falls das letzte Level (nexeLayer verweist auf 0) gespielt wurde. Scoreboard eintrag wird geschrieben ( wenn nicht gecheated wurde)
      */
@@ -194,7 +194,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     /**
      * Auwahl für ButtonCommands
-     * @param event 
+     * @param event mitgegebenes ActionEvent (enthält das Command)
      */
     @Override
     public void actionPerformed(ActionEvent event) {
@@ -243,21 +243,21 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     /**
      * Rückgabe des aktuellen Layer
-     * @return 
+     * @return aktuelle LayerId
      */
     public int getActualLayer(){
         return this.actualLayer;
     }
     /**
      * Rückgabe Levelname
-     * @return 
+     * @return aktueller levelName
      */
     public String getVictimName(){
         return this.name;
     }
     /**
      * VictimName wird gesetzt.Falls der Name nicht verändert wurde sei dein Name ab jetzt Fred.
-     * @param name 
+     * @param name Setzen des Spielernamens
      */
     public void setVictimName(String name){
         if(!name.equals("ENTER NAME")){
@@ -273,14 +273,14 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     /**
      * Aktuellen WinSound aus Db laden
-     * @return 
+     * @return Pfad zum Sound als String
      */
     public String getWinSound(){
         return this.layers.get(actualLayer).getWinSound();
     }
     /**
      * Aktuellen DeathSound aus Db laden
-     * @return 
+     * @return Pfad zum Sound als String
      */
     public String getDeathSound(){
         return this.layers.get(actualLayer).getDeathSound();
@@ -288,7 +288,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     
     /**
      * Alle Soundfiles laden und in Clips abspeichern
-     * @throws Exception 
+     * @throws Exception Falsl einer der Dateipfade nicht erreichbar ist.
      */
     private void loadClips() throws Exception{
         File file = new File("sounds/tinnitus.wav");
@@ -410,64 +410,64 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     /**
      * Setter ob man sich aktuell im Menu befondet
-     * @param in 
+     * @param in boolean
      */
     public void setInMenu(boolean in){
         this.inMenu = in;
     }
     /**
      * Ausgabe ob man sich aktuell im Hauptmenü befindet
-     * @return 
+     * @return boolean
      */
     public boolean getInMenu(){
         return this.inMenu;
     }
     /**
      * Ausgabe der GhostListe für ein Level
-     * @param layerID
-     * @return 
+     * @param layerID Knüpft an das jeweilige Level
+     * @return Ghosts in ArrayList
      */
     public ArrayList<Ghost> getGhostList(int layerID){
         return this.levelsGhost[layerID];
     }
     /**
      * Ausgabe aller GhostListen
-     * @return 
+     * @return Ausgabe aller GhostListen in Array
      */
     public ArrayList<Ghost>[] getGhostListArray(){
         return this.levelsGhost;
     }
     /**
-     * Wurde das Spiel bereits einmal mit esc, lose oder lastLevel beendet
-     * @return 
+     * Wurde das Spiel bereits einmal mit esc, verlieren oder lastLevel beendet
+     * @return boolean ob das erste ELvel bereits angespielt wurde.
      */
     public boolean getOncePlayed(){
         return this.oncePlayed;
     }
     /**
      * Getter ob U gedrückt wurde
-     * @return 
+     * @return boolean ob U (Victim To Goal) gedrückt wurde
      */
     public boolean getCheated(){
         return this.youCheated;
     }
     /**
      * Setter ob U gedrückt wurde
-     * @param in 
+     * @param in boolean um CheatDetection zurückzusetzen
      */
     public void setCheated(boolean in){
         this.youCheated = in;
     }
     /**
      * Setter ob Ghosts abgespielt werden sollen
-     * @param in 
+     * @param in boolean ob Ghosts abgespielt werden
      */
     public void setGhostEnabled(boolean in){
         ghostsEnabled = in;
     }
     /**
      * Getter ob Ghosts abgespielt werden sollen
-     * @return 
+     * @return boolean ob Ghosts abgespielt werden
      */
     public boolean getGhostsEnabled(){
         return this.ghostsEnabled;
@@ -521,7 +521,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     /**
      * Methode wird als hoover-Effekt beim Exit Button aufgerufen,
      * das BackGround Panel im Hauuptmenü und die Musik wird angepasst
-     * @param in 
+     * @param in boolean
      */
     public void heWantsToCry(boolean in){
         if(in){
@@ -553,7 +553,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     /**
      * Hoover-Effekt für den Exit Button
-     * @param e 
+     * @param e inMouseEvent
      */
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -561,7 +561,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     /**
      * Hoover-Effekt für den Exit Button
-     * @param e 
+     * @param e inMouseEvent
      */
     @Override
     public void mouseExited(MouseEvent e) {
@@ -576,14 +576,14 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     }
     /**
      * Ausgabe ob im ersten Level veränderter Text dargestellt werden soll
-     * @return 
+     * @return boolean ob das Spiel mit Continue gestartet wurde
      */
     public boolean getBeMean(){
         return this.beMean;
     }
     /**
      * Parameterveränderung ob im ersten Level ein anderer Text als Levelname angezeigt werden soll.
-     * @param in 
+     * @param in boolean Setzen beMean
      */
     public void setBeMean(boolean in){
         this.beMean = in;
