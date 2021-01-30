@@ -1,4 +1,5 @@
 package gocry;
+
 import java.awt.geom.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,11 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 
-/*
- * Spielerklasse mit Position der Spielfigur, Texturen, einem freiwählbaren Namen und dem Sprungsound
- */
+
 /**
- *
+ * Datenklasse der Spielfgigur. Speicherung und Veränderung der Eigenschaften.
+ * 
  * @author justus
  */
 public class Victim {
@@ -19,32 +19,22 @@ public class Victim {
     // Position der Spielfigur
     private int positionX;
     private int positionY;
-
-
     private int height;
-
     private int width;
     // Pfad zur Textur für Spielfigur
     private String texture;
-
     // Name des Spielers
     private String name;
-
     // Pfad zur Sounddatei fürs Springen
     private String jumpSound;
-
     // Ausgeführte Bewegung (links)
     private boolean moveLeft = false;
-
     //Ausgeführte Bewegung (rechts)
     private boolean moveRight = false;
-
     private static Victim instance;
-
     // Sprunghöhe 
     private int jumpHeight;
     private int maxHeight;
-
     private boolean inJump = false;
 
     private boolean blockOnRightSide;
@@ -70,22 +60,22 @@ public class Victim {
     
     private ArrayList<Ghost> ghostList = new ArrayList<Ghost>();
 
-    
+    /**
+     * Rückgabe des einzigen Victim Objects.
+     * @return 
+     */
     public static Victim getInstance() {
         if (instance == null) {
             instance = new Victim();
         }
         return instance;
     }
-
+    /**
+     * Texturen werden bei Victimerstellung gerladen & Standardbild für Start wird gesetzt.
+     */
     Victim() {
         loadTextures();
         activeImage = standRight;
-    }
-    Victim(String name, String texture, String jumpSound) {
-        this.name = name;
-        this.texture = texture;
-        this.jumpSound = jumpSound;
     }
     /**
      * Ausgabe der GhostList (Aufnahme des Spiels)
@@ -100,8 +90,6 @@ public class Victim {
     public void resetGhostList(){
         this.ghostList = new ArrayList<Ghost>();
     }
-    
-    
     /**
      * Laden aller Texturen für den Spielern
      */
@@ -121,7 +109,6 @@ public class Victim {
             System.out.println("Textures found");
         }
     }
-
     /**
      * Je nach vorherigen Bild wird das passende Bild für das Stehen geladen
      */
@@ -184,7 +171,6 @@ public class Victim {
     public void setHeadWindMod(boolean in){
         this.headWind = in;
     }
-    
     /**
      * Nachträgliche setUp Methode für Victimveränderung. Kann bei jedem Levelstart gesetzt werden.
      * @param name Name des Victims
@@ -212,20 +198,23 @@ public class Victim {
     /**
      * Umwandlung von der relativen Position im ObjectArray(x; 0-31 - y; 0-17) in die
      * realer Screen Position (in Pixel Null-Punkt oben link)
-     * @param Point2D aktuelle Position im Array
+     * Berechnung: x*=40; y = FensterBreite - (y*40) - SpielerHöhe
+     * 
+     * @param input
+     * 
      * @return Point2D reale Position in Pixel
      */
     public Point2D getRelToPixelSize(Point2D input) {
-        input.setLocation(input.getX() * LevelController.getInstance().blockArrayWidth, LevelController.getInstance().frameHeight - (input.getY() * LevelController.getInstance().blockWidth) - Victim.getInstance().getHeight());
+        input.setLocation(input.getX() * LevelController.getInstance().blockWidth, 
+                LevelController.getInstance().frameHeight - (input.getY() * LevelController.getInstance().blockWidth) - Victim.getInstance().getHeight());
         return input;
     }
-    
-    //public boolean
     /**
-     * Umwandlung von realer Screen Position (in Pixel Null-Punkt oben link) in
-     * die relative Position im ObjectArray(x; 0-31 - y; 0-17)
+     * Umwandlung von realer Screen Position (1280*720 in Pixel Null-Punkt oben link) in
+     * die relative Position im ObjectArray(x; 0-31 - y; 0-17 Null-Punkt unten links)
      *
-     * Berechnung:
+     * Berechnung: x /= FensterBreite * ArrayBreite ( x / 1280 * 32)
+     *             y = FensterHöhe - y / FensterHöhe * ArrayHöhe (720-(y/720*18) 
      *
      * @param point - Reale Position des Victims (Linker oberer Eckpunkt)
      * @return (x; 0.0-31.0 - y; 0.0-17.0)
@@ -265,9 +254,8 @@ public class Victim {
     public void calcMaxJumpHeight() {
         this.maxHeight = this.positionY - this.jumpHeight;
     }
-
     /**
-     * Sprungabfrage, falls berechnete Höhe erreicht wurde -> Abbruch
+     * Sprungabfrage, falls berechnete Höhe erreicht wurde - Abbruch
      */
     public void jump() {
         if (this.positionY <= this.maxHeight) {
@@ -276,31 +264,25 @@ public class Victim {
             this.positionY -= (int) Math.round(this.height / 10.0);
         }
     }
-    
     /**
      * Gravitation / Fallen an
      */
     public void startFallen(){
         this.fallen = true;
     }
-    
     /**
      * Gravitation / Fallen aus
      */
-    
     public void endFallen(){
         this.fallen = false;
     }
-    
     /**
      * Sprung beenden
      */
     public void endJump() {
         this.inJump = false;
         this.maxHeight = 0;
-
     }
-    
     /**
      * Alle Bewegung zurücksetzen (Für LevelStart)
      */
@@ -310,7 +292,6 @@ public class Victim {
         this.moveRight = false;
         this.fallen = true;
     }
-
     /**
      * Schritte nach rechts einleiten
      */
@@ -319,14 +300,12 @@ public class Victim {
             this.moveRight = true;
         }
     }
-
     /**
      * Schritte nach recht beenden
      */
     public  void endMoveRight() {
         this.moveRight = false;
     }
-
     /**
      * Schritte nach links einleiten
      */
@@ -341,7 +320,6 @@ public class Victim {
     public void endMoveLeft() {
         this.moveLeft = false;
     }
-
     /**
      * CalcMovement wird im Thread regelmäßig aufgerufen.
      * Anhand der oben gesetzten Booleans für die Bewegungsrichtungen und Modifikationen

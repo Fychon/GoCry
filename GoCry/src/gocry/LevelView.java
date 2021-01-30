@@ -1,6 +1,3 @@
-/*
- * Anzeige der LevelObjects und des Victim
- */
 package gocry;
 
 import javax.swing.*;
@@ -13,7 +10,14 @@ import javax.imageio.ImageIO;
 
 
 /**
- *
+ * Klasse für die Anzeige des Levels und seiner Komponenten.
+ * Es sollen alle Komponeten dargestellt werden die sich nciht regelmäßig verändern und 
+ * kein dauerhaftes repaint() der Komponenten benötigt ist.
+ * Darstellung von: 
+ * <br>Backgroundtexture, 
+ * <br>Levelname, 
+ * <br>Spielbläcke im Level.
+ * 
  * @author johann
  */
 public class LevelView extends JPanel {
@@ -22,6 +26,12 @@ public class LevelView extends JPanel {
     private BufferedImage[][] images = new BufferedImage[50][50];
     private BufferedImage background;
 
+    /**
+     * Erstellung eines Levels in einem Frame.
+     * LevelObjekte, Objekttexturen u. Levelname werden anhand LevelID aus der Datenbank geladen und zugefügt.
+     * @param frame
+     * @param levelID 
+     */
     public LevelView(JFrame frame, int levelID) {
         
             this.setPreferredSize((frame.getSize()));
@@ -49,11 +59,18 @@ public class LevelView extends JPanel {
         this.resizeObjects();
     }
     
+    /**
+     * Verändern des anzuzeigenden Level
+     * @param in 
+     */
     public void setLevelName(String in){
         this.levelName = in;
     }
     
-
+    /**
+     * Laden aller Objekte zu einem Level aus der Datenbank und erstellung einer Objektliste
+     * @param levelID 
+     */
     public void addObjectsFromLevelID(int levelID) {
         try {
             objectList = LevelController.getInstance().getAllObjectsFromLevelID(levelID);
@@ -62,12 +79,20 @@ public class LevelView extends JPanel {
         }
     }
 
+    /**
+     * Position und Größe aller Objekte werden an die aktuelle Framegröße angepasst.
+     */
     public void resizeObjects() {
         for (LevelObject object : objectList) {
             object.calcRealSize(this.getSize());
             object.calcRealLocation(this.getSize());
         }
     }
+    /**
+     * Überschreibung der PaintComponent Methode. Wird automatisch bei jeden repaint() mitaufgerufen.
+     * LevelName, Background und alle LevelObjekte mit richtiger Textur werden in die Graphic  gezeichnet.
+     * @param g 
+     */
     @Override
     public void paintComponent(final Graphics g) {
         super.paintComponent(g);

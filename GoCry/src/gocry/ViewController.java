@@ -21,7 +21,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * Verwaltet die verschiedenen Panels und JLayeredViews. 
+ * Leitet den Levelwechsel, backToMenu wie auch lastLevelFinished ein.
+ * Erstellung und Verwaltung aller Clips / Hintergrundsounds.
  * @author johann
  */
 public class ViewController implements ActionListener, ChangeListener, MouseListener {
@@ -124,7 +126,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         }
     }
     /**
-     * Rückgang zum Menu. Soundwechsel, Abbruch von vielleicht vorhandenen Tinnitus. Parameter auf Level & Layer 0 setzten.
+     * Rückgang zum Menu. Soundwechsel, Abbruch von vielleicht vorhandenen Tinnitus. Parameter auf Level u. Layer 0 setzten.
      * Abspeichern und Zurücksetzen der aktuellen lokalen GhostList
      * @param escPressed 
      */
@@ -320,7 +322,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         deathSound.open(deathStream);
     }
     /**
-     * Falls noch kein Tinnitus abgespielt -> anfangen in Dauerloop
+     * Falls noch kein Tinnitus abgespielt - anfangen in Dauerloop
      */
     public void playTinnitus(){
         if(this.tinnitusIsPlaying == false){
@@ -329,7 +331,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         }
     }
     /**
-     * Falls aktuell Tinnitus abgespielt -> stoppen
+     * Falls aktuell Tinnitus abgespielt - stoppen
      */
     public void stopTinnitus(){
         if(this.tinnitusIsPlaying == true){
@@ -338,7 +340,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         }
     }
     /**
-     * Falls noch kein Exit abgespielt -> anfangen in Dauerloop
+     * Falls noch kein Exit abgespielt - anfangen in Dauerloop
      */
     private void playExitSound() {
         if(inExitSoundOn == false){
@@ -362,7 +364,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
             deathSound.start();
         }
     /**
-     * Falls noch kein Gamesound abgespielt -> anfangen in Dauerloop
+     * Falls noch kein Gamesound abgespielt - anfangen in Dauerloop
      */
     public void playInGameSound(){
         if(inGameSoundOn == false){
@@ -371,7 +373,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         }
     }
     /**
-     * Falls aktuell Gamesound abgespielt -> stoppen
+     * Falls aktuell Gamesound abgespielt - stoppen
      */
     public void stopInGameSound(){
         if(inGameSoundOn){
@@ -380,7 +382,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         }
     }
     /**
-     * Falls noch kein Menusound abgespielt -> anfangen in Dauerloop
+     * Falls noch kein Menusound abgespielt - anfangen in Dauerloop
      */
     public void playMenuSound(){
         if(inMenuSoundOn == false){
@@ -389,7 +391,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         }
     }
     /**
-     * Falls aktuell Exitsound abgespielt wird -> stoppen
+     * Falls aktuell Exitsound abgespielt wird - stoppen
      */
     public void stopExitSound(){
         if(inExitSoundOn == true){
@@ -549,12 +551,18 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-
+    /**
+     * Hoover-Effekt für den Exit Button
+     * @param e 
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
         heWantsToCry(true);
     }
-
+    /**
+     * Hoover-Effekt für den Exit Button
+     * @param e 
+     */
     @Override
     public void mouseExited(MouseEvent e) {
         heWantsToCry(false);
@@ -574,7 +582,7 @@ public class ViewController implements ActionListener, ChangeListener, MouseList
         return this.beMean;
     }
     /**
-     * Parameterveränderung ob im ersten Level ein anderer Text als LEvelname angezeigt werden soll.
+     * Parameterveränderung ob im ersten Level ein anderer Text als Levelname angezeigt werden soll.
      * @param in 
      */
     public void setBeMean(boolean in){

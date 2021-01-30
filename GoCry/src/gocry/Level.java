@@ -1,12 +1,11 @@
 package gocry;
 
 import java.awt.geom.Point2D;
-/*
- * Verbindet Spielfeld, Spieler und Levelobjekte
- */
-
 /**
- *
+ * Datenklasse für die Eigenschaften eines Levels.
+ * Neben LevelName, SpawnLocation und ID werden die zugehörigen Modifikationen abgespeichert.
+ * Objekte dieser Klasse werden mittels Informationen aus der Datenbank erstellt und als Liste bei Erstellung des
+ * LevelController übergeben.
  * @author justus
  */
 
@@ -36,6 +35,26 @@ public class Level {
     private Point2D.Double levelSpawnLocation;
 
 
+    /**
+     * Konstrukter eines Levels, Daten werden aus Datenbank vorgegeben.
+     * @param levelid
+     * @param namen
+     * @param spawnpointx
+     * @param spawnpointy
+     * @param movementspeed
+     * @param backgroundtexture
+     * @param gravitation
+     * @param lightsout
+     * @param soundlock
+     * @param invertcontrol
+     * @param headwind
+     * @param wtfisenabled
+     * @param killblocksarehidden
+     * @param killblocksareinvisible
+     * @param flipswitchillusion
+     * @param tinnitus
+     * @param ghostsEnabled 
+     */
     Level(int levelid, String namen, int spawnpointx, int spawnpointy, double movementspeed, String backgroundtexture, double gravitation, boolean lightsout, boolean soundlock, boolean invertcontrol, boolean headwind, boolean wtfisenabled, boolean killblocksarehidden, boolean killblocksareinvisible, boolean flipswitchillusion, boolean tinnitus, boolean ghostsEnabled) {
         this.levelID = levelid;
         this.levelName = namen;
@@ -55,26 +74,32 @@ public class Level {
         this.tinnitus = tinnitus;
         this.ghostsEnabled = ghostsEnabled;
     }
-    
-    
-    public void setLevelName(String levelName){
-        this.levelName = levelName;
-    }
-    
-    
-// Getter
+        
+    /**
+     * Rückgabe der LevelID
+     * @return int levlid
+     */
     public int getLevelId(){
         return this.levelID;
     }
-    
+    /**
+     * Rückgabe des Levelnamens
+     * @return String Levelname
+     */
     public String getLevelName(){
         return this.levelName;
     }
-    
+    /**
+     * Rückgabe der SpawnLocation des Levels
+     * @return Point2D spawnlocation
+     */
     public Point2D.Double getSpawn(){
         return this.levelSpawnLocation;
     }
-
+    /**
+     * Rückgabe des Pfades zur zugehörigen Hintergrundtextur.
+     * @return String texturePath
+     */
     String getBackgroundTexture() {
         return this.backgroundtexture;
     }

@@ -7,7 +7,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * Ansicht des Scoreboards. Wird als Layered Pane 
- * mit Hintergrundbild und Tabelle geladen.
+ * mit Hintergrundbild und Tabelle geladen. 
+ * Anzuzeigende Einträge werden mitgegeben.
  * @author johann
  */
 public class ScoreboardView extends JLayeredPane {
@@ -49,7 +50,7 @@ public class ScoreboardView extends JLayeredPane {
     }
     
     /**
-     * HintergrundBild wird geladen
+     * HintergrundBild wird in First Panel geladen
      */
     public void loadBackground(){
             Icon icon = new ImageIcon("textures/mainmenu.png");
@@ -60,7 +61,7 @@ public class ScoreboardView extends JLayeredPane {
     }
 
     /**
-     * Erstellung der Scoreboard und Ansicht der mitgegebenen Entrys
+     * Erstellung der Scoreboard und Ansicht der mitgegebenen Entrys im Sec. Panel
      * @param entrys 
      */
     public void createScoreboard(ArrayList<ScoreboardEntry> entrys) {

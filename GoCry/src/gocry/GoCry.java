@@ -1,12 +1,9 @@
-/*
- * Hauptklasse für den Spielstart
- */
 package gocry;
 
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * Hauptklasse, Start des Spiels
  * @author johann
  */
 public class GoCry {

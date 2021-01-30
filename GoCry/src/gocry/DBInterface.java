@@ -7,7 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- *
+ * Klasse für den Zugriff auf die Datenbank.
+ * Es werden benötigte Daten aus der Datenbank nach mitgegebenen Parametern oder in sortierter Form ausgegeben.
+ * Scoreboardeinträge werdend er Datenbank hinzugefügt.
  * @author johann
  */
 public class DBInterface {
@@ -16,6 +18,10 @@ public class DBInterface {
     private Connection conn;
     private static DBInterface instance;
 
+    /**
+     * Rückgabe des einzigen DBInterface Objektes, falls noch kein existiert wird ein erstellt.
+     * @return 
+     */
     public static DBInterface getInstance() {
         if (instance == null) {
             instance = new DBInterface();
@@ -23,6 +29,9 @@ public class DBInterface {
         return instance;
     }
 
+    /**
+     * Konstruktor für Schnittstellenerstellung. Es wird nach dem Datenbanktreiber gesucht.
+     */
     private DBInterface() {
         try {
             Class.forName(treibername);
@@ -31,11 +40,17 @@ public class DBInterface {
             System.exit(-1);
         }
     }
-
+    /**
+     * Verbindung mit der Datenbank wird aufgebaut.
+     * @throws SQLException 
+     */
     private void connect() throws SQLException {
         conn = DriverManager.getConnection(dbURL, "admin", "");
     }
-
+    /**
+     * Bestehende Verbindung mit der Datenbank wird unterbrochen.
+     * @throws SQLException 
+     */
     private void close() throws SQLException {
         if (conn != null) {
             if (!conn.isClosed()) {
@@ -45,7 +60,12 @@ public class DBInterface {
             }
         }
     }
-
+    /**
+     * Ausgabe aller bestehenden Scoreboardeinträge in der Datenbank.
+     * Die Einträge sind nach der Spielzeit sortiert.
+     * @return ArrayListe aller ScoreboardEntry(s)
+     * @throws SQLException 
+     */
     public ArrayList<ScoreboardEntry> allScoreboardEntrys() throws SQLException {
         ArrayList<ScoreboardEntry> alle = new ArrayList<ScoreboardEntry>();
         connect();
@@ -61,7 +81,12 @@ public class DBInterface {
         close();
         return alle;
     }
-
+    /**
+     * Ausgabe aller LevelObjekte eines Levels
+     * @param levelid
+     * @return ArrayListe aller LevelObject(s)
+     * @throws SQLException 
+     */
     public ArrayList<LevelObject> allLevelObjects(int levelid) throws SQLException {
         ArrayList<LevelObject> all = new ArrayList<LevelObject>();
         connect();
@@ -81,7 +106,12 @@ public class DBInterface {
         close();
         return all;
     }
-
+    /**
+     * Ausgabe der Victiminformationen.
+     * @param victimDesignID
+     * @return
+     * @throws SQLException 
+     */
     public String[] getVictim(int victimDesignID) throws SQLException {
         connect();
         String[] result = new String[5];
@@ -94,6 +124,12 @@ public class DBInterface {
         return result;
     }
 
+    /**
+     * Ausgabe aller Layer des Spiels
+     * Alle Layer werden einer ArrayListe hinzugefügt und ausgegeben um die Levelwechsel zu organisieren.
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Layer> getAllLayer() throws SQLException {
         connect();
         ArrayList<Layer> result = new ArrayList<Layer>();
@@ -113,6 +149,11 @@ public class DBInterface {
         return result;
     }
     
+    /**
+     * Ausgabe aller Level und deren Modifikationen
+     * @return ArrayListe aller Level
+     * @throws SQLException 
+     */
     public ArrayList<Level> getAllLevel() throws SQLException {
         connect();
             ArrayList<Level> result = new ArrayList<Level>();
@@ -144,6 +185,12 @@ public class DBInterface {
         return result;
     }
     
+    /**
+     * Ausgabe aller Texturenpfade für alle Objekte.
+     * Texturen werden anhand StatusID und TextureID des Objektes zugeordnet.
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<ObjectTexture> getTextures() throws SQLException {
         connect();
         ArrayList<ObjectTexture> result = new ArrayList<ObjectTexture>();
@@ -161,7 +208,14 @@ public class DBInterface {
         return result;
     }
 
-  
+    /**
+     * Aus den mitgegeben Informationen (Spielzeit, Datum, Name) wird ein neuer ScoreboardEintrag der Datenbank in die Tabelle SCOREBOARD hinzugeügt.
+     * @param gameTime      gespielte Spielzeit
+     * @param creationDate  Tag an dem die Spielzeit erstellt wurde
+     * @param name          name des Victims der die SPielzeit erspielt hat
+     * @return              Rückgabe ob das Speichern erfolgreich gewesen ist.
+     * @throws SQLException 
+     */
     public boolean newScoreboardEntry(String gameTime, String creationDate, String name) throws SQLException {
         connect();
         boolean result = false;

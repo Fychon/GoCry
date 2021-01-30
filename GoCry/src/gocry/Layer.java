@@ -1,12 +1,9 @@
 package gocry;
 
-/*
- * Führt Frage- und Jump'n Run Level zusammen um sie über die Layerebene im Welchsel steuern zu können
- * speichert Sounddateien für Sieg, Niederlage und generelle Hintergrundsounds
- */
-
 /**
- *
+ * Verknüft die einzelnen Level mit dem ViewController, Question könnten optinional über den ViewController geladen werden (gestrichenes Feature)
+ * Die Klasse Layer verbindet spezifische Sounds (Win, Death, Background) mit dem aktuellen Level / (Frage)
+ * Alle Layer werden bei Erstellung des ViewControllers geladen.
  * @author justus
  */
 public class Layer {
@@ -29,6 +26,16 @@ public class Layer {
     // Pfad zur Sounddatei für Hintergrundmusik
     private String backGroundSound;
 
+    
+    /**
+     * Erstellung eines neuen Layereintrags. Parameter werden aus der Datenbank geladen
+     * @param layerID
+     * @param deathSound
+     * @param winSound
+     * @param backgroundSound
+     * @param level_id
+     * @param nextLayer 
+     */
     Layer(int layerID, String deathSound, String winSound, String backgroundSound, int level_id, int nextLayer) {
         this.layerID = layerID;
         this.deathSound = deathSound;
@@ -39,37 +46,31 @@ public class Layer {
     }
     
     
-// Setter
-    public void setLayerID(int layerID){
-        this.layerID = layerID;
-    }
-    
-    public void setDeathSound(String deathSound){
-        this.deathSound = deathSound;
-    }
-    
-    public void setWinSound(String winSound){
-        this.winSound = winSound;
-    }
-    
-    public void setBackGroundSound(String backGroundSound){
-        this.backGroundSound = backGroundSound;
-    }
-    
-// Getter
-    
+    /**
+     * Rückgabe der aktuellen LayerID
+     * @return 
+     */
     public int getLayerID(){
         return this.layerID;
     }
-    
+    /**
+     * Rückgabe des Pfades zum aktuellen DeathSounds
+     * @return String pathToDeathSound
+     */
     public String getDeathSound(){
         return this.deathSound;
     }
-    
+    /**
+     * Rückgabe des Pfades zum aktuellen WinSounds
+     * @return String pathToWinSound
+     */
     public String getWinSound(){
         return this.winSound;
     }
-    
+    /**
+     * Rückgabe des Pfades zum aktuellen Background
+     * @return String pathToBackground
+     */
     public String getBackGroundSound(){
         return this.backGroundSound;
     }

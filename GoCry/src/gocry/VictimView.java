@@ -1,11 +1,6 @@
-    /*
-     * To change this license header, choose License Headers in Project Properties.
-     * To change this template file, choose Tools | Templates
-     * and open the template in the editor.
-     */
     package gocry;
 
-import java.awt.AlphaComposite;
+    import java.awt.AlphaComposite;
     import java.awt.Color;
     import java.awt.Dimension;
     import java.awt.Font;
@@ -18,7 +13,9 @@ import java.awt.AlphaComposite;
     import javax.swing.*;
 
     /**
-     *
+     * Anzeige aller Objekte (Victim, Timer, Ghost(s)) auf einem Panel die in möglichst kleinen Intervallen
+     * repaintet werden sollen. Repaint zur Ausgabenaktualisierung wird regelmäßig durch Thread aufgerufen.
+     * Teil des JLayeredPane GameView.
      * @author johann
      */
     public class VictimView extends JPanel implements Runnable{

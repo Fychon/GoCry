@@ -3,11 +3,9 @@ package gocry;
 
 import java.awt.geom.Point2D;
 
-/*
- * Fragelevel an jeder dritten Layerebene
- */
+
 /**
- *
+ * 
  * @author justus
  */
 public class Question {

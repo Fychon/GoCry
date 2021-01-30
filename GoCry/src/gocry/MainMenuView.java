@@ -3,12 +3,11 @@ package gocry;
 import java.awt.*;
 import java.sql.SQLException;
 import javax.swing.*;
-    /*
-     * Ansicht des Hauptmenüs. Weiterführung auf Start des Spiels, Spiel laden und Scoreboard anzeigen.
-     */
 
     /**
-     *
+     * Erstellung des allgemeinen Fensters(JFrame) auf feste Spielgröße(1280x720).
+     * Erstellen, Laden und Speichern aller drei Panels und deren Komponenten des Hauptmenüs.
+     * Verweis bei Button-Action (Klick o. Hoover-Effekt) auf ViewController.
      * @author ahh-rief
      */
     public class MainMenuView extends JFrame {
@@ -35,7 +34,12 @@ import javax.swing.*;
         
         private ImageIcon volumeIcons[] = new ImageIcon[4];
         private JLabel volumeLabel;
-        //Constructor
+        
+        /**
+         * Konstruktor für Hauptmenü. Größe wird festgelegt und ist nicht veränderbar.
+         * Entfernen eines vorhandenen Layout-Managers für Pixelgenau GUI Gestaltung.
+         * @param controller 
+         */
         public MainMenuView(ViewController controller){
             this.setUndecorated(true);             
             this.controller = controller;
@@ -46,7 +50,12 @@ import javax.swing.*;
             this.getContentPane().setLayout(null);
         }
 
-
+        /**
+         * Erstellung des Hauptmenüs. Es werden erst die allgemeinen Frame Einstellungen geladen.
+         * Danach werden die drei für das Hauptmenü benötigte Panel-Einstellungen geladen und mittels der 3 loadPanel() Methoden
+         * der Inhalt dieser Panels. Die drei Panel werdem als LayeredPane im Fenster angezeigt.
+         *
+         */
         public void createGui(){
             //Frame Settings
             this.setTitle("GoCry Hauptmenü");
@@ -91,7 +100,13 @@ import javax.swing.*;
             this.add(lmenu);
         }
                
-        
+        /**
+         * Erstellung und Hinzufügen der Komponenten für das dritte (oberste) Panel.
+         * Dieses Panel ist für die Userinteraktionen (Knöpfe, Slider, Textfelder) zuständig.
+         * Größe und Position der Komponenten werden fest gesetzt. 
+         * F+r eine gute Darstellung und da  überall mit Texturen und Icons gearbeitet wird, wird
+         * die Sichtbarkeit der Kompoenten mangepasst und der Hintergrund entfernt.
+         */
         public void loadThirdPanel(){
             Dimension sizeButtons = lmenu.getSize();
             sizeButtons.width = sizeButtons.width / 3;
@@ -189,7 +204,12 @@ import javax.swing.*;
             lmenuKomp.add(closeGame);
             lmenuKomp.add(volume);
         }
-                
+        
+        /**
+         * Erstellung und Laden der Komponenten für das zweite Panel (in der Mitte).
+         * Das Panel zeigt den Titel (GoCry) als Gif an (Wechsel von Schwarz auf Gelb) und ist zusätzlich
+         * für die Anzeige des sich veränderen Volumeicons zuständig.
+         */
         public void loadSecPanel(){
             Icon icon = new ImageIcon("textures/GoCry.gif");
             JLabel label = new JLabel(icon);
@@ -205,6 +225,11 @@ import javax.swing.*;
             ltitle.add(volumeLabel);
         }
 
+        /**
+         * Erstellung und Laden der Komponenteneingeschaften des ersten Hintergrund-Panels.
+         * Dieses Panel ist das "Intro" und zeigt die Hintergrundanimation als GIF an.
+         * Das Bild wird über die komplette Framegröße gelegt und wird automatisch als Endless-Loop abgespielt.
+         */
         public void loadFirstPanel(){
             Icon icon = new ImageIcon("textures/mainmenu.gif");
             JLabel label = new JLabel(icon);
@@ -213,6 +238,11 @@ import javax.swing.*;
             lbackGround.add(label); 
         }
         
+        /**
+         * Anzeigen des Infoscreens beim ersten Spielstart.
+         * Alle aktuellen Komponenten werden entfernt und der InfoScreen wird
+         * als Bild in einem JPanel vollständig über das Fenster gelegt.
+         */
         public void showInfoScreen(){
             this.getContentPane().removeAll();        
             JPanel infoPanel = new JPanel();
@@ -227,6 +257,12 @@ import javax.swing.*;
             this.repaint();
         }
         
+        /**
+         * Methode für Anzeige des Hoover-Effect (an - true; aus - false).
+         * Das Background Bild aus dem HintergrundPanels des MainMenüs wird gewechselt.
+         * Das Icon des ExitButtons wird als Animation abgespielt.
+         * @param in   Hoover an / aus
+         */
         public void goodbyePanel(boolean in){
             lbackGround.removeAll();
             if(in){
@@ -248,7 +284,12 @@ import javax.swing.*;
             lbackGround.repaint();
         }
         
-
+        /**
+         * Erstellung und Hinzugügung einer ScoreBoard View.
+         * Bei Erstellung werden alle Einträge aus der Datenbank geladen und mitgegeben.
+         * 
+         * @throws SQLException 
+         */
         public void showScoreboard() throws SQLException{
             ViewController.getInstance().setVictimName(enterName.getText());
             this.getContentPane().removeAll();
@@ -258,28 +299,40 @@ import javax.swing.*;
             this.revalidate();
         }
 
+        /**
+         * Erstellung und Anzeige einer GameView.
+         * Laden und Anzeige der benötigten Spieleobjekt (LevelView) und des
+         * Spielers (VictimView) passend zum mitgegebenen Level.
+         * @param level_id          
+         */
         public void showLevel(int level_id){
             this.getContentPane().removeAll();        
             ViewController.getInstance().setVictimName(enterName.getText());
             GameView game = new GameView(this, level_id);
             game.setLayout(null);
             game.setBounds(0, 0, this.getSize().width, this.getSize().height);
-            //game.resiveObjects();
             this.setVisible(true);
             this.add(game);
             this.addKeyListener(LevelController.getInstance());
 
-            //this.pack();
 
             this.repaint();
             this.revalidate();
         }
         
+        /**
+         * Wechsel des VolumeIcons im 2. Panel von 0-3 (0%;33%;66%;100%), um die Lautstärke zu visualisieren.
+         * @param i 
+         */
         public void switchVolumeIcon(int i){
             volumeLabel.setIcon(volumeIcons[i]);
             ltitle.repaint();
         }
-        
+        /**
+         * Methode zum Anzeigen des Hauptmenü. Wird beim Rückgang in das Hauptmenü 
+         * (z.B. von der Scorebaordansicht aus) aufgerufen. Entfernung aller aktuellen Komponenten
+         * und Ansicht der gespeicherten LayeredPane für die Panels des Hauptmenüs
+         */
         public void showMenu(){
             this.getContentPane().removeAll();
             this.add(lmenu);
@@ -288,6 +341,11 @@ import javax.swing.*;
             this.repaint();
             this.revalidate();
         }
+        /**
+         * Ansicht des Hauptmenüs mit deaktivierten o. aktivierten Continue Button. Falls der mitgegebnen Parameter ecPressed true ist wird der
+         * nichtsnützige Continue Button aktiviert und ein anderes Bild verwendet. Im anderen Falle wird er deaktiviert und das ausgegraute Bild verwendet.
+         * @param escPressed 
+         */
         public void showMenuWithButton(boolean escPressed){
             this.getContentPane().removeAll();
             this.add(lmenu);

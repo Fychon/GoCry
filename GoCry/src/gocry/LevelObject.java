@@ -2,13 +2,11 @@ package gocry;
 
 import java.awt.Dimension;
 
-/*
- * Bausteine der Level
- * 
- * 
- */
 /**
- *
+ * Modelklasse für die Erstellung aller LevelObjekte aus der Datenbank.
+ * Objekte werden aus der Datenbank anhand LevelID geladen.
+ * Position und Größe werden mittels der Framedimensionen berechnet und verändert.
+ * Die Objekte werden für die Ansicht in LevelView wie auch für die Collsisions in LEvelController verwendet.
  * @author justus
  */
 public class LevelObject{
@@ -36,11 +34,11 @@ public class LevelObject{
     private int textureid;
     
 
-    /* Switch um Effekt des Objekts auf Spieler festzulegen
-   * Kill - instantdeath
-   * Winzone - Ziel => Level bestanden, wenn erreicht
-   * Neutral - neutrales Element (bsp: normaler Untergrund)
-     */
+   /* Switch um Effekt des Objekts auf Spieler festzulegen
+    * Kill - instantdeath
+    * Winzone - Ziel => Level bestanden, wenn erreicht
+    * Neutral - neutrales Element (bsp: normaler Untergrund)
+    */
     public enum objectStatus {
         NEUTRAL,
         KILL,
@@ -50,21 +48,17 @@ public class LevelObject{
     // Status des Objekts
     private objectStatus status;
 
-    LevelObject(int positionX, int positionY, int status_id) {
-        this.positionx = positionX;
-        this.positiony = positionY;
-        switch (status_id) {
-            case 0:
-                this.status = objectStatus.NEUTRAL;
-            case 1:
-                this.status = objectStatus.KILL;
-            case 2:
-                this.status = objectStatus.WINZONE;
-            default:
-                this.status = objectStatus.NEUTRAL;
-        }
-    }
-
+    /**
+     * Konstruktor für levelObjekte. Ein Objekt braucht eine Position im Array und einen 
+     * zugehörigen Status (Neutral/Kill/Win). Alle Objekte werden mittels Informationen aus der Datenbank ersteltl.
+     * 
+     * @param positionX
+     * @param positionY
+     * @param collision
+     * @param visibility
+     * @param status_id
+     * @param texture_id 
+     */
     LevelObject(int positionX, int positionY, boolean collision, boolean visibility, int status_id, int texture_id) {
         this.positionx = positionX;
         this.positiony = positionY;
@@ -89,78 +83,68 @@ public class LevelObject{
         }
     }
 
+    /**
+     * Anpassung der Breite und Hööge eines Levelblockes.
+     * Alle Objekte sollen Quadratisch sein. Die Breite wird durch die gesamte Framebreite und der Anzahl der Blöcke in "einer Zeile"
+     * Alle Blöcke auf der X-Achse zusammen, bilden die gesamte Framebreite
+     * @param size 
+     */
     void calcRealSize(Dimension size) {
         this.width = size.width / 32;
         this.height = width;
     }
-
+    /**
+     * Berechnung der realen Position eines LevelObjektes im Frame.
+     * Die Position wird mit der Breite eines Objektes verrechnet (e.g. block(x:4;y:0) -> x; 4*40px = 160px
+     * Die Position auf der Y Achse muss invertiert werden, da der Nullpunkt oben ist, und Faktor 1 aus der DB-Position hinzugerechnet
+     * (e.g. ist: x:4;y:0 soll: x:160;y:680) y = 720 - 40 * (y(0)+1)
+     * @param size 
+     */
     void calcRealLocation(Dimension size) {
         positionx *= getWidth();
         positiony = size.height - getHeight() * (positiony+1);
     }
 
-// Setter
-    public synchronized void setPositionX(int x) {
-        this.positionx = x;
-    }
 
-    public synchronized void setPositionY(int y) {
-        this.positionx = y;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setCollision(boolean collision) {
-        this.collision = collision;
-    }
-
-
-    public void setVisibility(boolean visibility) {
-        this.visibility = visibility;
-    }
-
-    public void setTexture(String texture) {
-        this.texture = texture;
-    }
-
-// Getter   
-    public synchronized int getPositionX() {
+    /**
+     * Rückgabe der Position des Blockes auf der x Achse
+     * @return 
+     */
+    public int getPositionX() {
         return this.positionx;
     }
-
-    public synchronized int getPositionY() {
+    /**
+     * Rückgabe der Position des Blockes auf der Y Achse
+     * @return 
+     */
+    public int getPositionY() {
         return this.positiony;
     }
-
+    /**
+     * Rückgabe der Höhe des Blockes
+     * @return 
+     */
     public int getHeight() {
         return this.height;
     }
-
+    /**
+     * Rückgabe der Breite des Blockes
+     * @return 
+     */
     public int getWidth() {
         return this.width;
     }
-
-    public boolean getCollision() {
-        return this.collision;
-    }
-
-    public boolean getVisibility() {
-        return this.visibility;
-    }
-
-    public String getTexture() {
-        return this.texture;
-    }
-
+    /**
+     * Rückgabe des Status des Blockes
+     * @return 
+     */
     public objectStatus getStatus() {
         return this.status;
     }
+    /**
+     * Rückgabe der TextureID des Blockes
+     * @return 
+     */
     public int getTextureId(){
         return this.textureid;
     }
